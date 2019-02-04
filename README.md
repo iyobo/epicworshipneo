@@ -3,7 +3,7 @@
 
 <p align="center">
 An Audio/Visual projection tool for churches and concerts.
-It is a scalable Scalable Cross-Platform Desktop App based on  <a href="http://electron.atom.io/">Electron</a>, <a href="https://facebook.github.io/react/">React</a>, <a href="https://github.com/mobxjs/mobx">Mobx</a>, <a href="https://github.com/reactjs/react-router">React Router</a>, <a href="http://webpack.github.io/docs/">Webpack</a> and <a href="https://github.com/gaearon/react-hot-loader">React Hot Loader</a> and setup for rapid application development (HMR).
+It is a Scalable Cross-Platform Desktop App based on  <a href="http://electron.atom.io/">Electron</a>, <a href="https://facebook.github.io/react/">React</a>, <a href="https://github.com/mobxjs/mobx">Mobx</a>, <a href="https://github.com/reactjs/react-router">React Router</a>, <a href="http://webpack.github.io/docs/">Webpack</a> and <a href="https://github.com/gaearon/react-hot-loader">React Hot Loader</a> and setup for rapid application development (HMR).
 </p>
 
 <div align="center">
@@ -19,7 +19,7 @@ It is a scalable Scalable Cross-Platform Desktop App based on  <a href="http://e
 
 <a href="https://facebook.github.io/react/"><img src="./internals/img/react-padded-90.png" /></a>
 <a href="https://webpack.github.io/"><img src="./internals/img/webpack-padded-90.png" /></a>
-<a href="http://redux.js.org/"><img src="./internals/img/redux-padded-90.png" /></a>
+<a href="http://mobx.js.org/"><img src="./internals/img/mobx.png" /></a>
 <a href="https://github.com/ReactTraining/react-router"><img src="./internals/img/react-router-padded-90.png" /></a>
 <a href="https://flowtype.org/"><img src="./internals/img/flow-padded-90.png" /></a>
 <a href="http://eslint.org/"><img src="./internals/img/eslint-padded-90.png" /></a>
