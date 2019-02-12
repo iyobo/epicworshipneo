@@ -10,29 +10,18 @@
  *
  * @flow
  */
+import { initLogger, installExtensions } from "./utils/bootstrap";
+initLogger();
+
 import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize('database', 'username', 'password', {
-  host: 'localhost',
-  dialect: 'sqlite',
+import { initializeData } from "./data/localdb";
+import { initializeMessaging } from "./messaging/messaging";
 
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  },
 
-  // SQLite only
-  storage: './database.sqlite',
-
-  // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
-  operatorsAliases: false
-});
 
 export default class AppUpdater {
   constructor() {
@@ -56,15 +45,7 @@ if (
   require('electron-debug')();
 }
 
-const installExtensions = async () => {
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
 
-  return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload))
-  ).catch(console.log);
-};
 
 /**
  * Add event listeners...
@@ -85,6 +66,10 @@ app.on('ready', async () => {
   ) {
     await installExtensions();
   }
+
+  await initializeData(app);
+  await initializeMessaging(app)
+
 
   mainWindow = new BrowserWindow({
     show: false,
