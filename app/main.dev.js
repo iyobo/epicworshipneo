@@ -19,7 +19,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 
 import { initializeData } from "./data/localdb";
-import { initializeMessaging } from "./messaging/messaging";
+import { initializeScreens } from "./managers/screenManager";
 
 
 
@@ -68,7 +68,7 @@ app.on('ready', async () => {
   }
 
   await initializeData(app);
-  await initializeMessaging(app)
+  await initializeScreens(app)
 
 
   mainWindow = new BrowserWindow({
