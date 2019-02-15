@@ -1,6 +1,6 @@
 import ScreenStore from "./ScreenStore";
 
-export default class AppStore {
+class AppStore {
 
   constructor(){
     this.screenStore = new ScreenStore(this);
@@ -9,3 +9,6 @@ export default class AppStore {
 
 
 }
+
+
+export default new AppStore();
