@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Link, NavLink, Route, Switch } from "react-router-dom";
-import SongsPage from "../pages/SongsPage";
-import ScripturePage from "../pages/ScripturePage";
-import VideoPage from "../pages/VideoPage";
-import VideoBackgroundPage from "../pages/VideoBackgroundPage";
-import ImagePage from "../pages/ImagePage";
-import ImageBackgroundPage from "../pages/ImageBackgroundPage";
-import AudioPage from "../pages/AudioPage";
+import SongsPage from "../pages/elements/SongsPage";
+import ScripturePage from "../pages/elements/ScripturePage";
+import VideoPage from "../pages/elements/VideoPage";
+import VideoBackgroundPage from "../pages/elements/VideoBackgroundPage";
+import ImagePage from "../pages/elements/ImagePage";
+import ImageBackgroundPage from "../pages/elements/ImageBackgroundPage";
+import AudioPage from "../pages/elements/AudioPage";
 
 @inject("store")
 @observer
