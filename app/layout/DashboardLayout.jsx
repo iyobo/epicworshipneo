@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, NavLink, Route, Switch } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import ProductionPage from "../pages/ProductionPage";
 import ElementsLayout from "./ElementsLayout";
@@ -20,28 +20,28 @@ export default class DashboardLayout extends Component {
 
             <ul className="uk-navbar-nav">
               <li>
-                <Link to="/">
+                <NavLink exact to="/" >
                   <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: album"/>
                   Productions
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link to="/elements">
+                <NavLink to="/elements">
                   <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: thumbnails"/>
                   Elements
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link to="/live">
+                <NavLink to="/live">
                   <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: star"/>
                   Live
-                </Link>
+                </NavLink>
               </li>
               <li>
-                <Link to="/settings">
+                <NavLink to="/settings">
                   <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: settings"/>
                   Settings
-                </Link>
+                </NavLink>
               </li>
 
             </ul>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, NavLink, Route, Switch } from "react-router-dom";
 import SongsPage from "../pages/SongsPage";
 import ScripturePage from "../pages/ScripturePage";
 import VideoPage from "../pages/VideoPage";
@@ -15,18 +15,19 @@ export default class ElementsLayout extends Component {
   render() {
     return (
       <div className='uk-animation-slide-right-small'>
+
         <ul className="uk-subnav uk-subnav-pill">
-          <li className="uk-active"><Link to="/elements/songs">Songs</Link></li>
-          <li><Link to="/elements/scripture">Scripture</Link></li>
-          <li><Link to="/elements/video">Video</Link></li>
-          <li><Link to="/elements/videobg">Video Background</Link></li>
-          <li><Link to="/elements/image">Image</Link></li>
-          <li><Link to="/elements/imagebg">Image Background</Link></li>
-          <li><Link to="/elements/audio">Audio</Link></li>
+          <li><NavLink exact to="/elements">Songs</NavLink></li>
+          <li><NavLink to="/elements/scripture">Scripture</NavLink></li>
+          <li><NavLink to="/elements/video">Video</NavLink></li>
+          <li><NavLink to="/elements/videobg">Video Background</NavLink></li>
+          <li><NavLink to="/elements/image">Image</NavLink></li>
+          <li><NavLink to="/elements/imagebg">Image Background</NavLink></li>
+          <li><NavLink to="/elements/audio">Audio</NavLink></li>
         </ul>
 
         <Switch>
-          <Route to="/elements/songs" component={SongsPage} />
+          <Route exact to="/elements" component={SongsPage} />
           <Route to="/elements/scripture" component={ScripturePage} />
           <Route to="/elements/video" component={VideoPage} />
           <Route to="/elements/videobg" component={VideoBackgroundPage} />

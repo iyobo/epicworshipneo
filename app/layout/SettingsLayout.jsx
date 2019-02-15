@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Route, Switch } from "react-router-dom";
+import { Link, NavLink, Route, Switch } from "react-router-dom";
 import { inject, observer } from "mobx-react/index";
 import ProjectorsPage from "../pages/settings/ProjectorsPage";
 import CountdownPage from "../pages/settings/CountdownPage";
@@ -13,14 +13,14 @@ export default class SettingsLayout extends Component {
     return (
       <div className='settingsLayout uk-animation-slide-right-small'>
         <ul className="uk-subnav uk-subnav-pill">
-          <li className="uk-active"><Link to="/settings/projectors">Projectors</Link></li>
-          <li><Link to="/settings/countdown">Countdown</Link></li>
-          <li><Link to="/settings/bible">Bible Translations</Link></li>
-          <li><Link to="/settings/migrations">Migrations</Link></li>
+          <li><NavLink exact to="/settings">Projectors</NavLink></li>
+          <li><NavLink to="/settings/countdown">Countdown</NavLink></li>
+          <li><NavLink to="/settings/bible">Bible Translations</NavLink></li>
+          <li><NavLink to="/settings/migrations">Migrations</NavLink></li>
         </ul>
 
         <Switch>
-          <Route to="/elements/projectors" component={ProjectorsPage} />
+          <Route exact to="/elements" component={ProjectorsPage} />
           <Route to="/elements/countdown" component={CountdownPage} />
           <Route to="/elements/bible" component={BibleTranslationsPage} />
           <Route to="/elements/migrations" component={MigrationsPage} />
