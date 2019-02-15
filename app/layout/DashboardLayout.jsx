@@ -6,6 +6,7 @@ import ElementsLayout from "./ElementsLayout";
 import LivePage from "../pages/LivePage";
 import SettingsLayout from "./SettingsLayout";
 
+
 @inject("store")
 @observer
 export default class DashboardLayout extends Component {
