@@ -3,11 +3,11 @@ import { inject, observer } from "mobx-react";
 
 @inject("store")
 @observer
-export default class VideoBackgroundPage extends Component {
+export default class AnnouncementsPage extends Component {
   render() {
     return (
       <div className='uk-animation-slide-left-small'>
-        <h3>Video Backgrounds</h3>
+
       </div>
     );
   }

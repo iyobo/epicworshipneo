@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 
 @inject("store")
 @observer
-export default class AudioPage extends Component {
+export default class LanguagePage extends Component {
   render() {
     return (
       <div className='uk-animation-slide-left-small'>

@@ -11,21 +11,21 @@
  * @flow
  */
 import { initLogger, installExtensions } from "./utils/bootstrap";
+
 initLogger();
 
-import { app, BrowserWindow } from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
-import MenuBuilder from './menu';
+import { app, BrowserWindow } from "electron";
+import { autoUpdater } from "electron-updater";
+import log from "electron-log";
+import MenuBuilder from "./menu";
 
 import { initializeData } from "./data/localdb";
 import { initializeScreens } from "./managers/screenManager";
 
 
-
 export default class AppUpdater {
   constructor() {
-    log.transports.file.level = 'info';
+    log.transports.file.level = "info";
     autoUpdater.logger = log;
     autoUpdater.checkForUpdatesAndNotify();
   }
@@ -33,52 +33,54 @@ export default class AppUpdater {
 
 let mainWindow = null;
 
-if (process.env.NODE_ENV === 'production') {
-  const sourceMapSupport = require('source-map-support');
+
+if (process.env.NODE_ENV === "production") {
+  const sourceMapSupport = require("source-map-support");
   sourceMapSupport.install();
 }
 
 if (
-  process.env.NODE_ENV === 'development' ||
-  process.env.DEBUG_PROD === 'true'
+  process.env.NODE_ENV === "development" ||
+  process.env.DEBUG_PROD === "true"
 ) {
-  require('electron-debug')();
+  require("electron-debug")();
 }
-
 
 
 /**
  * Add event listeners...
  */
 
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
-  if (process.platform !== 'darwin') {
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
-app.on('ready', async () => {
+app.on("ready", async () => {
   if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
+    process.env.NODE_ENV === "development" ||
+    process.env.DEBUG_PROD === "true"
   ) {
     await installExtensions();
   }
 
   await initializeData(app);
-  await initializeScreens(app)
+  await initializeScreens(app);
 
 
   mainWindow = new BrowserWindow({
-    title: 'EpicWorship: When you do, It must be Epic',
+    title: "EpicWorship: When you do, It must be Epic",
     show: false,
-    width: 1024,
+    width: 1200,
     height: 728,
+    x: -1000,
+    y: -400,
     webPreferences: {
       webSecurity: false,
-      nodeIntegration: true,
+      nodeIntegration: true
     }
   });
 
@@ -90,19 +92,24 @@ app.on('ready', async () => {
   // }));
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
+  if (
+    process.env.NODE_ENV === "development" ||
+    process.env.DEBUG_PROD === "true"
+  ) mainWindow.webContents.openDevTools({ mode: "bottom" });
+
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-  mainWindow.webContents.on('did-finish-load', () => {
-  // mainWindow.once('ready-to-show', () => {
+  mainWindow.webContents.on("did-finish-load", () => {
+    // mainWindow.once('ready-to-show', () => {
     if (!mainWindow) {
-      throw new Error('"mainWindow" is not defined');
+      throw new Error("\"mainWindow\" is not defined");
     }
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {
       mainWindow.show();
-      mainWindow.webContents.openDevTools();
       mainWindow.focus();
+
     }
   });
 
@@ -118,7 +125,7 @@ app.on('ready', async () => {
   //   }
   // });
 
-  mainWindow.on('closed', () => {
+  mainWindow.on("closed", () => {
     mainWindow = null;
   });
 

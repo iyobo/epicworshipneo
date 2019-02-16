@@ -5,15 +5,13 @@ import ProductionPage from "../pages/ProductionPage";
 import ElementsLayout from "./ElementsLayout";
 import LivePage from "../pages/LivePage";
 import SettingsLayout from "./SettingsLayout";
+import NewsPage from "../pages/NewsPage";
+import { T } from "../../i18n/i18n";
 
 
 @inject("store")
 @observer
 export default class DashboardLayout extends Component {
-
-  isRootUrl=(match, location)=>{
-    console.log({match, location})
-  }
 
   render() {
     return (
@@ -21,31 +19,31 @@ export default class DashboardLayout extends Component {
 
         <nav className="uk-navbar-container uk-margin uk-navbar mainnav">
           <div className="uk-navbar-left">
-            <a className="uk-navbar-item uk-logo" href="#">EpicWorship</a>
+            <Link className="uk-navbar-item uk-logo" to="/">EpicWorship</Link>
 
             <ul className="uk-navbar-nav">
               <li>
-                <NavLink exact to="/productions" isActive={this.isRootUrl}>
+                <NavLink exact to="/productions">
                   <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: album"/>
-                  Productions
+                  <T name='menu_productions'/>
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/elements">
                   <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: thumbnails"/>
-                  Elements
+                  <T name='menu_elements'/>
                 </NavLink>
               </li>
               <li>
                 <NavLink exact to="/live">
                   <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: star"/>
-                  Live
+                  <T name='menu_live'/>
                 </NavLink>
               </li>
               <li>
                 <NavLink to="/settings">
                   <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: settings"/>
-                  Settings
+                  <T name='menu_settings'/>
                 </NavLink>
               </li>
 
@@ -53,7 +51,11 @@ export default class DashboardLayout extends Component {
           </div>
 
           <div className="uk-navbar-right">
-            <div>Now Live: Production</div>
+            <div className='pad10'>
+              <span uk-icon="icon: rss"/>
+              <T name='menu_nowLive'/>: <Link
+              to='/productions'>{this.props.store.productionStore.activeProduction ? this.props.store.productionStore.activeProduction.name : <i>None</i>}</Link>
+            </div>
 
             <ul className="uk-navbar-nav">
 
