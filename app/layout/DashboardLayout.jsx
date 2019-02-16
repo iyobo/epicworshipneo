@@ -10,17 +10,22 @@ import SettingsLayout from "./SettingsLayout";
 @inject("store")
 @observer
 export default class DashboardLayout extends Component {
+
+  isRootUrl=(match, location)=>{
+    console.log({match, location})
+  }
+
   render() {
     return (
       <div className='dashboardLayout uk-animation-slide-left-small'>
 
-        <nav className="uk-navbar-container uk-margin uk-navbar">
+        <nav className="uk-navbar-container uk-margin uk-navbar mainnav">
           <div className="uk-navbar-left">
             <a className="uk-navbar-item uk-logo" href="#">EpicWorship</a>
 
             <ul className="uk-navbar-nav">
               <li>
-                <NavLink exact to="/" >
+                <NavLink exact to="/productions" isActive={this.isRootUrl}>
                   <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: album"/>
                   Productions
                 </NavLink>
@@ -32,7 +37,7 @@ export default class DashboardLayout extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/live">
+                <NavLink exact to="/live">
                   <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: star"/>
                   Live
                 </NavLink>
@@ -48,6 +53,8 @@ export default class DashboardLayout extends Component {
           </div>
 
           <div className="uk-navbar-right">
+            <div>Now Live: Production</div>
+
             <ul className="uk-navbar-nav">
 
             </ul>
@@ -57,9 +64,10 @@ export default class DashboardLayout extends Component {
         <div className='dashboardBody'>
           <Switch>
             <Route path='/elements' component={ElementsLayout}/>
-            <Route path='/live' component={LivePage}/>
+            <Route exact path='/live' component={LivePage}/>
             <Route path='/settings' component={SettingsLayout}/>
-            <Route path='/' component={ProductionPage}/>
+            <Route exact path='/productions' component={ProductionPage}/>
+            <Route exact path='' component={NewsPage}/>
           </Switch>
         </div>
 

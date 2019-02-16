@@ -9,6 +9,7 @@
     <script type="text/javascript" src="../node_modules/uikit/dist/js/uikit.min.js"></script>
     <script src="../node_modules/uikit/dist/js/uikit-icons.min.js"></script>
     <script>
+      console.log('splat');
       (function() {
         if (!process.env.HOT) {
           const link = document.createElement('link');
@@ -21,12 +22,14 @@
     </script>
   </head>
   <body>
+    <div id="loc"></div>
     <div id="root"></div>
     <script type="text/javascript" src="../resources/js/sweetalert2.all.min.js"></script>
     <script type="text/javascript" src="../resources/js/iziToast.min.js"></script>
 
     <script>
       {
+
         const scripts = [];
 
         // Dynamically insert the DLL script in development env in the

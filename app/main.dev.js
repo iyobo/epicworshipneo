@@ -72,16 +72,28 @@ app.on('ready', async () => {
 
 
   mainWindow = new BrowserWindow({
+    title: 'EpicWorship: When you do, It must be Epic',
     show: false,
     width: 1024,
-    height: 728
+    height: 728,
+    webPreferences: {
+      webSecurity: false,
+      nodeIntegration: true,
+    }
   });
 
+  //TODO: maybe use this?
+  //win.loadURL(url.format({
+  // pathname: path.join(__dirname, 'dist/index.html'),
+  // protocol: 'file:',
+  // slashes: true
+  // }));
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
   mainWindow.webContents.on('did-finish-load', () => {
+  // mainWindow.once('ready-to-show', () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
@@ -89,9 +101,22 @@ app.on('ready', async () => {
       mainWindow.minimize();
     } else {
       mainWindow.show();
+      mainWindow.webContents.openDevTools();
       mainWindow.focus();
     }
   });
+
+  // mainWindow.webContents.on('did-navigate-in-page', () => {
+  //   if (!mainWindow) {
+  //     throw new Error('"mainWindow" is not defined');
+  //   }
+  //   if (process.env.START_MINIMIZED) {
+  //     mainWindow.minimize();
+  //   } else {
+  //     mainWindow.show();
+  //     mainWindow.focus();
+  //   }
+  // });
 
   mainWindow.on('closed', () => {
     mainWindow = null;

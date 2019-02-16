@@ -9,12 +9,13 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 
 export default class Root extends Component {
+
   render() {
     return (
       <Provider store={appStore}>
         <BrowserRouter>
           <Switch>
-            <Route path='/' component={DashboardLayout}/>
+            <Route path='' component={DashboardLayout}/>
           </Switch>
         </BrowserRouter>
       </Provider>
