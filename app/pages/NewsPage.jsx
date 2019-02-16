@@ -14,7 +14,7 @@ export default class NewsPage extends Component {
             <T name='news_goTo'/> <Link to='/productions'>Productions</Link> <T name='news_toGetStarted'/>
           </div>
           <div>
-            <div className="uk-card uk-card-default uk-card-body">News & Tutorials coming soon</div>
+            <div className="uk-card uk-card-default uk-card-body"><T name='news_comingSoon'/></div>
           </div>
         </div>
       </div>

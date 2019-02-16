@@ -7,6 +7,7 @@ import MediaPage from "../pages/elements/MediaPage";
 import BackgroundsPage from "../pages/elements/BackgroundsPage";
 import AnnouncementsPage from "../pages/elements/AnnouncementsPage";
 import PresentationsPage from "../pages/elements/PresentationsPage";
+import { T } from "../../i18n/i18n";
 
 @inject("store")
 @observer
@@ -16,12 +17,12 @@ export default class ElementsLayout extends Component {
       <div className='uk-animation-slide-right-small'>
 
         <ul className="uk-subnav uk-subnav-pill uk-animation-slide-top-small">
-          <li><NavLink exact to="/elements"><i className='fa fa-music'/> Songs</NavLink></li>
-          <li><NavLink to="/elements/scripture"><i className='fa fa-bible'/> Scripture</NavLink></li>
-          <li><NavLink to="/elements/media"><i className='fa fa-play-circle'/> Media</NavLink></li>
-          <li><NavLink to="/elements/backgrounds"><i className='fa fa-image'/> Backgrounds</NavLink></li>
-          <li><NavLink to="/elements/announcements"><i className='fa fa-bullhorn'/> Announcements</NavLink></li>
-          <li><NavLink to="/elements/presentations"><i className='fa fa-magic'/> Presentations</NavLink></li>
+          <li><NavLink exact to="/elements"><i className='fa fa-music'/> <T name='menu_songs'/></NavLink></li>
+          <li><NavLink to="/elements/scripture"><i className='fa fa-bible'/> <T name='menu_scripture'/></NavLink></li>
+          <li><NavLink to="/elements/media"><i className='fa fa-play-circle'/> <T name='menu_media'/></NavLink></li>
+          <li><NavLink to="/elements/backgrounds"><i className='fa fa-image'/> <T name='menu_backgrounds'/></NavLink></li>
+          <li><NavLink to="/elements/announcements"><i className='fa fa-bullhorn'/> <T name='menu_announcements'/></NavLink></li>
+          <li><NavLink to="/elements/presentations"><i className='fa fa-magic'/> <T name='menu_presentations'/></NavLink></li>
 
         </ul>
 
