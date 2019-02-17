@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 
 const pluralize = require("pluralize");
 const capitalize = require("capitalize");
-export let activeLanguage = "en";
+export let activeLanguage = 'en';
 
 
 String.prototype.replaceAll = function(search, replacement) {
@@ -19,9 +19,25 @@ const reservedParams = [
 ];
 
 export const loadLanguage = (newLanguage) => {
-  const dict = require("./languages/" + activeLanguage);
+  let locale = newLanguage;
 
-  if(!dict) throw new Error(`Language files for ${newLanguage} not found`)
+  if (!locale) {
+    locale = navigator.language || 'en';
+    console.log("Switching to Language:", locale);
+  }
+
+  //We only use the first 2 characters
+  locale = locale.slice(0,2);
+
+  let dict = {}
+  try {
+    dict = require("./languages/" + locale);
+  }catch(err){
+    console.error(`Language files for ${locale} not found. Using english instead`);
+    loadLanguage('en');
+    return;
+  }
+
 
   //check to make sure no param variables uses a reserved param
   for (let [k, v] of Object.entries(dict)) {
@@ -35,10 +51,10 @@ export const loadLanguage = (newLanguage) => {
   }
 
   dictionary = dict;
-  activeLanguage = newLanguage;
+  activeLanguage = locale;
 };
 
-loadLanguage(activeLanguage);
+loadLanguage();
 
 /**
  * translate some text by key name

@@ -24,10 +24,11 @@ export default class ProductionPage extends Component {
               <li>List item 2 <a href="#" uk-icon="icon: file-edit"></a> <a href="#" uk-icon="icon: trash"></a> </li>
             </ul>
           </div>
-          {}
-          <div className='uk-animation-slide-right-small'>
-            <div className="uk-card uk-card-default uk-card-body">Item</div>
-          </div>
+          {false &&
+            <div className='uk-animation-slide-right-small'>
+              <div className="uk-card uk-card-default uk-card-body">Item</div>
+            </div>
+          }
         </div>
 
 
