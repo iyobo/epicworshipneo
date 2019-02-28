@@ -16,6 +16,8 @@ export default class ProductionPageComponent extends Component {
   onSubmit = (evt) => {
     evt.preventDefault();
 
+    if(!this.state.name) return toast.error({title: 'Invalid Production name', message:'Every production needs a good name'})
+
     const prodStore = this.props.store.productionStore;
     const elementStore = this.props.store.productionStore;
 
@@ -25,12 +27,11 @@ export default class ProductionPageComponent extends Component {
     if (!production) {
       production = prodStore.createProduction(this.state.name);
       prodStore.setSelectedProduction(production);
-    }
-    else {
+    } else {
       production.name = this.state.name;
     }
 
-    this.setState({name:''})
+    this.setState({ name: "" });
 
   };
 
@@ -53,9 +54,8 @@ export default class ProductionPageComponent extends Component {
               <b>Name</b>
               <input className="uk-input" type="text" name="name" autoFocus={true}
                      placeholder={production ? production.name : "New Production"}
-
-                     onChange={(evt)=>{
-                       this.setState({name: evt.target.value})
+                     onChange={(evt) => {
+                       this.setState({ name: evt.target.value });
                      }}
                      value={this.state.name}/>
             </div>
