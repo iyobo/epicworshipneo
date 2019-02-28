@@ -18,4 +18,11 @@ module.exports = {
   news_goTo: 'Go to',
   news_toGetStarted: 'to get started',
   news_comingSoon: 'News and Tutorials coming soon',
+
+  production_tooltip_create: 'Create a new Production',
+  production_tooltip_delete: 'Delete this Production',
+  production_tooltip_clone: 'Clone this Production',
+
+  production_errorTitle_productionName: 'Invalid production name',
+  production_errorMessage_productionName: 'Every great production needs a good name',
 }

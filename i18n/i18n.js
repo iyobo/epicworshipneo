@@ -10,7 +10,7 @@ String.prototype.replaceAll = function(search, replacement) {
   return target.replace(new RegExp(search, "g"), replacement);
 };
 
-let dictionary = {};
+export let dict = {};
 const reservedParams = [
   "pluralize",
   "uppercase",
@@ -29,9 +29,9 @@ export const loadLanguage = (newLanguage) => {
   //We only use the first 2 characters
   locale = locale.slice(0,2);
 
-  let dict = {}
+  let newDict = {}
   try {
-    dict = require("./languages/" + locale);
+    newDict = require("./languages/" + locale);
   }catch(err){
     console.error(`Language files for ${locale} not found. Using english instead`);
     loadLanguage('en');
@@ -40,7 +40,7 @@ export const loadLanguage = (newLanguage) => {
 
 
   //check to make sure no param variables uses a reserved param
-  for (let [k, v] of Object.entries(dict)) {
+  for (let [k, v] of Object.entries(newDict)) {
     for (let reserved of reservedParams) {
       if (v.includes("{{" + reserved + "}}")) {
         const errorMsg = `Could not load language ${activeLanguage}: Content for '${k}' is using a reserved keyword '${reserved}'`;
@@ -50,7 +50,7 @@ export const loadLanguage = (newLanguage) => {
     }
   }
 
-  dictionary = dict;
+  dict = newDict;
   activeLanguage = locale;
 };
 
@@ -63,7 +63,7 @@ loadLanguage();
  * @returns {*}
  */
 export const t = (name, params) => {
-  let text = dictionary[name] || "";
+  let text = dict[name] || "";
 
 
   if (params) {
@@ -87,6 +87,7 @@ export const t = (name, params) => {
   return text;
 };
 export const translate = t;
+
 
 export const T = (props) => <Fragment>
   {t(props.name, props.params)}

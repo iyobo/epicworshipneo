@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { inject, observer } from "mobx-react";
-import { translate } from "../../../i18n/i18n";
+import { dict, translate } from "../../../i18n/i18n";
 import { Route, Switch } from "react-router";
 import ProductionPageComponent from "./ProductionPageComponent";
 import { Link } from "react-router-dom";
@@ -27,8 +27,8 @@ export default class ProductionPage extends Component {
 
   render() {
     const prodStore = this.props.store.productionStore;
-    const liveProd = prodStore.liveProduction;
-    const selectedProd = prodStore.selectedProduction;
+    const liveProductionId = prodStore.liveProductionId;
+    const selectedProdId = this.state.selectedId;
 
 
     return (
@@ -36,11 +36,11 @@ export default class ProductionPage extends Component {
         <h2>{translate("menu_productions")}</h2>
 
         <ul className="uk-iconnav">
-          <li><Link to='/productions/new' data-uk-icon="icon: plus" data-uk-tooltip="Create a new Production"/></li>
-          {selectedProd &&
+          <li><Link to='/productions/new' data-uk-icon="icon: plus" data-uk-tooltip={dict.production_tooltip_create}/></li>
+          {selectedProdId &&
           <Fragment>
-            <li><a href="#" uk-icon="icon: copy" uk-tooltip="Duplicate this Production"></a></li>
-            <li><a href="#" uk-icon="icon: trash" uk-tooltip="Delete this Production"></a></li>
+            <li><a href="#" uk-icon="icon: copy" uk-tooltip={dict.production_tooltip_clone}></a></li>
+            <li><a href="#" uk-icon="icon: trash" uk-tooltip={dict.production_tooltip_delete}></a></li>
           </Fragment>
           }
         </ul>
@@ -51,8 +51,8 @@ export default class ProductionPage extends Component {
 
               {prodStore.productions.map((it) => {
                 console.log(it);
-                let isSelected = (selectedProd && it._id ===  selectedProd._id) ? "selected" : "";
-                let isLive = (liveProd && it._id === liveProd._id) ? "active" : "";
+                let isSelected = (it._id ===  selectedProdId) ? "selected" : "";
+                let isLive = (it._id === liveProductionId) ? "active" : "";
 
 
                 return <li className={`${isLive} ${isSelected}`} onClick={() => {
