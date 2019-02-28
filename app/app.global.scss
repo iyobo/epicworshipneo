@@ -1,8 +1,10 @@
 @import "~@fortawesome/fontawesome-free/css/all.css";
+$bgColor: #f8f5f4;
+$borderColor: #e4d7cc;
 
 body {
   //background-color: rgb(248, 248, 248);
-  background-color: rgb(248, 239, 233);
+  background-color: $bgColor;
 
   //position: relative;
   color: #4b4b4b;
@@ -31,7 +33,7 @@ body {
   }
 }
 
-.mainnav{
+.mainnav {
   padding-left: 20px;
 }
 
@@ -39,6 +41,32 @@ body {
   padding: 10px;
 }
 
-.itemList{
+.itemList {
+  //max-width: 300px;
+  background-color: white;
+  margin-top: 10px;
+  border: 1px solid $borderColor;
 
+  li {
+    padding: 15px;
+    cursor: pointer;
+    margin: 0 !important;
+
+    //background-color: #e5ffff;
+    border-top: 1px solid $borderColor;
+    //border-bottom: 1px solid $borderColor;
+
+    &.selected {
+      background-color: #3fc3ee;
+    }
+
+    &.active {
+      background-color: #a5dc86;
+    }
+  }
+}
+
+section {
+  background-color: white;
+  padding: 15px;
 }

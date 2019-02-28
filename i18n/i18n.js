@@ -86,6 +86,7 @@ export const t = (name, params) => {
 
   return text;
 };
+export const translate = t;
 
 export const T = (props) => <Fragment>
   {t(props.name, props.params)}

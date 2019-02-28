@@ -4,6 +4,7 @@ module.exports = {
   menu_live: 'Live',
   menu_settings: 'Settings',
   menu_songs: 'Songs',
+  menu_scripture: 'Scripture',
   menu_media: 'Media',
   menu_backgrounds: 'Backgrounds',
   menu_announcements: 'Announcements',
