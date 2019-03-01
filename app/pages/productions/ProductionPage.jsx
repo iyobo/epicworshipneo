@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react";
 import { dict, translate } from "../../../i18n/i18n";
 import { Route, Switch } from "react-router";
 import ProductionPageComponent from "./ProductionPageComponent";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 @inject("store")
 @observer
@@ -18,12 +18,33 @@ export default class ProductionPage extends Component {
     };
   }
 
+  onCreateBroduction = (prod) => {
+    this.props.history.push("/productions/new" + prod._id);
+    this.deselectProduction();
+  };
+
+
   selectProduction = (prod) => {
-    const prodStore = this.props.store.productionStore;
-    // prodStore.setSelectedProduction(prod._id);
     this.props.history.push("/productions/" + prod._id);
     this.setState({selectedId: prod._id})
   };
+
+  deselectProduction = ()=>{
+    this.setState({selectedId: null})
+  }
+
+  onClone=()=>{
+    const prodStore = this.props.store.productionStore;
+
+  }
+
+  onDelete=()=>{
+    const prodStore = this.props.store.productionStore;
+  }
+
+  onMakeLive=()=>{
+    const prodStore = this.props.store.productionStore;
+  }
 
   render() {
     const prodStore = this.props.store.productionStore;
@@ -36,11 +57,12 @@ export default class ProductionPage extends Component {
         <h2>{translate("menu_productions")}</h2>
 
         <ul className="uk-iconnav">
-          <li><Link to='/productions/new' data-uk-icon="icon: plus" data-uk-tooltip={dict.production_tooltip_create}/></li>
+          <li><button onClick={this.onCreateBroduction}  data-uk-icon="icon: plus" data-uk-tooltip={dict.production_tooltip_create}/></li>
           {selectedProdId &&
           <Fragment>
-            <li><a href="#" uk-icon="icon: copy" uk-tooltip={dict.production_tooltip_clone}></a></li>
-            <li><a href="#" uk-icon="icon: trash" uk-tooltip={dict.production_tooltip_delete}></a></li>
+            <li><button onClick={this.onClone} uk-icon="icon: copy" uk-tooltip={dict.production_tooltip_clone}/></li>
+            <li><button onClick={this.onDelete} uk-icon="icon: trash" uk-tooltip={dict.production_tooltip_delete}/></li>
+            <li><button onClick={this.onMakeLive} uk-icon="icon: star" uk-tooltip={dict.production_tooltip_makeLive}/></li>
           </Fragment>
           }
         </ul>

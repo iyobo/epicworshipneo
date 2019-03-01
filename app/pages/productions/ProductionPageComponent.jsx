@@ -26,7 +26,7 @@ export default class ProductionPageComponent extends Component {
 
     if (!production) {
       production = prodStore.createProduction(this.state.name);
-      prodStore.setSelectedProduction(production);
+      this.props.history.push("/productions/" + production._id);
     } else {
       production.name = this.state.name;
     }

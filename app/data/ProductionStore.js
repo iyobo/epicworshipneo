@@ -6,7 +6,6 @@ export default class ProductionStore {
 
   @observable productionHash = {};
   @observable liveProductionId;
-  @observable selectedProductionId;
 
   constructor(appStore) {
     this.appStore = appStore;
@@ -24,23 +23,12 @@ export default class ProductionStore {
     return this.productionHash[this.liveProductionId];
   };
 
-  @action
-  setSelectedProduction = (productionId) => {
-    this.selectedProductionId = productionId;
-  };
-  get selectedProduction() {
-    return this.productionHash[this.selectedProductionId];
-  };
-
-
-
-
   findProductionById(id) {
     return this.productionHash[id];
   }
 
   @computed get productions() {
-    return Object.values(this.productionHash);
+    return Object.values(this.productionHash).reverse();
   }
 
   @action
