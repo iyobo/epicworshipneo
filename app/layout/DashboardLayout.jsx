@@ -80,6 +80,8 @@ export default class DashboardLayout extends Component {
           <Route path='/elements' component={ElementsLayout}/>
           <Route path='/live' component={LivePage}/>
           <Route path='/settings' component={SettingsLayout}/>
+
+          <Route exact path='/productions/:productionId' component={ProductionPage}/>
           <Route path='/productions' component={ProductionPage}/>
           <Route exact path='' component={NewsPage}/>
         </Switch>

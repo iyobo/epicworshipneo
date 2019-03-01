@@ -13,25 +13,18 @@ export default class ProductionPage extends Component {
     super(props);
 
     this.state = {
-      showNameModal: false,
-      selectedId: null
+      showNameModal: false
     };
   }
 
-  onCreateBroduction = (prod) => {
-    this.props.history.push("/productions/new" + prod._id);
-    this.deselectProduction();
+  onCreateProduction = (prod) => {
+    this.props.history.push("/productions/new");
   };
-
 
   selectProduction = (prod) => {
     this.props.history.push("/productions/" + prod._id);
-    this.setState({selectedId: prod._id})
   };
 
-  deselectProduction = ()=>{
-    this.setState({selectedId: null})
-  }
 
   onClone=()=>{
     const prodStore = this.props.store.productionStore;
@@ -49,15 +42,15 @@ export default class ProductionPage extends Component {
   render() {
     const prodStore = this.props.store.productionStore;
     const liveProductionId = prodStore.liveProductionId;
-    const selectedProdId = this.state.selectedId;
+    const selectedProdId = this.props.match.params.productionId;
 
 
     return (
       <div className='uk-animation-slide-right-small'>
-        <h2>{translate("menu_productions")}</h2>
+        <h2>{dict.menu_productions}</h2>
 
         <ul className="uk-iconnav">
-          <li><button onClick={this.onCreateBroduction}  data-uk-icon="icon: plus" data-uk-tooltip={dict.production_tooltip_create}/></li>
+          <li><button onClick={this.onCreateProduction} data-uk-icon="icon: plus" data-uk-tooltip={dict.production_tooltip_create}/></li>
           {selectedProdId &&
           <Fragment>
             <li><button onClick={this.onClone} uk-icon="icon: copy" uk-tooltip={dict.production_tooltip_clone}/></li>
@@ -72,10 +65,8 @@ export default class ProductionPage extends Component {
             <ul className="uk-list itemList">
 
               {prodStore.productions.map((it) => {
-                console.log(it);
                 let isSelected = (it._id ===  selectedProdId) ? "selected" : "";
                 let isLive = (it._id === liveProductionId) ? "active" : "";
-
 
                 return <li className={`${isLive} ${isSelected}`} onClick={() => {
                   this.selectProduction(it);
