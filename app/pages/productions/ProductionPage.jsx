@@ -78,7 +78,7 @@ export default class ProductionPage extends Component {
           <div className='uk-animation-slide-right-small uk-width-expand'>
             <Switch>
               <Route exact path='/productions'
-                     component={() => <div>Click + for new production, or click on pre-existing</div>}/>
+                     component={() => <div>{dict.production_page_instructions}</div>}/>
               <Route exact path='/productions/new' component={ProductionPageComponent}/>
               <Route exact path='/productions/:productionId' component={ProductionPageComponent}/>
             </Switch>
