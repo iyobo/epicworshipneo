@@ -8,8 +8,6 @@ body {
 
   //position: relative;
   color: #4b4b4b;
-  height: 100vh;
-  width: 100vw;
 
 }
 
@@ -47,6 +45,7 @@ body {
   background-color: white;
   margin-top: 10px;
   border: 1px solid $borderColor;
+  display: block;
 
   li {
     padding: 15px;
