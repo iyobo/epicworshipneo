@@ -32,7 +32,7 @@ export default class DashboardLayout extends Component {
 
           <ul className="uk-navbar-nav">
             <li>
-              <NavLink exact to="/productions">
+              <NavLink to="/productions">
                 <span className="uk-icon uk-margin-small-right" href="#" uk-icon="icon: album"/>
                 <T name='menu_productions'/>
               </NavLink>
