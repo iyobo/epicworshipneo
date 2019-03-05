@@ -44,7 +44,7 @@ export default class ProductionPageComponent extends Component<Props> {
     const prodId = this.props.selectedId || prodStore.lastSelectedProductionId; //if id='new' go all the way down and work with null production
 
     // If still no id then no current or previous selection
-    if(prodId === null) return <div>{dict.production_page_instructions}</div>
+    if(!prodId) return <div>{dict.production_page_instructions}</div>
 
     const production = prodStore.findProductionById(prodId);
 

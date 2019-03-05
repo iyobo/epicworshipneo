@@ -12,18 +12,14 @@ export default class ProductionPage extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      showNameModal: false
-    };
   }
 
   onCreateProduction = (prod) => {
-    this.props.history.push("/productions/new");
+    this.props.store.navigateToProduction('new');
   };
 
   selectProduction = (prod) => {
-    this.props.history.push("/productions/" + prod._id);
+    this.props.store.navigateToProduction(prod._id);
   };
 
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
