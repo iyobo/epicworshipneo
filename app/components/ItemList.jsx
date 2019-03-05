@@ -12,24 +12,28 @@ export default class ItemList extends Component<Props> {
 
   static defaultProps = {
     idField: "_id",
-    onItemClick: ()=>{}
+    onItemClick: () => {
+    }
   };
 
   render() {
     const idField = this.props.idField;
 
     return (
-      <ul className="uk-list itemList">
+      <div>
+        <div></div>
+        <ul className="uk-list itemList">
 
-        {this.props.items.map((it) => {
-          let isSelected = (it[idField] === this.props.selectedId) ? "selected" : "";
-          let isActive = (it[idField] === this.props.activeId) ? "active" : "";
+          {this.props.items.map((it) => {
+            let isSelected = (it[idField] === this.props.selectedId) ? "selected" : "";
+            let isActive = (it[idField] === this.props.activeId) ? "active" : "";
 
-          return <li key={it[idField]} className={`${isActive} ${isSelected}`} onClick={() => {
-            this.props.onItemClick(it);
-          }}>{it.name}</li>;
-        })}
-      </ul>
+            return <li key={it[idField]} className={`${isActive} ${isSelected}`} onClick={() => {
+              this.props.onItemClick(it);
+            }}>{it.name}</li>;
+          })}
+        </ul>
+      </div>
     );
   }
 }

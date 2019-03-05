@@ -13,8 +13,8 @@ export default class ProductionStore {
 
     //TODO: load all productions into memory
 
-    Array(20).fill().forEach((it)=>{
-      this.createProduction(chance.date({string: true}))
+    Array(100).fill().forEach((it)=>{
+      this.createProduction(chance.weekday() +' '+chance.date({string: true}))
     });
 
   }

@@ -39,6 +39,11 @@ html,body {
 .pad10 {
   padding: 10px;
 }
+.sidePanel{
+  max-width: 500px;
+  height: calc(100vh - 200px);
+  overflow: scroll;
+}
 
 .itemList {
   //max-width: 300px;
