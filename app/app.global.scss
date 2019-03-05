@@ -39,9 +39,15 @@ html,body {
 .pad10 {
   padding: 10px;
 }
+
+.searchbox{
+
+}
+
 .sidePanel{
+  margin-top: 10px;
   max-width: 500px;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 220px);
   overflow: scroll;
 }
 
