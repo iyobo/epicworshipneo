@@ -4,6 +4,7 @@ import { dict, translate } from "../../../i18n/i18n";
 import { Route, Switch } from "react-router";
 import ProductionPageComponent from "./ProductionPageComponent";
 import { Link, NavLink } from "react-router-dom";
+import ItemList from "../../components/ItemList";
 
 @inject("store")
 @observer
@@ -25,6 +26,10 @@ export default class ProductionPage extends Component {
     this.props.history.push("/productions/" + prod._id);
   };
 
+  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+
+    this.props.store.productionStore.setLastSelectedProduction(nextProps.match.params.id)
+  }
 
   onClone=()=>{
     const prodStore = this.props.store.productionStore;
@@ -42,8 +47,7 @@ export default class ProductionPage extends Component {
   render() {
     const prodStore = this.props.store.productionStore;
     const liveProductionId = prodStore.liveProductionId;
-    const selectedProdId = this.props.match.params.productionId;
-
+    const selectedProdId = this.props.match.params.id||prodStore.lastSelectedProductionId;
 
     return (
       <div className='uk-animation-slide-right-small'>
@@ -62,27 +66,19 @@ export default class ProductionPage extends Component {
 
         <div data-uk-grid>
           <div className='uk-width-1-3'>
-            <ul className="uk-list itemList">
-
-              {prodStore.productions.map((it) => {
-                let isSelected = (it._id ===  selectedProdId) ? "selected" : "";
-                let isLive = (it._id === liveProductionId) ? "active" : "";
-
-                return <li className={`${isLive} ${isSelected}`} onClick={() => {
-                  this.selectProduction(it);
-                }}>{it.name}</li>;
-              })}
-            </ul>
+            <ItemList items={prodStore.productions} selectedId={selectedProdId} activeId={liveProductionId} onItemClick={(item)=>this.selectProduction(item)}  />
           </div>
-          {}
+
+
           <div className='uk-animation-slide-right-small uk-width-expand'>
-            <Switch>
-              <Route exact path='/productions'
-                     component={() => <div>{dict.production_page_instructions}</div>}/>
-              <Route exact path='/productions/new' component={ProductionPageComponent}/>
-              <Route exact path='/productions/:productionId' component={ProductionPageComponent}/>
-            </Switch>
+            {/*<Switch>*/}
+              {/*<Route exact path='/productions'*/}
+                     {/*component={() => <div>{dict.production_page_instructions}</div>}/>*/}
+              {/*<Route exact path='/productions/new' component={ProductionPageComponent}/>*/}
+              {/*<Route exact path='/productions/:id' component={ProductionPageComponent}/>*/}
+            {/*</Switch>*/}
             {/*<div className="uk-card uk-card-default uk-card-body">Item</div>*/}
+            <ProductionPageComponent selectedId={selectedProdId}  />
           </div>
 
         </div>

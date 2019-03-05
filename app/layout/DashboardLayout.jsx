@@ -16,6 +16,9 @@ export default class DashboardLayout extends Component {
   constructor(props) {
     super(props);
     this.state = { error: null };
+
+    //IMPORTANT: allows for store-based navigation
+    props.store.setHistory(this.props.history);
   }
 
   componentDidCatch(error) {
@@ -81,7 +84,7 @@ export default class DashboardLayout extends Component {
           <Route path='/live' component={LivePage}/>
           <Route path='/settings' component={SettingsLayout}/>
 
-          <Route exact path='/productions/:productionId' component={ProductionPage}/>
+          <Route exact path='/productions/:id' component={ProductionPage}/>
           <Route path='/productions' component={ProductionPage}/>
           <Route exact path='' component={NewsPage}/>
         </Switch>

@@ -44,8 +44,11 @@ html,body {
   //max-width: 300px;
   background-color: white;
   margin-top: 10px;
-  border: 1px solid $borderColor;
+  //border: 1px solid $borderColor;
   display: block;
+  position: relative;
+  bottom: 0px;
+  overflow: scroll;
 
   li {
     padding: 15px;
@@ -68,5 +71,7 @@ html,body {
 
 section {
   background-color: white;
+  border-radius: 5px;
+  //border: 1px solid #cecece;
   padding: 15px;
 }

@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
+import { dict } from "../../../i18n/i18n";
+
+
+type Props= {
+  selectedId?: string
+}
 
 @inject("store")
 @observer
-export default class ProductionPageComponent extends Component {
+export default class ProductionPageComponent extends Component<Props> {
 
   constructor(props) {
     super(props);
@@ -19,29 +25,28 @@ export default class ProductionPageComponent extends Component {
     if(!this.state.name) return toast.error({title: 'Invalid Production name', message:'Every production needs a good name'})
 
     const prodStore = this.props.store.productionStore;
-    const elementStore = this.props.store.productionStore;
-
-    const prodId = this.props.match.params.productionId;
+    const prodId = this.props.selectedId;
     let production = prodStore.findProductionById(prodId);
 
     if (!production) {
       production = prodStore.createProduction(this.state.name);
-      this.props.history.push("/productions/" + production._id);
     } else {
       production.name = this.state.name;
     }
 
     this.setState({ name: "" });
+    this.props.store.navigateToProduction(production._id);
 
   };
 
   render() {
     const prodStore = this.props.store.productionStore;
-    const elementStore = this.props.store.productionStore;
+    const prodId = this.props.selectedId || prodStore.lastSelectedProductionId; //if id='new' go all the way down and work with null production
 
-    const prodId = this.props.match.params.productionId;
+    // If still no id then no current or previous selection
+    if(prodId === null) return <div>{dict.production_page_instructions}</div>
+
     const production = prodStore.findProductionById(prodId);
-
 
     return (
       <section className='uk-animation-slide-right-small'>

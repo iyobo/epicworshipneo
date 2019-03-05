@@ -8,6 +8,7 @@ import BackgroundsPage from "../pages/elements/BackgroundsPage";
 import AnnouncementsPage from "../pages/elements/AnnouncementsPage";
 import PresentationsPage from "../pages/elements/PresentationsPage";
 import { T } from "../../i18n/i18n";
+import { Redirect } from "react-router";
 
 @inject("store")
 @observer
@@ -28,7 +29,6 @@ export default class ElementsLayout extends Component {
         {/*Order of routes is important*/}
         <div className='elementsBody'>
           <Switch>
-            <Route exact path="/elements" component={SongsPage}/>
 
             <Route exact path="/elements/songs/:elementId" component={SongsPage}/>
             <Route path="/elements/songs" component={SongsPage}/>
@@ -46,6 +46,8 @@ export default class ElementsLayout extends Component {
 
             <Route exact path="/elements/presentations/:elementId" component={PresentationsPage}/>
             <Route path="/elements/presentations" component={PresentationsPage}/>
+
+            <Redirect to='/elements/songs' />
 
           </Switch>
         </div>

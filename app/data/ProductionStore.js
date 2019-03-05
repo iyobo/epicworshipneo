@@ -6,11 +6,16 @@ export default class ProductionStore {
 
   @observable productionHash = {};
   @observable liveProductionId;
+  lastSelectedProductionId;
 
   constructor(appStore) {
     this.appStore = appStore;
 
     //TODO: load all productions into memory
+
+    Array(20).fill().forEach((it)=>{
+      this.createProduction(chance.date({string: true}))
+    });
 
   }
 
@@ -18,17 +23,15 @@ export default class ProductionStore {
   setLiveProduction = (productionId) => {
     this.liveProductionId = productionId;
   };
-
   get liveProduction() {
     return this.productionHash[this.liveProductionId];
   };
 
-  @action
-  setSelectedProduction = (productionId) => {
-    this.selectedProductionId = productionId;
+  setLastSelectedProduction = (productionId) => {
+    this.lastSelectedProductionId = productionId;
   };
-  get selectedProduction() {
-    return this.productionHash[this.selectedProductionId];
+  get lastSelectedProduction() {
+    return this.productionHash[this.lastSelectedProductionId];
   };
 
 
