@@ -27,23 +27,40 @@ export default class ProductionPage extends Component {
     this.props.store.productionStore.setLastSelectedProduction(nextProps.match.params.id);
   }
 
+  getSelectedId(){
+    const prodStore = this.props.store.productionStore;
+    return this.props.match.params.id || prodStore.lastSelectedProductionId;
+  }
+
+  componentDidCatch(error) {
+    toast.error({ title: "Oops", message: error.message });
+  }
+
   onClone = () => {
     const prodStore = this.props.store.productionStore;
+    const selectedProdId = this.getSelectedId();
 
+    prodStore.cloneProduction(selectedProdId);
   };
 
   onDelete = () => {
     const prodStore = this.props.store.productionStore;
+    const selectedProdId = this.getSelectedId();
+
+    prodStore.deleteProduction(selectedProdId)
   };
 
   onMakeLive = () => {
     const prodStore = this.props.store.productionStore;
+    const selectedProdId = this.getSelectedId();
+
+    prodStore.makeProductionLive(selectedProdId);
   };
 
   render() {
     const prodStore = this.props.store.productionStore;
     const liveProductionId = prodStore.liveProductionId;
-    const selectedProdId = this.props.match.params.id || prodStore.lastSelectedProductionId;
+    const selectedProdId = this.getSelectedId();
 
     return (
       <div className='uk-animation-slide-right-small'>

@@ -6,7 +6,7 @@ import { observable } from "mobx";
 class AppStore {
 
   @observable busy = false;
-  history;
+  history=null;
 
   constructor() {
     this.screenStore = new ScreenStore(this);
@@ -24,6 +24,13 @@ class AppStore {
 
     this.productionStore.setLastSelectedProduction(productionId);
     this.history.push("/productions/" + productionId);
+  };
+
+  navigateToElement = (elemId) => {
+    if (!this.history) throw new Error("Cannot navigate: History not set");
+
+    this.productionStore.setLastSelectedProduction(productionId);
+    this.history.push("/elements/" + productionId);
   };
 
 }

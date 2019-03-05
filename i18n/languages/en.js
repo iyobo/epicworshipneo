@@ -27,6 +27,8 @@ module.exports = {
   production_tooltip_makeLive: "Make this Production LIVE",
 
   production_page_instructions: "Create (+) a Production, or Select a production and Click on the Star icon to make it live",
+  production_page_noElements: "No elements were added to this production",
+  production_page_noElementsGoAdd: "click to go add some!",
 
   production_errorTitle_productionName: "Invalid production name",
   production_errorMessage_productionName: "Every great production needs a good name",

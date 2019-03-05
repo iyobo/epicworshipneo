@@ -21,11 +21,6 @@ export default class DashboardLayout extends Component {
     props.store.setHistory(this.props.history);
   }
 
-  componentDidCatch(error) {
-    this.setState(error);
-  }
-
-
   render() {
 
     const nav = (
@@ -66,7 +61,7 @@ export default class DashboardLayout extends Component {
           <div className='pad10'>
             <span uk-icon="icon: rss"/>
             <T name='menu_nowLive'/>: <Link
-            to='/productions'>{this.props.store.productionStore.liveProduction ? this.props.store.productionStore.liveProduction.name :
+            to={'/productions/'+this.props.store.productionStore.liveProductionId}>{this.props.store.productionStore.liveProduction ? this.props.store.productionStore.liveProduction.name :
             <i>None</i>}</Link>
           </div>
 
@@ -94,7 +89,7 @@ export default class DashboardLayout extends Component {
     return (
       <div className='dashboardLayout uk-animation-slide-left-small'>
         {nav}
-        {this.state.error?<div>Oops, something went wrong: {this.state.error.message}</div>: body}
+        {this.state.error ? <div>Oops, something went wrong: {this.state.error.message}</div> : body}
       </div>
     );
   }

@@ -10,6 +10,11 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 export default class Root extends Component {
 
+  componentDidCatch(error) {
+    toast.error({ title: "Oops", message: error.message });
+  }
+
+
   render() {
     return (
       <Provider store={appStore}>
