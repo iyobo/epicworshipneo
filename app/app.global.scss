@@ -1,7 +1,7 @@
 @import "~@fortawesome/fontawesome-free/css/all.css";
 @import "./variables.scss";
 
-html,body {
+html, body {
   //background-color: rgb(248, 248, 248);
   background-color: $bgColor;
 
@@ -39,13 +39,34 @@ html,body {
   padding: 10px;
 }
 
-.searchbox{
 
+section {
+  background-color: white;
+  border-radius: 5px;
+  //border: 1px solid #cecece;
+  padding: 15px;
 }
 
-.sidePanel{
+.flexContainer {
+  display: flex;
+
+  > div {
+    padding-left: 10px;
+  }
+}
+
+.searchBox {
   margin-top: 10px;
-  max-width: 500px;
+  background-color: oldlace;
+}
+
+.sidePanel {
+  width: 400px;
+}
+
+.itemListWrapper {
+  margin-top: 10px;
+
   height: calc(100vh - 270px);
   overflow: scroll;
 }
@@ -54,7 +75,6 @@ html,body {
 
   //max-width: 300px;
   background-color: white;
-  margin-top: 10px;
   //border: 1px solid $borderColor;
   display: block;
   //position: relative;
@@ -80,9 +100,5 @@ html,body {
   }
 }
 
-section {
-  background-color: white;
-  border-radius: 5px;
-  //border: 1px solid #cecece;
-  padding: 15px;
-}
+
+

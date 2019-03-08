@@ -37,7 +37,10 @@ module.exports = {
 
 //Songs
   elements_songs_tooltip_create: "Create a new Song",
-  elements_songs_tooltip_delete: "Delete this Song"
+  elements_songs_tooltip_delete: "Delete this Song",
+  field_name: 'Name',
+  field_elements: 'Elements',
+  field_search: 'Search',
 
 
 };

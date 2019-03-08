@@ -66,7 +66,7 @@ export default class ProductionPageComponent extends Component<Props> {
             <legend className="uk-legend">{production ? production.name : "New Production"}</legend>
 
             <div className="uk-margin">
-              <b>Name</b>
+              <b>{dict.field_name}</b>
               <input className="uk-input" type="text" name="name" autoFocus={true}
                      placeholder={production ? production.name : "New Production"}
                      onChange={(evt) => {
@@ -76,7 +76,7 @@ export default class ProductionPageComponent extends Component<Props> {
             </div>
 
             {production && <div>
-              <h4>Elements</h4>
+              <h4>{dict.field_elements}</h4>
               {production.items.length > 0 ? <ul className="uk-list uk-list-striped itemList">
                 {production.items.map(it => {
                   return <li>{it}</li>;

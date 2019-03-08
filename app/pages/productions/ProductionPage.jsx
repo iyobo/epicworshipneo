@@ -5,6 +5,9 @@ import { Route, Switch } from "react-router";
 import ProductionPageComponent from "./ProductionPageComponent";
 import { Link, NavLink } from "react-router-dom";
 import ItemList from "../../components/ItemList";
+import SidePanel from "../../components/SidePanel";
+import { entityTypes } from "../../utils/data";
+import type { TSideBarButton } from "../../components/SidePanel";
 
 @inject("store")
 @observer
@@ -14,7 +17,7 @@ export default class ProductionPage extends Component {
     super(props);
   }
 
-  onCreateProduction = (prod) => {
+  onCreateProduction = () => {
     this.props.store.navigateToProduction("new");
   };
 
@@ -57,6 +60,14 @@ export default class ProductionPage extends Component {
     prodStore.makeProductionLive(selectedProdId);
   };
 
+  buttons:array<TSideBarButton> = [
+    { icon: "plus", tooltip: dict.production_tooltip_create, handler: this.onCreateProduction},
+    { icon: "copy", tooltip: dict.production_tooltip_clone, handler: this.onClone , showOnlyIfSelected: true},
+    { icon: "trash", tooltip: dict.production_tooltip_delete, handler: this.onDelete , showOnlyIfSelected: true},
+    { icon: "star", tooltip: dict.production_tooltip_makeLive, handler: this.onMakeLive , showOnlyIfSelected: true},
+    { icon: "star", tooltip: dict.production_tooltip_makeLive, handler: this.onMakeLive , showOnlyIfSelected: true},
+  ] ;
+
   render() {
     const prodStore = this.props.store.productionStore;
     const liveProductionId = prodStore.liveProductionId;
@@ -66,43 +77,14 @@ export default class ProductionPage extends Component {
       <div className='uk-animation-slide-right-small'>
         <h2>{dict.menu_productions}</h2>
 
-        <ul className="uk-iconnav">
-          <li>
-            <button onClick={this.onCreateProduction} data-uk-icon="icon: plus"
-                    data-uk-tooltip={dict.production_tooltip_create}/>
-          </li>
-          {selectedProdId &&
-          <Fragment>
-            <li>
-              <button onClick={this.onClone} uk-icon="icon: copy" uk-tooltip={dict.production_tooltip_clone}/>
-            </li>
-            <li>
-              <button onClick={this.onDelete} uk-icon="icon: trash" uk-tooltip={dict.production_tooltip_delete}/>
-            </li>
-            <li>
-              <button onClick={this.onMakeLive} uk-icon="icon: star" uk-tooltip={dict.production_tooltip_makeLive}/>
-            </li>
-          </Fragment>
-          }
-        </ul>
-        <div style={{marginTop:10}}>
-          <form className="uk-search uk-search-default" style={{width: '100%'}}>
-            <input className="uk-search-input" type="search" placeholder="Search..." />
-          </form>
-        </div>
+        <div className='flexContainer'>
 
-        <div data-uk-grid>
-          <div className='uk-width-1-3'>
-            <div>
-
-              <div className='sidePanel'>
-                <ItemList items={prodStore.productions}
-                          selectedId={selectedProdId}
-                          activeId={liveProductionId}
-                          onItemClick={(item) => this.selectProduction(item)}/>
-              </div>
-            </div>
-          </div>
+          <SidePanel items={prodStore.productions}
+                     selectedId={selectedProdId}
+                     activeId={liveProductionId}
+                     entityType={entityTypes.PRODUCTION}
+                     buttons={this.buttons}
+                     onItemClick={(item) => this.selectProduction(item)}/>
 
 
           <div className='uk-animation-slide-right-small uk-width-expand'>
