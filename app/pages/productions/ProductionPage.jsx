@@ -27,7 +27,7 @@ export default class ProductionPage extends Component {
     this.props.store.productionStore.setLastSelectedProduction(nextProps.match.params.id);
   }
 
-  getSelectedId(){
+  getSelectedId() {
     const prodStore = this.props.store.productionStore;
     return this.props.match.params.id || prodStore.lastSelectedProductionId;
   }
@@ -47,7 +47,7 @@ export default class ProductionPage extends Component {
     const prodStore = this.props.store.productionStore;
     const selectedProdId = this.getSelectedId();
 
-    prodStore.deleteProduction(selectedProdId)
+    prodStore.deleteProduction(selectedProdId);
   };
 
   onMakeLive = () => {
@@ -85,13 +85,23 @@ export default class ProductionPage extends Component {
           </Fragment>
           }
         </ul>
+        <div style={{marginTop:10}}>
+          <form className="uk-search uk-search-default" style={{width: '100%'}}>
+            <input className="uk-search-input" type="search" placeholder="Search..." />
+          </form>
+        </div>
 
         <div data-uk-grid>
-          <div className='uk-width-1-3 sidePanel'>
-            <ItemList items={prodStore.productions}
-                      selectedId={selectedProdId}
-                      activeId={liveProductionId}
-                      onItemClick={(item) => this.selectProduction(item)}/>
+          <div className='uk-width-1-3'>
+            <div>
+
+              <div className='sidePanel'>
+                <ItemList items={prodStore.productions}
+                          selectedId={selectedProdId}
+                          activeId={liveProductionId}
+                          onItemClick={(item) => this.selectProduction(item)}/>
+              </div>
+            </div>
           </div>
 
 

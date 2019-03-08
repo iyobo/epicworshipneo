@@ -20,13 +20,7 @@ export default class ItemList extends Component<Props> {
     const idField = this.props.idField;
 
     return (
-      <div>
-        <div className="searchbox uk-margin">
-          <form className="uk-search uk-search-default">
-            <span data-uk-search-icon></span>
-            <input className="uk-search-input" type="search" placeholder="Search..."/>
-          </form>
-        </div>
+
         <ul className="uk-list itemList">
 
           {this.props.items.map((it) => {
@@ -38,7 +32,6 @@ export default class ItemList extends Component<Props> {
             }}>{it.name}</li>;
           })}
         </ul>
-      </div>
     );
   }
 }
