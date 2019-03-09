@@ -64,8 +64,7 @@ export default class ProductionPage extends Component {
     { icon: "plus", tooltip: dict.production_tooltip_create, handler: this.onCreateProduction},
     { icon: "copy", tooltip: dict.production_tooltip_clone, handler: this.onClone , showOnlyIfSelected: true},
     { icon: "trash", tooltip: dict.production_tooltip_delete, handler: this.onDelete , showOnlyIfSelected: true},
-    { icon: "star", tooltip: dict.production_tooltip_makeLive, handler: this.onMakeLive , showOnlyIfSelected: true},
-    { icon: "star", tooltip: dict.production_tooltip_makeLive, handler: this.onMakeLive , showOnlyIfSelected: true},
+    { icon: "star", tooltip: dict.production_tooltip_makeLive, handler: this.onMakeLive , showOnlyIfSelected: true}
   ] ;
 
   render() {

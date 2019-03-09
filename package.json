@@ -269,12 +269,15 @@
     "moment": "^2.24.0",
     "pluralize": "^7.0.0",
     "pouchdb": "^7.0.0",
+    "pouchdb-adapter-node-websql": "^7.0.0",
+    "pouchdb-find": "^7.0.0",
     "pouchdb-gql": "^1.0.0",
     "pouchdb-hoodie-api": "^2.0.0",
     "pouchdb-migrate": "^1.1.1",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
     "react-hot-loader": "^4.6.5",
+    "react-loading-bar": "0.0.7",
     "react-loading-skeleton": "^1.0.0",
     "react-modal-component": "^1.0.9",
     "react-redux": "^5.1.1",
@@ -283,6 +286,7 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "source-map-support": "^0.5.9",
+    "sqlite3": "^4.0.6",
     "uikit": "^3.0.3"
   },
   "devEngines": {

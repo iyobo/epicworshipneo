@@ -25,19 +25,41 @@ type Props = {
 @observer
 export default class SidePanel extends Component<Props> {
 
+  static defaultProps = {};
+
+  constructor(props){
+    super(props);
+
+    this.state={
+      items: props.items
+    }
+  }
+
+  onSearch = (evt) => {
+    if (this.props.onSearch)
+      this.props.onSearch(evt.target.text.value);
+    else if (this.props.entityType) {
+      //TODO: implement default entity type search behavior
+
+    }
+  };
 
   render() {
+
+    let items = this.props.item;
 
     const buttons = [];
 
     this.props.buttons.forEach((it) => {
+      let renderMe = false;
       if (it.showOnlyIfSelected && this.props.selectedId) {
-        buttons.push(<li>
-          <button onClick={it.handler} data-uk-icon={`icon: ${it.icon}`}
-                  data-uk-tooltip={it.tooltip}/>
-        </li>);
+        renderMe = true;
       } else if (!it.showOnlyIfSelected) {
-        buttons.push(<li>
+        renderMe = true;
+      }
+
+      if(renderMe) {
+        buttons.push(<li key={it.icon}>
           <button onClick={it.handler} data-uk-icon={`icon: ${it.icon}`}
                   data-uk-tooltip={it.tooltip}/>
         </li>);
@@ -54,9 +76,9 @@ export default class SidePanel extends Component<Props> {
 
         {/*Searchbar*/}
         <div className='searchBox'>
-          <form className="uk-search uk-search-navbar">
+          <form className="uk-search uk-search-navbar" onSubmit={this.onSearch}>
             <span data-uk-search-icon/>
-            <input className="uk-search-input" type="search" placeholder={dict.field_search + "..."}/>
+            <input name='text' className="uk-search-input" type="search" placeholder={dict.field_search + "..."}/>
           </form>
         </div>
 

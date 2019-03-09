@@ -6,5 +6,6 @@ export const entityTypes = {
   BACKGROUND: 'background',
   ANNOUNCEMENT: 'announcement',
   PRESENTATION: 'presentation',
-  NOTE: 'note' //production bound
+  NOTE: 'note', //production bound
+  OPTION: 'option',
 }

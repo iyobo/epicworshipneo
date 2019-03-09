@@ -1,11 +1,11 @@
 import ScreenStore from "./ScreenStore";
 import ProductionStore from "./ProductionStore";
 import ElementStore from "./ElementStore";
-import { observable } from "mobx";
+import { observable, action } from "mobx";
 
 class AppStore {
 
-  @observable busy = false;
+  @observable isBusy = false;
   history=null;
 
   constructor() {
@@ -32,6 +32,16 @@ class AppStore {
     this.productionStore.setLastSelectedProduction(productionId);
     this.history.push("/elements/" + productionId);
   };
+
+  @action
+  showBusy(){
+    this.isBusy = true;
+  }
+
+  @action
+  hideBusy(){
+    this.isBusy = false;
+  }
 
 }
 
