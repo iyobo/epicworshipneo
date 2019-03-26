@@ -1,4 +1,5 @@
 module.exports = {
+  //Menu
   menu_productions: "Productions",
   menu_elements: "Elements",
   menu_live: "Live",
@@ -15,13 +16,18 @@ module.exports = {
   menu_migrations: "Migrations",
   menu_language: "Language",
   menu_nowLive: "Now Live",
+
+  //News
   news_goTo: "Go to",
   news_toGetStarted: "to get started",
   news_comingSoon: "News and Tutorials coming soon",
 
+  //General
+  newProduction: "New Production",
+  clearSearch: "Clear Search",
+
 //PRODUCTIONS...
 
-  production_newProduction: "New Production",
   production_tooltip_create: "Create a new Production",
   production_tooltip_delete: "Delete this Production",
   production_tooltip_clone: "Clone this Production",

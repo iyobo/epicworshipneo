@@ -63,7 +63,7 @@ export default class ProductionPageComponent extends Component<Props> {
         <form onSubmit={this.onSubmit}>
           <fieldset className="uk-fieldset">
 
-            <legend className="uk-legend">{production ? production.name : dict.production_newProduction}</legend>
+            <legend className="uk-legend">{production ? production.name : dict.newProduction}</legend>
 
             <div className="uk-margin">
               <b>{dict.field_name}</b>

@@ -81,7 +81,8 @@ export default class ProductionPage extends Component {
           <SidePanel items={prodStore.productions}
                      selectedId={selectedProdId}
                      activeId={liveProductionId}
-                     entityType={entityTypes.PRODUCTION}
+                    // entityType={entityTypes.PRODUCTION}
+                     enableSearch={true}
                      buttons={this.buttons}
                      onItemClick={(item) => this.selectProduction(item)}/>
 
@@ -89,11 +90,10 @@ export default class ProductionPage extends Component {
           <div className='uk-animation-slide-right-small uk-width-expand'>
             <ProductionPageComponent selectedId={selectedProdId}/>
           </div>
-
         </div>
 
-
       </div>
+
     );
   }
 }
