@@ -125,7 +125,7 @@ export default class SidePanel extends Component<Props> {
           <div className='searchBox'>
             <div className="uk-search uk-search-navbar">
               <div style={{
-                width: "90%",
+                width: "80%",
                 display: "inline-block",
                 border: "1px solid bisque",
                 marginRight: 5,
@@ -138,7 +138,10 @@ export default class SidePanel extends Component<Props> {
                        className="uk-search-input" type="search"
                        placeholder={dict.field_search + "..."}/>
               </div>
-              <a href="#" uk-icon="ban" onClick={this.clearSearch} data-uk-tooltip={dict.clearSearch}/>
+              <a href="#" uk-icon="ban"
+                 style={{color:'red'}}
+                 onClick={this.clearSearch}
+                 data-uk-tooltip={dict.clearSearch}/>
             </div>
           </div>
         }
