@@ -20,7 +20,7 @@ export default class ProductionPageComponent extends Component<Props> {
     };
   }
 
-  onSubmit = (evt) => {
+  onSubmit = async (evt) => {
     evt.preventDefault();
 
     if (!this.state.name) return toast.error({
@@ -30,14 +30,14 @@ export default class ProductionPageComponent extends Component<Props> {
 
     const prodStore = this.props.store.productionStore;
     const prodId = this.props.selectedId;
-    let production = prodStore.findProductionById(prodId);
+    let production = await prodStore.findProductionById(prodId);
 
     if (!production) {
-      production = prodStore.createProduction(this.state.name);
+      production = await prodStore.createProduction(this.state.name);
     } else {
       production.name = this.state.name;
     }
-
+    // debugger;
     this.setState({ name: "" });
     this.props.store.navigateToProduction(production._id);
 
@@ -63,7 +63,7 @@ export default class ProductionPageComponent extends Component<Props> {
         <form onSubmit={this.onSubmit}>
           <fieldset className="uk-fieldset">
 
-            <legend className="uk-legend">{production ? production.name : "New Production"}</legend>
+            <legend className="uk-legend">{production ? production.name : dict.production_newProduction}</legend>
 
             <div className="uk-margin">
               <b>{dict.field_name}</b>

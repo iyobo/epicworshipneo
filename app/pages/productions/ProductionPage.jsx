@@ -39,33 +39,33 @@ export default class ProductionPage extends Component {
     toast.error({ title: "Oops", message: error.message });
   }
 
-  onClone = () => {
+  onClone = async () => {
     const prodStore = this.props.store.productionStore;
     const selectedProdId = this.getSelectedId();
 
-    prodStore.cloneProduction(selectedProdId);
+    await prodStore.cloneProduction(selectedProdId);
   };
 
-  onDelete = () => {
+  onDelete = async () => {
     const prodStore = this.props.store.productionStore;
     const selectedProdId = this.getSelectedId();
 
-    prodStore.deleteProduction(selectedProdId);
+    await prodStore.deleteProduction(selectedProdId);
   };
 
-  onMakeLive = () => {
+  onMakeLive = async () => {
     const prodStore = this.props.store.productionStore;
     const selectedProdId = this.getSelectedId();
 
-    prodStore.makeProductionLive(selectedProdId);
+    await prodStore.makeProductionLive(selectedProdId);
   };
 
-  buttons:array<TSideBarButton> = [
-    { icon: "plus", tooltip: dict.production_tooltip_create, handler: this.onCreateProduction},
-    { icon: "copy", tooltip: dict.production_tooltip_clone, handler: this.onClone , showOnlyIfSelected: true},
-    { icon: "trash", tooltip: dict.production_tooltip_delete, handler: this.onDelete , showOnlyIfSelected: true},
-    { icon: "star", tooltip: dict.production_tooltip_makeLive, handler: this.onMakeLive , showOnlyIfSelected: true}
-  ] ;
+  buttons: array<TSideBarButton> = [
+    { icon: "plus", tooltip: dict.production_tooltip_create, handler: this.onCreateProduction },
+    { icon: "copy", tooltip: dict.production_tooltip_clone, handler: this.onClone, showOnlyIfSelected: true },
+    { icon: "trash", tooltip: dict.production_tooltip_delete, handler: this.onDelete, showOnlyIfSelected: true },
+    { icon: "star", tooltip: dict.production_tooltip_makeLive, handler: this.onMakeLive, showOnlyIfSelected: true }
+  ];
 
   render() {
     const prodStore = this.props.store.productionStore;

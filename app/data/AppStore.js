@@ -21,7 +21,7 @@ class AppStore {
 
   navigateToProduction = (productionId) => {
     if (!this.history) throw new Error("Cannot navigate: History not set");
-
+    // debugger;
     this.productionStore.setLastSelectedProduction(productionId);
     this.history.push("/productions/" + productionId);
   };

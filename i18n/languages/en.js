@@ -21,6 +21,7 @@ module.exports = {
 
 //PRODUCTIONS...
 
+  production_newProduction: "New Production",
   production_tooltip_create: "Create a new Production",
   production_tooltip_delete: "Delete this Production",
   production_tooltip_clone: "Clone this Production",
@@ -41,6 +42,8 @@ module.exports = {
   field_name: 'Name',
   field_elements: 'Elements',
   field_search: 'Search',
+
+
 
 
 };

@@ -1,11 +1,15 @@
 //NOTE: leveldb is dumb and sometimes LOCKS things. We need to ensure that each time we start the app, we force a delete of any LOCK files in the database folder
 const fs = require('fs');
 const path = require('path');
-try {
-  fs.unlinkSync('../../epicworshipdb/LOCK');
-}catch(err){
-  // console.warn(err)
+
+const databaseFolderPath = path.join(__dirname,'..', 'database');
+if (!fs.existsSync(databaseFolderPath)){
+
+  console.log(`Creating ${databaseFolderPath}...`)
+  fs.mkdirSync(databaseFolderPath);
 }
+
+// const dbPath = path.join('database', 'epicworshipdb');
 
 import PouchDB from "pouchdb";
 import PouchHoodieApi from "pouchdb-hoodie-api";
@@ -19,8 +23,9 @@ PouchDB.plugin(PouchMigrate);
 PouchDB.plugin(PouchFind);
 // PouchDB.plugin(require('pouchdb-adapter-node-websql'));
 
-// export const db = new PouchDB("epicworshipdb", { auto_compaction: true, adapter: 'websql' });
-export const db = new PouchDB(path.join(__dirname,'..','..', 'epicworshipdb'), { auto_compaction: true});
+const props= process.env;
+
+export const db = new PouchDB(path.join(__dirname,'..', 'database','epicworshipdb'), { auto_compaction: true});
 export const api = db.hoodieApi();
 
 export const initializeData = async () => {
@@ -31,9 +36,12 @@ export const initializeData = async () => {
 
   // ensure indexes
   await db.createIndex({
-    index: { fields: ["entityType"] }
+    index: { name:'entityListIdx',fields: ["entityType","dateCreated"] }
   });
 
+  await db.createIndex({
+    index: { name:'entitySearchIdx', fields: ["entityType","dateCreated", "name"] }
+  });
 };
 
 // export const productionDB = api.withIdPrefix('production/');

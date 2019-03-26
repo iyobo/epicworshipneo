@@ -31,22 +31,29 @@ export default class SidePanel extends Component<Props> {
     super(props);
 
     this.state={
-      items: props.items
+      items: props.items,
+      searchVal:''
     }
   }
 
-  onSearch = (evt) => {
+  //
+
+  onSearch = async (evt) => {
+    evt.preventDefault();
+
+    const searchVal = this.state.searchVal;
     if (this.props.onSearch)
-      this.props.onSearch(evt.target.text.value);
+      this.props.onSearch(searchVal);
     else if (this.props.entityType) {
       //TODO: implement default entity type search behavior
-
+      const result = await this.props.store.productionStore.searchProductions(searchVal);
+      this.setState({items: result});
     }
   };
 
   render() {
 
-    let items = this.props.item;
+    let items = !this.state.searchVal? this.props.items: this.state.items;
 
     const buttons = [];
 
@@ -78,13 +85,13 @@ export default class SidePanel extends Component<Props> {
         <div className='searchBox'>
           <form className="uk-search uk-search-navbar" onSubmit={this.onSearch}>
             <span data-uk-search-icon/>
-            <input name='text' className="uk-search-input" type="search" placeholder={dict.field_search + "..."}/>
+            <input name='text' onChange={(evt)=>this.setState({searchVal: evt.target.value})} className="uk-search-input" type="search" placeholder={dict.field_search + "..."}/>
           </form>
         </div>
 
         {/*itemlist*/}
         <div className='itemListWrapper'>
-          <ItemList items={this.props.items}
+          <ItemList items={items}
                     selectedId={this.props.selectedId}
                     activeId={this.props.activeId}
                     onItemClick={this.props.onItemClick}/>

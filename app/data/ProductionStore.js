@@ -23,16 +23,37 @@ export default class ProductionStore {
 
   async _loadProductionsFromDB() {
 
-
-    // Array(20).fill().forEach((it) => {
-    //   this.createProduction(chance.weekday() + " " + chance.date({ string: true }));
-    // });
-
-    const result = await epicDB.api.findAll({ entityTypes: entityTypes.PRODUCTION });
-    result.sort(function(a, b) {
+    const {docs} = await epicDB.db.find({
+      selector: {
+        entityType: entityTypes.PRODUCTION,
+        // dateCreated: { $exists: true }
+      },
+      // use_index: ["entityListIdx"],
+      // sort: ["dateCreated"]
+    });
+    // debugger;
+    docs.sort(function(a, b) {
       return b.dateCreated - a.dateCreated;
     });
-    this.productions = result;
+    this.productions = docs;
+  }
+
+  async searchProductions(search) {
+
+    const {docs} = await epicDB.db.find({
+      selector: {
+        entityTypes: entityTypes.PRODUCTION,
+        dateCreated: { $exists: true },
+        name: { $regex: new RegExp(`.*${search}.*`) }
+      },
+      // use_index: ["entityType","dateCreated","name"],
+      // sort: ["dateCreated"]
+    });
+    docs.sort(function(a, b) {
+      return b.dateCreated - a.dateCreated;
+    });
+
+    return docs;
   }
 
   @computed get productionIndex() {
@@ -88,7 +109,7 @@ export default class ProductionStore {
   // }
 
   @action
-  createProduction = (name) => {
+  createProduction = async (name) => {
     const newProduction = {
       _id: chance.guid(),
       name,
@@ -97,11 +118,12 @@ export default class ProductionStore {
       items: [] // {_id: chance.guid(), elementId}
     };
 
+    //add in db
+    const res = await epicDB.api.add(newProduction);
+// debugger;
     //add in store
     this.productions.unshift(newProduction);
-
-    //add in db
-    epicDB.api.add(newProduction);
+    // debugger;
 
     return newProduction;
   };
