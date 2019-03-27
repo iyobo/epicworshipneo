@@ -36,11 +36,11 @@ export const initializeData = async () => {
 
   // ensure indexes
   await db.createIndex({
-    index: { name:'entityListIdx',fields: ["entityType","dateCreated"] }
+    index: { name:'entityListIdx',fields: ["elementType","dateCreated"] }
   });
 
   await db.createIndex({
-    index: { name:'entitySearchIdx', fields: ["entityType","dateCreated", "name"] }
+    index: { name:'entitySearchIdx', fields: ["elementType","dateCreated", "name"] }
   });
 };
 

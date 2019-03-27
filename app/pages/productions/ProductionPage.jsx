@@ -6,7 +6,7 @@ import ProductionPageComponent from "./ProductionPageComponent";
 import { Link, NavLink } from "react-router-dom";
 import ItemList from "../../components/ItemList";
 import SidePanel from "../../components/SidePanel";
-import { entityTypes } from "../../utils/data";
+import { elementTypes } from "../../utils/data";
 import type { TSideBarButton } from "../../components/SidePanel";
 
 @inject("store")
@@ -81,7 +81,7 @@ export default class ProductionPage extends Component {
           <SidePanel items={prodStore.productions}
                      selectedId={selectedProdId}
                      activeId={liveProductionId}
-                    // entityType={entityTypes.PRODUCTION}
+                    // elementType={elementTypes.PRODUCTION}
                      enableSearch={true}
                      buttons={this.buttons}
                      onItemClick={(item) => this.selectProduction(item)}/>

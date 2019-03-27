@@ -16,7 +16,7 @@ type Props = {
   selectedId?: string,
   activeId?: string,
   idField?: string,
-  entityType?: string,
+  elementType?: string,
   onItemClick?: func,
   onSearch?: func,
   onClearSearch?: func,
@@ -56,8 +56,8 @@ export default class SidePanel extends Component<Props> {
     if (searchVal) {
       if (this.props.onSearch)
         this.props.onSearch(searchVal);
-      else if (this.props.entityType) {
-        //If no parental search function, we can figure out a default search behavior depending on entityType
+      else if (this.props.elementType) {
+        //If no parental search function, we can figure out a default search behavior depending on elementType
 
         //TODO: implement default entity type search behavior
         const result = await this.props.store.productionStore.searchProductions(searchVal);

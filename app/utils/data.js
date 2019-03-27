@@ -1,4 +1,4 @@
-export const entityTypes = {
+export const elementTypes = {
   PRODUCTION: 'production',
   SONG: 'song',
   SCRIPTURE: 'scripture', //production bound
@@ -6,6 +6,7 @@ export const entityTypes = {
   BACKGROUND: 'background',
   ANNOUNCEMENT: 'announcement',
   PRESENTATION: 'presentation',
+
   NOTE: 'note', //production bound
   OPTION: 'option',
 }

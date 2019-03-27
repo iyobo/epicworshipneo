@@ -1,5 +1,5 @@
 import { observable, action, computed } from "mobx";
-import { entityTypes } from "../utils/data";
+import { elementTypes } from "../utils/data";
 import { epicDB } from "./localdb";
 
 const _ = require("lodash");
@@ -18,14 +18,13 @@ export default class ProductionStore {
 
     this._loadProductionsFromDB();
 
-
   }
 
   async _loadProductionsFromDB() {
 
     const {docs} = await epicDB.db.find({
       selector: {
-        entityType: entityTypes.PRODUCTION,
+        elementType: elementTypes.PRODUCTION,
         // dateCreated: { $exists: true }
       },
       // use_index: ["entityListIdx"],
@@ -38,15 +37,16 @@ export default class ProductionStore {
     this.productions = docs;
   }
 
+  //FIXME: fix this
   async searchProductions(search) {
 
     const {docs} = await epicDB.db.find({
       selector: {
-        entityTypes: entityTypes.PRODUCTION,
+        elementTypes: elementTypes.PRODUCTION,
         dateCreated: { $exists: true },
         name: { $regex: new RegExp(`.*${search}.*`) }
       },
-      // use_index: ["entityType","dateCreated","name"],
+      // use_index: ["elementType","dateCreated","name"],
       // sort: ["dateCreated"]
     });
     docs.sort(function(a, b) {
@@ -114,7 +114,7 @@ export default class ProductionStore {
       _id: chance.guid(),
       name,
       dateCreated: new Date(),
-      entityType: entityTypes.PRODUCTION,
+      elementType: elementTypes.PRODUCTION,
       items: [] // {_id: chance.guid(), elementId}
     };
 

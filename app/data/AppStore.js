@@ -2,11 +2,12 @@ import ScreenStore from "./ScreenStore";
 import ProductionStore from "./ProductionStore";
 import ElementStore from "./ElementStore";
 import { observable, action } from "mobx";
+import { elementTypes } from "../utils/data";
 
 class AppStore {
 
   @observable isBusy = false;
-  history=null;
+  history = null;
 
   constructor() {
     this.screenStore = new ScreenStore(this);
@@ -20,26 +21,28 @@ class AppStore {
   };
 
   navigateToProduction = (productionId) => {
-    if (!this.history) throw new Error("Cannot navigate: History not set");
-    // debugger;
-    this.productionStore.setLastSelectedProduction(productionId);
-    this.history.push("/productions/" + productionId);
+    this.navigateToElement(elementTypes.PRODUCTION, productionId);
   };
 
-  navigateToElement = (elemId) => {
+  navigateToElement = (elementType, id) => {
     if (!this.history) throw new Error("Cannot navigate: History not set");
 
-    this.productionStore.setLastSelectedProduction(productionId);
-    this.history.push("/elements/" + productionId);
+    if (elementType === elementTypes.PRODUCTION) {
+      this.productionStore.setLastSelectedProduction(id);
+      this.history.push(`/productions/${id}`);
+    } else {
+      this.history.push(`/elements/${elementType}/${id}`);
+    }
+
   };
 
   @action
-  showBusy(){
+  showBusy() {
     this.isBusy = true;
   }
 
   @action
-  hideBusy(){
+  hideBusy() {
     this.isBusy = false;
   }
 
