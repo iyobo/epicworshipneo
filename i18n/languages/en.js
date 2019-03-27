@@ -25,6 +25,7 @@ module.exports = {
   //General
   newProduction: "New Production",
   clearSearch: "Clear Search",
+  search: "Search",
 
 //PRODUCTIONS...
 
@@ -43,13 +44,16 @@ module.exports = {
 //ELEMENTS...
 
 //Songs
-  elements_songs_tooltip_create: "Create a new Song",
-  elements_songs_tooltip_delete: "Delete this Song",
-  field_name: 'Name',
-  field_elements: 'Elements',
-  field_search: 'Search',
+  song_tooltip_create: "Create a new Song",
+  song_tooltip_delete: "Delete this Song",
+  song_tooltip_clone: "Clone this Song",
 
+  song_page_instructions: "Create (+) a Song, or Select a song.",
+  song_page_noElements: "No elements were added to this Song",
+  song_page_noElementsGoAdd: "click to go add some!",
 
+  song_errorTitle_productionName: "Invalid Song name",
+  song_errorMessage_productionName: "Every great Song needs a good name",
 
 
 };

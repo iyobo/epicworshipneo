@@ -30,11 +30,11 @@ export default class ElementStore {
 
   async _loadElementsFromDB(elementType) {
 
-    const {docs} = await epicDB.db.find({
+    const { docs } = await epicDB.db.find({
       selector: {
-        elementType,
+        elementType
         // dateCreated: { $exists: true }
-      },
+      }
       // use_index: ["entityListIdx"],
       // sort: ["dateCreated"]
     });
@@ -132,7 +132,11 @@ export default class ElementStore {
     return newElement;
   };
 
+  getElement = async (elementType, id) => {
+    return this[elementType + "Map"][id];
+  };
 
+  @action
   cloneElement = async (elementType, id) => {
     const originalElement = this[elementType + "Map"][id];
     if (!originalElement) throw new Error(`Clone: Cannot find ${elementType} of Id ${id}`);
@@ -148,6 +152,7 @@ export default class ElementStore {
     this.appStore.navigateToElement(elementType, newElement._id);
   };
 
+  @action
   deleteElement = async (elementType, id) => {
     const element = this[elementType + "Map"][id];
     if (!element) throw new Error(`Delete: Cannot find ${elementType}  of Id ${id}`);

@@ -6,6 +6,10 @@ import type { TSideBarButton } from "../../../components/SidePanel";
 import SidePanel from "../../../components/SidePanel";
 import { elementTypes } from "../../../utils/data";
 
+
+const elementType = elementTypes.SONG;
+
+
 @inject("store")
 @observer
 export default class SongsPage extends Component {
@@ -15,16 +19,16 @@ export default class SongsPage extends Component {
   }
 
   onCreate = () => {
-    this.props.store.navigateToElement(elementTypes.SONG, 'new');
+    this.props.store.navigateToElement(elementType, 'new');
   };
 
   onItemSelect = (item) => {
-    this.props.store.navigateToElement(elementTypes.SONG, item._id);
+    this.props.store.navigateToElement(elementType, item._id);
   };
 
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
 
-    this.props.store.elementStore.setLastSelectedProduction(nextProps.match.params.id);
+    // this.props.store.elementStore.setLastSelectedProduction(nextProps.match.params.id);
   }
 
   getSelectedId() {
@@ -39,33 +43,33 @@ export default class SongsPage extends Component {
     const store = this.props.store.elementStore;
     const selectedElementId = this.getSelectedId();
 
-    await store.cloneElement(elementTypes.SONG, selectedElementId);
+    await store.cloneElement(elementType, selectedElementId);
   };
 
   onDelete = async () => {
     const store = this.props.store.elementStore;
     const selectedElementId = this.getSelectedId();
 
-    await store.deleteElement(elementTypes.SONG, selectedElementId);
+    await store.deleteElement(elementType, selectedElementId);
   };
 
   buttons: array<TSideBarButton> = [
-    { icon: "plus", tooltip: dict.production_tooltip_create, handler: this.onCreate },
-    { icon: "copy", tooltip: dict.production_tooltip_clone, handler: this.onClone, showOnlyIfSelected: true },
-    { icon: "trash", tooltip: dict.production_tooltip_delete, handler: this.onDelete, showOnlyIfSelected: true }
+    { icon: "plus", tooltip: dict.song_tooltip_create, handler: this.onCreate },
+    { icon: "copy", tooltip: dict.song_tooltip_clone, handler: this.onClone, showOnlyIfSelected: true },
+    { icon: "trash", tooltip: dict.song_tooltip_delete, handler: this.onDelete, showOnlyIfSelected: true }
   ];
 
   render() {
     const elementStore = this.props.store.elementStore;
     const selectedElementId = this.getSelectedId();
-
+    // debugger;
     return (
       <div className='uk-animation-slide-right-small'>
         <h2>{dict.menu_songs}</h2>
 
         <div className='flexContainer'>
 
-          <SidePanel items={elementStore.songs}
+          <SidePanel items={elementStore[elementType+'s']}
                      selectedId={selectedElementId}
             // elementType={elementTypes.PRODUCTION}
                      enableSearch={true}

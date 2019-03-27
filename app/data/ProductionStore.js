@@ -128,6 +128,13 @@ export default class ProductionStore {
     return newProduction;
   };
 
+  @action
+  updateProduction = async (production) => {
+    const res = await epicDB.api.update(production);
+
+    return production;
+  };
+
 
   cloneProduction = (productionId) => {
     const production = this.productionIndex[productionId];

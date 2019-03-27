@@ -31,6 +31,7 @@ class AppStore {
       this.productionStore.setLastSelectedProduction(id);
       this.history.push(`/productions/${id}`);
     } else {
+      console.log('nacing to ',elementType,id)
       this.history.push(`/elements/${elementType}/${id}`);
     }
 

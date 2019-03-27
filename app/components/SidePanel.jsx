@@ -136,7 +136,7 @@ export default class SidePanel extends Component<Props> {
                        value={this.state.searchVal}
                        onChange={(evt) => this.onSearch(evt)}
                        className="uk-search-input" type="search"
-                       placeholder={dict.field_search + "..."}/>
+                       placeholder={dict.search + "..."}/>
               </div>
               <a href="#" uk-icon="ban"
                  style={{color:'red'}}

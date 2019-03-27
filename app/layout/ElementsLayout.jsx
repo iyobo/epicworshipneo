@@ -30,22 +30,22 @@ export default class ElementsLayout extends Component {
         <div className='elementsBody'>
           <Switch>
 
-            <Route exact path="/elements/songs/:elementId" component={SongsPage}/>
+            <Route exact path="/elements/song/:id" component={SongsPage}/>
             <Route path="/elements/song" component={SongsPage}/>
 
-            <Route exact path="/elements/scripture/:elementId" component={ScripturePage}/>
+            <Route exact path="/elements/scripture/:id" component={ScripturePage}/>
             <Route path="/elements/scripture" component={ScripturePage}/>
 
-            <Route exact path="/elements/media/:elementId" component={MediaPage}/>
+            <Route exact path="/elements/media/:id" component={MediaPage}/>
             <Route path="/elements/media" component={MediaPage}/>
 
-            <Route exact path="/elements/background/:elementId" component={BackgroundsPage}/>
+            <Route exact path="/elements/background/:id" component={BackgroundsPage}/>
             <Route path="/elements/background" component={BackgroundsPage}/>
 
-            <Route exact path="/elements/announcement/:elementId" component={AnnouncementsPage}/>
+            <Route exact path="/elements/announcement/:id" component={AnnouncementsPage}/>
             <Route path="/elements/announcement" component={AnnouncementsPage}/>
 
-            <Route exact path="/elements/presentation/:elementId" component={PresentationsPage}/>
+            <Route exact path="/elements/presentation/:id" component={PresentationsPage}/>
             <Route path="/elements/presentation" component={PresentationsPage}/>
 
             <Redirect to='/elements/song' />
