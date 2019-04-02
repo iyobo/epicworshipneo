@@ -1,12 +1,15 @@
 export const elementTypes = {
-  PRODUCTION: 'production',
-  SONG: 'song',
-  SCRIPTURE: 'scripture', //production bound
-  MEDIA: 'media',
-  BACKGROUND: 'background',
-  ANNOUNCEMENT: 'announcement',
-  PRESENTATION: 'presentation',
+  SONG: "song",
+  SCRIPTURE: "scripture", //production bound
+  MEDIA: "media",
+  BACKGROUND: "background",
+  ANNOUNCEMENT: "announcement",
+  PRESENTATION: "presentation",
+  NOTE: "note" //production bound
+};
 
-  NOTE: 'note', //production bound
-  OPTION: 'option',
-}
+export const entityTypes = {
+  PRODUCTION: "production",
+  ELEMENT: "element",
+  CONFIG: "config"
+};

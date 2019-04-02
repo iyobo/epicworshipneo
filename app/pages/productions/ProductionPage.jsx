@@ -87,8 +87,7 @@ export default class ProductionPage extends Component {
                      buttons={this.buttons}
                      onItemClick={(item) => this.selectProduction(item)}/>
 
-
-          <div className='uk-animation-slide-right-small uk-width-expand'>
+          <div className='uk-animation-slide-right-small '>
             <ProductionPageComponent selectedId={selectedProdId}/>
           </div>
         </div>

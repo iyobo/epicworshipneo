@@ -12,8 +12,8 @@ html, body {
 
 .dashboardBody {
   padding-left: 20px;
-  padding-right: 20px;
-  padding-bottom: 20px;
+  padding-right: 5px;
+  padding-bottom: 10px;
 }
 
 .uk-navbar-nav {
@@ -49,10 +49,16 @@ section {
 
 .flexContainer {
   display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  height: 100%;
 
   > div {
     padding-right: 5px;
     margin-right: 5px;
+    align-self: flex-start;
+    flex-grow: 1;
   }
 }
 
@@ -62,14 +68,14 @@ section {
 }
 
 .sidePanel {
-  width: 400px;
+  max-width: 400px;
 }
 
 .itemListWrapper {
   margin-top: 10px;
 
   //height: calc(100vh - 270px);
-  overflow: scroll;
+  overflow-y: auto;
 }
 
 .itemList {

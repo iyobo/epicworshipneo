@@ -1,6 +1,7 @@
 import { observable, action, computed } from "mobx";
-import { elementTypes } from "../utils/data";
+import { elementTypes, entityTypes } from "../utils/data";
 import { epicDB } from "./localdb";
+const _ = require("lodash");
 
 const chance = new require("chance")();
 
@@ -33,9 +34,7 @@ export default class ElementStore {
     const { docs } = await epicDB.db.find({
       selector: {
         elementType
-        // dateCreated: { $exists: true }
       }
-      // use_index: ["entityListIdx"],
       // sort: ["dateCreated"]
     });
     // debugger;
@@ -120,6 +119,7 @@ export default class ElementStore {
       content,
       dateCreated: new Date(),
       elementType,
+      entityType: entityTypes.ELEMENT,
       items: [] // {_id: chance.guid(), elementId}
     };
 
@@ -148,13 +148,15 @@ export default class ElementStore {
     const originalElement = this[elementType + "Map"][id];
     if (!originalElement) throw new Error(`Clone: Cannot find ${elementType} of Id ${id}`);
 
-    const newElement = _.cloneDeep(originalElement);
-    newElement._id = chance.guid();
-    newElement.name += " clone " + new Date().toLocaleTimeString();
+    const newElement={};
+    newElement._id =  chance.guid();
+    newElement.name = originalElement.name + ` (c)`;
+    newElement.content = originalElement.content;
     newElement.dateCreated = new Date();
+    newElement.entityType= entityTypes.ELEMENT;
 
-    this[elementType + "s"].unshift(newElement);
     await epicDB.api.add(newElement);
+    this[elementType + "s"].unshift(newElement);
 
     this.appStore.navigateToElement(elementType, newElement._id);
   };

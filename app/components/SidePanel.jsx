@@ -21,7 +21,7 @@ type Props = {
   onSearch?: func,
   onClearSearch?: func,
   buttons: array<TSideBarButton>,
-  enableSearch: boolean,
+  enableSearch?: boolean,
   startingHeight: number
 }
 
@@ -30,7 +30,8 @@ type Props = {
 export default class SidePanel extends Component<Props> {
 
   static defaultProps = {
-    startingHeight: 320
+    startingHeight: 320,
+    buttons:[]
   };
 
   constructor(props) {

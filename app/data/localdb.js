@@ -1,13 +1,19 @@
-//NOTE: leveldb is dumb and sometimes LOCKS things. We need to ensure that each time we start the app, we force a delete of any LOCK files in the database folder
-const fs = require('fs');
-const path = require('path');
+import RxDB from "rxdb";
 
-const databaseFolderPath = path.join(__dirname,'..', 'database');
-if (!fs.existsSync(databaseFolderPath)){
 
-  console.log(`Creating ${databaseFolderPath}...`)
+
+
+
+const fs = require("fs");
+const path = require("path");
+
+const databaseFolderPath = path.join(__dirname, "..", "database");
+if (!fs.existsSync(databaseFolderPath)) {
+
+  console.log(`Creating ${databaseFolderPath}...`);
   fs.mkdirSync(databaseFolderPath);
 }
+
 
 // const dbPath = path.join('database', 'epicworshipdb');
 
@@ -23,10 +29,12 @@ PouchDB.plugin(PouchMigrate);
 PouchDB.plugin(PouchFind);
 // PouchDB.plugin(require('pouchdb-adapter-node-websql'));
 
-const props= process.env;
+const props = process.env;
 
-export const db = new PouchDB(path.join(__dirname,'..', 'database','epicworshipdb'), { auto_compaction: true});
+export const db = new PouchDB(path.join(__dirname, "..", "database", "epicworshipdb"), { auto_compaction: true });
 export const api = db.hoodieApi();
+
+let rxdb = null;
 
 export const initializeData = async () => {
   console.log("Initializing DB...");
@@ -36,16 +44,30 @@ export const initializeData = async () => {
 
   // ensure indexes
   await db.createIndex({
-    index: { name:'entityListIdx',fields: ["elementType","dateCreated"] }
+    index: { name: "entityListIdx", fields: ["elementType", "dateCreated"] }
   });
 
   await db.createIndex({
-    index: { name:'entitySearchIdx', fields: ["elementType","dateCreated", "name"] }
+    index: { name: "entitySearchIdx", fields: ["elementType", "dateCreated", "name"] }
   });
+
+
+  rxdb = await RxDB.create({
+    name: 'epicdb',           // <- name
+    adapter: 'leveldb',          // <- storage-adapter
+    password: 'epicPass',     // <- password (optional)
+    multiInstance: true,         // <- multiInstance (optional, default: true)
+    queryChangeDetection: false // <- queryChangeDetection (optional, default: false)
+  });
+  console.dir(rxdb);
 };
 
 // export const productionDB = api.withIdPrefix('production/');
 // export const elementDB = api.withIdPrefix('element/');
 // export const configDB = api.withIdPrefix('config/');
 
-export const epicDB = { db, api };
+export const epicDB = { db, api , rxdb};
+
+export const saveProduction = async (production) => {
+
+};

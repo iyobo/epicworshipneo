@@ -19,7 +19,7 @@ export default class SongsPage extends Component {
   }
 
   onCreate = () => {
-    this.props.store.navigateToElement(elementType, 'new');
+    this.props.store.navigateToElement(elementType, "new");
   };
 
   onItemSelect = (item) => {
@@ -53,10 +53,19 @@ export default class SongsPage extends Component {
     await store.deleteElement(elementType, selectedElementId);
   };
 
+  onAddToProduction = async () => {
+    const store = this.props.store.productionStore;
+    const selectedElementId = this.getSelectedId();
+
+    await store.deleteElement(elementType, selectedElementId);
+  };
+
+
   buttons: array<TSideBarButton> = [
     { icon: "plus", tooltip: dict.song_tooltip_create, handler: this.onCreate },
     { icon: "copy", tooltip: dict.song_tooltip_clone, handler: this.onClone, showOnlyIfSelected: true },
-    { icon: "trash", tooltip: dict.song_tooltip_delete, handler: this.onDelete, showOnlyIfSelected: true }
+    { icon: "trash", tooltip: dict.song_tooltip_delete, handler: this.onDelete, showOnlyIfSelected: true },
+    { icon: "chevron-right", tooltip: dict.toProduction, handler: this.onAddToProduction, showOnlyIfSelected: true }
   ];
 
   render() {
@@ -68,21 +77,18 @@ export default class SongsPage extends Component {
         <h2>{dict.menu_songs}</h2>
 
         <div className='flexContainer'>
-
-          <SidePanel items={elementStore[elementType+'s']}
+          <SidePanel items={elementStore[elementType + "s"]}
                      selectedId={selectedElementId}
             // elementType={elementTypes.PRODUCTION}
                      enableSearch={true}
                      buttons={this.buttons}
-                     onItemClick={(item) => this.onItemSelect(item)} />
+                     onItemClick={(item) => this.onItemSelect(item)}/>
 
-          <div className='uk-animation-slide-right-small uk-width-expand'>
+          <div className='uk-animation-slide-right-small '>
             <SongsPageComponent selectedId={selectedElementId}/>
           </div>
         </div>
-
       </div>
-
     );
   }
 }

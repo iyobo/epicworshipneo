@@ -9,11 +9,15 @@ import PresentationsPage from "../pages/elements/PresentationsPage";
 import { T } from "../../i18n/i18n";
 import { Redirect } from "react-router";
 import SongsPage from "../pages/elements/songs/SongsPage";
+import SidePanel from "../components/SidePanel";
 
 @inject("store")
 @observer
 export default class ElementsLayout extends Component {
   render() {
+
+    const liveProduction = this.props.store.productionStore.liveProduction;
+
     return (
       <div className='uk-animation-slide-right-small'>
 
@@ -21,13 +25,16 @@ export default class ElementsLayout extends Component {
           <li><NavLink to="/elements/song"><i className='fa fa-music'/> <T name='menu_songs'/></NavLink></li>
           <li><NavLink to="/elements/scripture"><i className='fa fa-bible'/> <T name='menu_scripture'/></NavLink></li>
           <li><NavLink to="/elements/media"><i className='fa fa-play-circle'/> <T name='menu_media'/></NavLink></li>
-          <li><NavLink to="/elements/backgrounds"><i className='fa fa-image'/> <T name='menu_backgrounds'/></NavLink></li>
-          <li><NavLink to="/elements/announcements"><i className='fa fa-bullhorn'/> <T name='menu_announcements'/></NavLink></li>
-          <li><NavLink to="/elements/presentations"><i className='fa fa-magic'/> <T name='menu_presentations'/></NavLink></li>
+          <li><NavLink to="/elements/backgrounds"><i className='fa fa-image'/> <T name='menu_backgrounds'/></NavLink>
+          </li>
+          <li><NavLink to="/elements/announcements"><i className='fa fa-bullhorn'/> <T
+            name='menu_announcements'/></NavLink></li>
+          <li><NavLink to="/elements/presentations"><i className='fa fa-magic'/> <T
+            name='menu_presentations'/></NavLink></li>
 
         </ul>
         {/*Order of routes is important*/}
-        <div className='elementsBody'>
+        <div className='elementsBody flexContainer'>
           <Switch>
 
             <Route exact path="/elements/song/:id" component={SongsPage}/>
@@ -48,9 +55,20 @@ export default class ElementsLayout extends Component {
             <Route exact path="/elements/presentation/:id" component={PresentationsPage}/>
             <Route path="/elements/presentation" component={PresentationsPage}/>
 
-            <Redirect to='/elements/song' />
+            <Redirect to='/elements/song'/>
 
           </Switch>
+          {liveProduction &&
+          <div>
+            <h3>Production Set</h3>
+            <SidePanel
+              items={liveProduction.items}
+              // selectedId={selectedElementId}
+              // buttons={this.buttons}
+              // onItemClick={(item) => this.onItemSelect(item)}
+            />
+          </div>
+          }
         </div>
 
       </div>

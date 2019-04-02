@@ -23,19 +23,27 @@ export default class SongsPageComponent extends Component<Props> {
     };
   }
 
+  componentDidMount(): void {
+    this._refresh(this.props)
+  }
+
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
     if (this.props.selectedId !== nextProps.selectedId) {
-      const elementStore = this.props.store.elementStore;
-      const element = elementStore.getElement(elementType, nextProps.selectedId);
+      this._refresh(nextProps)
+    }
+  }
 
-      // debugger;
+  _refresh=(props)=>{
+    const elementStore = props.store.elementStore;
+    const element = elementStore.getElement(elementType, props.selectedId);
 
-      if (element) {
-        console.log(element);
-        this.setState({ name: element.name, content: element.content });
-      } else if (nextProps.selectedId === "new") {
-        this.setState({ name: "", content: "" });
-      }
+    // debugger;
+
+    if (element) {
+      console.log(element);
+      this.setState({ name: element.name, content: element.content });
+    } else if (props.selectedId === "new") {
+      this.setState({ name: "", content: "" });
     }
   }
 

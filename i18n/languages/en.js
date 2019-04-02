@@ -72,6 +72,8 @@ module.exports = {
   background: "background",
   bible: "bible",
   staticBackground: "Static Background",
-  motionBackground: "Motion Background"
+  motionBackground: "Motion Background",
+
+  toProduction: 'Add to Production',
 
 };
