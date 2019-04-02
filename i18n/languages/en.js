@@ -1,4 +1,5 @@
 module.exports = {
+
   //Menu
   menu_productions: "Productions",
   menu_elements: "Elements",
@@ -55,5 +56,22 @@ module.exports = {
   song_errorTitle_productionName: "Invalid Song name",
   song_errorMessage_productionName: "Every great Song needs a good name",
 
+
+  // Field labels
+  field_name: "Name",
+  field_body: "Body",
+  field_content: "Content",
+
+
+  // misc
+  new: "new",
+  song: "song",
+  video: "video",
+  audio: "audio",
+  media: "media",
+  background: "background",
+  bible: "bible",
+  staticBackground: "Static Background",
+  motionBackground: "Motion Background"
 
 };

@@ -21,14 +21,17 @@ type Props = {
   onSearch?: func,
   onClearSearch?: func,
   buttons: array<TSideBarButton>,
-  enableSearch: boolean
+  enableSearch: boolean,
+  startingHeight: number
 }
 
 @inject("store")
 @observer
 export default class SidePanel extends Component<Props> {
 
-  static defaultProps = {};
+  static defaultProps = {
+    startingHeight: 320
+  };
 
   constructor(props) {
     super(props);
@@ -147,7 +150,7 @@ export default class SidePanel extends Component<Props> {
         }
 
         {/*itemlist*/}
-        <div className='itemListWrapper'>
+        <div className='itemListWrapper' style={{height: `calc(100vh - ${this.props.startingHeight}px)`}}>
           <ItemList items={items}
                     selectedId={this.props.selectedId}
                     activeId={this.props.activeId}

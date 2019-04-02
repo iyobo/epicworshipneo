@@ -59,13 +59,20 @@ export const loadLanguage = (newLanguage) => {
 
 loadLanguage();
 
+export type TranslationParams={
+  pluralize: boolean,
+  uppercase: boolean,
+  lowercase: boolean,
+  capitalize: boolean,
+}
+
 /**
  * translate some text by key name
  * @param name
  * @param params - opts. undefine this to skip dynamic translation features (static is faster)
  * @returns {*}
  */
-export const t = (name, params) => {
+export const t = (name, params:TranslationParams) => {
   let text = dict[name] || "";
 
 
@@ -90,6 +97,8 @@ export const t = (name, params) => {
   return text;
 };
 export const translate = t;
+
+dict._ = t;
 
 
 export const T = (props) => <Fragment>

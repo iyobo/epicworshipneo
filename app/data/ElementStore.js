@@ -132,7 +132,14 @@ export default class ElementStore {
     return newElement;
   };
 
-  getElement = async (elementType, id) => {
+  @action
+  updateElement = async (element) => {
+    const res = await epicDB.api.update(element);
+
+    return element;
+  };
+
+  getElement = (elementType, id) => {
     return this[elementType + "Map"][id];
   };
 

@@ -36,6 +36,7 @@ export default class ProductionPageComponent extends Component<Props> {
       production = await prodStore.createProduction(this.state.name);
     } else {
       production.name = this.state.name;
+      await prodStore.updateProduction(production);
     }
     // debugger;
     this.setState({ name: "" });

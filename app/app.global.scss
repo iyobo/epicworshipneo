@@ -68,7 +68,7 @@ section {
 .itemListWrapper {
   margin-top: 10px;
 
-  height: calc(100vh - 270px);
+  //height: calc(100vh - 270px);
   overflow: scroll;
 }
 
@@ -100,6 +100,20 @@ section {
     }
   }
 }
+textarea.epicTextArea{
+  min-height: 200px;
+  height: 40vh;
+  max-width: 100%;
+  line-height: 25px;
+}
 
 
+.h100{
+  height: 100px;
+}
+
+
+.h200{
+  height: 200px;
+}
 

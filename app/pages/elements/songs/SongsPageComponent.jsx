@@ -23,55 +23,91 @@ export default class SongsPageComponent extends Component<Props> {
     };
   }
 
+  componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
+    if (this.props.selectedId !== nextProps.selectedId) {
+      const elementStore = this.props.store.elementStore;
+      const element = elementStore.getElement(elementType, nextProps.selectedId);
+
+      // debugger;
+
+      if (element) {
+        console.log(element);
+        this.setState({ name: element.name, content: element.content });
+      } else if (nextProps.selectedId === "new") {
+        this.setState({ name: "", content: "" });
+      }
+    }
+  }
+
+
   onSubmit = async (evt) => {
     evt.preventDefault();
 
     if (!this.state.name) return toast.error({
-      title: "Invalid element name",
-      message: "Every element needs a good name"
+      title: `Empty ${elementType} name`,
+      message: `Every ${elementType} needs a good name`
+    });
+    if (!this.state.content) return toast.error({
+      title: `Empty ${elementType} body`,
+      message: `Every ${elementType} needs a good body`
     });
 
     const elementStore = this.props.store.elementStore;
     const elementId = this.props.selectedId;
-    let element = await elementStore.songMap[elementId];
+    let element = elementStore.getElement(elementType, elementId);
 
     if (!element) {
       element = await elementStore.createElement(elementType, this.state.name, this.state.content);
     } else {
       element.name = this.state.name;
+      element.content = this.state.content;
+      await elementStore.updateElement(element);
     }
     // debugger;
-    this.setState({ name: "" });
+    // this.setState({ name: "" });
     this.props.store.navigateToElement(elementType, element._id);
 
   };
 
   render() {
     const elementStore = this.props.store.elementStore;
-    const elementId = this.props.selectedId ; //if id='new' go all the way down and work with null element
+    const elementId = this.props.selectedId; //if id='new' go all the way down and work with null element
     // debugger;
-    console.log({elementId})
+    console.log({ elementId });
 
     // If still no id then no current or previous selection
     if (!elementId) return <div>{dict.song_page_instructions}</div>;
 
     const element = elementStore.getElement(elementType, elementId);
+    // debugger;
 
     return (
       <section className='uk-animation-slide-right-small'>
         <form onSubmit={this.onSubmit}>
           <fieldset className="uk-fieldset">
 
-            <legend className="uk-legend">{element ? element.name : dict.newelement}</legend>
+            <legend className="uk-legend">{element ? element.name : dict.song_tooltip_create}</legend>
 
             <div className="uk-margin">
               <b>{dict.field_name}</b>
-              <input className="uk-input" type="text" name="name" autoFocus={true}
-                     placeholder={element ? element.name : "New element"}
+              <input className="uk-input"
+                     type="text"
+                     name="name"
+                     autoFocus={true}
                      onChange={(evt) => {
                        this.setState({ name: evt.target.value });
                      }}
                      value={this.state.name}/>
+            </div>
+
+            <div className="uk-margin">
+              <div><b>{dict.field_body}</b></div>
+              <textarea className="uk-input epicTextArea"
+                        name="content"
+                        onChange={(evt) => {
+                          this.setState({ content: evt.target.value });
+                        }}
+                        value={this.state.content} />
             </div>
 
 

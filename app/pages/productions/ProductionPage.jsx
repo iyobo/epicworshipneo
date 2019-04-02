@@ -81,7 +81,8 @@ export default class ProductionPage extends Component {
           <SidePanel items={prodStore.productions}
                      selectedId={selectedProdId}
                      activeId={liveProductionId}
-                    // elementType={elementTypes.PRODUCTION}
+            // elementType={elementTypes.PRODUCTION}
+                     startingHeight={270}
                      enableSearch={true}
                      buttons={this.buttons}
                      onItemClick={(item) => this.selectProduction(item)}/>
