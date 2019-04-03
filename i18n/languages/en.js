@@ -61,6 +61,7 @@ module.exports = {
   field_name: "Name",
   field_body: "Body",
   field_content: "Content",
+  field_text: "text",
 
 
   // misc

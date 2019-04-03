@@ -2,7 +2,7 @@ import ScreenStore from "./ScreenStore";
 import ProductionStore from "./ProductionStore";
 import ElementStore from "./ElementStore";
 import { observable, action } from "mobx";
-import { elementTypes } from "../utils/data";
+import { elementTypes } from "../../utils/data";
 
 class AppStore {
 

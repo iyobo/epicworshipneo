@@ -11,5 +11,5 @@ export const elementTypes = {
 export const entityTypes = {
   PRODUCTION: "production",
   ELEMENT: "element",
-  CONFIG: "config"
+  SETTING: "setting"
 };

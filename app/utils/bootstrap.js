@@ -34,7 +34,7 @@ export const initLogger = () => {
           }
         }
       }
-      originalMethod.apply(console, [`[${timestamp}] @ ${initiator}`, "\n ", ...args]);
+      originalMethod.apply(console, [...args, "\n ", `[${timestamp}] @ ${initiator}`]);
     };
   });
 

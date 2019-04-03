@@ -74,9 +74,9 @@ export default class SidePanel extends Component<Props> {
         const result = _.filter(this.props.items, (it) => {
           let include = regex.test(it.name);
 
-          //if this item has content, search inside it too
-          if (!include && it.content) {
-            include = regex.test(it.content.toString()); //text body?
+          //if not elected, if this item has a text, search inside it too
+          if (!include && it.text) {
+            include = regex.test(it.text); //text body?
           }
 
           return include;

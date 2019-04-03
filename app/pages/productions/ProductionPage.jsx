@@ -22,7 +22,7 @@ export default class ProductionPage extends Component {
   };
 
   selectProduction = (prod) => {
-    this.props.store.navigateToProduction(prod._id);
+    this.props.store.navigateToProduction(prod.id);
   };
 
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {

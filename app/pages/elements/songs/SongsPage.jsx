@@ -23,7 +23,7 @@ export default class SongsPage extends Component {
   };
 
   onItemSelect = (item) => {
-    this.props.store.navigateToElement(elementType, item._id);
+    this.props.store.navigateToElement(elementType, item.id);
   };
 
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {

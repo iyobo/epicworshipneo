@@ -2,7 +2,7 @@
 import React, { Component, Fragment } from "react";
 
 import { Provider } from "mobx-react";
-import appStore from "../data/AppStore";
+import appStore from "../data/stores/AppStore";
 import SettingsLayout from "./SettingsLayout";
 import DashboardLayout from "./DashboardLayout";
 import { BrowserRouter, Route, Switch } from "react-router-dom";

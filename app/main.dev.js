@@ -19,7 +19,7 @@ import { autoUpdater } from "electron-updater";
 import log from "electron-log";
 import MenuBuilder from "./menu";
 
-import { initializeData } from "./data/localdb";
+import database, { initializeData } from "./data/persistence/Database";
 import { initializeScreens } from "./managers/screenManager";
 
 
@@ -67,7 +67,7 @@ app.on("ready", async () => {
     await installExtensions();
   }
 
-  await initializeData(app);
+  // await initializeData(app);
   await initializeScreens(app);
 
 

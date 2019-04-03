@@ -1,6 +1,6 @@
 import { observable, action, computed } from "mobx";
-import { elementTypes, entityTypes } from "../utils/data";
-import { epicDB } from "./localdb";
+import { elementTypes, entityTypes } from "../../utils/data";
+import { db, setConfig} from "../persistence/Database";
 const _ = require("lodash");
 
 const chance = new require("chance")();
@@ -31,16 +31,11 @@ export default class ElementStore {
 
   async _loadElementsFromDB(elementType) {
 
-    const { docs } = await epicDB.db.find({
-      selector: {
-        elementType
-      }
-      // sort: ["dateCreated"]
-    });
+    const docs = await db.elements.find({elementType}).sort('timestamp').exec();
     // debugger;
-    docs.sort(function(a, b) {
-      return b.dateCreated - a.dateCreated;
-    });
+    // docs.sort(function(a, b) {
+    //   return b.dateCreated - a.dateCreated;
+    // });
     this[elementType + "s"] = docs;
   }
 
@@ -49,7 +44,7 @@ export default class ElementStore {
     const map = {};
 
     this.songs.forEach((it) => {
-      map[it._id] = it;
+      map[it.id] = it;
     });
 
     return map;
@@ -60,7 +55,7 @@ export default class ElementStore {
     const map = {};
 
     this.scriptures.forEach((it) => {
-      map[it._id] = it;
+      map[it.id] = it;
     });
 
     return map;
@@ -71,7 +66,7 @@ export default class ElementStore {
     const map = {};
 
     this.medias.forEach((it) => {
-      map[it._id] = it;
+      map[it.id] = it;
     });
 
     return map;
@@ -82,7 +77,7 @@ export default class ElementStore {
     const map = {};
 
     this.backgrounds.forEach((it) => {
-      map[it._id] = it;
+      map[it.id] = it;
     });
 
     return map;
@@ -93,7 +88,7 @@ export default class ElementStore {
     const map = {};
 
     this.announcements.forEach((it) => {
-      map[it._id] = it;
+      map[it.id] = it;
     });
 
     return map;
@@ -104,7 +99,7 @@ export default class ElementStore {
     const map = {};
 
     this.presentations.forEach((it) => {
-      map[it._id] = it;
+      map[it.id] = it;
     });
 
     return map;
@@ -112,30 +107,33 @@ export default class ElementStore {
 
 
   @action
-  createElement = async (elementType, name, content) => {
+  createElement = async (elementType, name, text) => {
     const newElement = {
-      _id: chance.guid(),
+      id: chance.guid(),
       name,
-      content,
-      dateCreated: new Date(),
+      text,
+      details: {},
+      timestamp: Date.now(),
+      createdTime: Date.now(),
       elementType,
       entityType: entityTypes.ELEMENT,
-      items: [] // {_id: chance.guid(), elementId}
     };
 
     //add in db
-    const res = await epicDB.api.add(newElement);
+    const res = await db.elements.atomicUpsert(newElement);
 
     //add in store
     this[elementType + "s"].unshift(newElement);
 
+    toast.success({message: `${elementType} "${name}" updated`});
     return newElement;
   };
 
   @action
   updateElement = async (element) => {
-    const res = await epicDB.api.update(element);
+    const res = await db.elements.atomicUpsert(element);
 
+    toast.success({message: `${element.elementType} "${element.name}" updated`});
     return element;
   };
 
@@ -148,26 +146,31 @@ export default class ElementStore {
     const originalElement = this[elementType + "Map"][id];
     if (!originalElement) throw new Error(`Clone: Cannot find ${elementType} of Id ${id}`);
 
-    const newElement={};
-    newElement._id =  chance.guid();
+    const newElement={elementType};
+    newElement.id =  chance.guid();
     newElement.name = originalElement.name + ` (c)`;
-    newElement.content = originalElement.content;
-    newElement.dateCreated = new Date();
+    newElement.text = originalElement.text;
+    newElement.details = originalElement.details;
     newElement.entityType= entityTypes.ELEMENT;
+    newElement.timestamp = Date.now();
 
-    await epicDB.api.add(newElement);
+    await db.elements.atomicUpsert(newElement);
     this[elementType + "s"].unshift(newElement);
 
-    this.appStore.navigateToElement(elementType, newElement._id);
+    toast.success({message: `${elementType} "${newElement.name}" created`});
+    this.appStore.navigateToElement(elementType, newElement.id);
   };
 
   @action
   deleteElement = async (elementType, id) => {
-    const element = this[elementType + "Map"][id];
-    if (!element) throw new Error(`Delete: Cannot find ${elementType}  of Id ${id}`);
 
-    _.remove(this[elementType + "s"], { _id: id });
-    await epicDB.api.remove(id);
+    const element = await db.elements.findOne({id:id}).exec();
+    if (!element) throw new Error(`Delete: Cannot find ${elementType} of Id ${id}`);
+
+    await element.remove();
+    _.remove(this[elementType + "s"], { id: id });
+
+    toast.success({message: `${elementType} "${element.name}" deleted`});
 
     this.appStore.navigateToElement(elementType, null);
   };

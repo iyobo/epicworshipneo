@@ -52,3 +52,5 @@ npm-debug.log.*
 
 database/*
 epicworshipdb*
+
+db*

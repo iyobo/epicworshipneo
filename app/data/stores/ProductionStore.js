@@ -1,6 +1,7 @@
 import { action, computed, observable } from "mobx";
-import { entityTypes } from "../utils/data";
-import { epicDB } from "./localdb";
+import { entityTypes } from "../../utils/data";
+import { db, setConfig} from "../persistence/Database";
+import { configs } from "../persistence/models/Setting";
 
 const _ = require("lodash");
 
@@ -16,49 +17,43 @@ export default class ProductionStore {
     this.appStore = appStore;
 
     this._loadProductionsFromDB();
-
   }
 
   async _loadProductionsFromDB() {
 
-    const {docs} = await epicDB.db.find({
-      selector: {
-        entityType: entityTypes.PRODUCTION,
-      },
-      // sort: ["dateCreated"]
-    });
-    // debugger;
-    docs.sort(function(a, b) {
-      return b.dateCreated - a.dateCreated;
-    });
+    const docs = await db.productions.find().sort('timestamp').exec();
+
+    // docs.sort(function(a, b) {
+    //   return b.dateCreated - a.dateCreated;
+    // });
     this.productions = docs;
 
-    const live = await epicDB.api.find('app.liveProductionId').then(this.setLiveProduction);
-    // this.setLiveProduction(live);
+    const liveSetting = await db.settings.findOne({id: configs.liveProductionId}).exec();
+    if(liveSetting) this.setLiveProduction(liveSetting.value);
   }
 
   //FIXME: fix this
   async searchProductions(search) {
 
-    const {docs} = await epicDB.db.find({
-      selector: {
-        entityType: entityTypes.PRODUCTION,
-        name: { $regex: new RegExp(`.*${search}.*`) }
-      },
-      // sort: ["dateCreated"]
-    });
-    docs.sort(function(a, b) {
-      return b.dateCreated - a.dateCreated;
-    });
-
-    return docs;
+    // const {docs} = await db.db.find({
+    //   selector: {
+    //     entityType: entityTypes.PRODUCTION,
+    //     name: { $regex: new RegExp(`.*${search}.*`) }
+    //   },
+    //   // sort: ["dateCreated"]
+    // });
+    // docs.sort(function(a, b) {
+    //   return b.dateCreated - a.dateCreated;
+    // });
+    //
+    // return docs;
   }
 
   @computed get productionIndex() {
     const map = {};
 
     this.productions.forEach((it) => {
-      map[it._id] = it;
+      map[it.id] = it;
     });
 
     return map;
@@ -70,12 +65,12 @@ export default class ProductionStore {
     this.liveProductionId = productionId;
   };
 
-  makeProductionLive = (productionId) => {
+  makeProductionLive = async (productionId) => {
     const production = this.productionIndex[productionId];
     if (!production) throw new Error(`Live: Cannot find production of Id ${productionId}`);
 
+    await setConfig(configs.liveProductionId,productionId);
     this.setLiveProduction(productionId);
-    epicDB.api.updateOrAdd('app.liveProductionId', {productionId});
   };
 
   get liveProduction() {
@@ -95,49 +90,32 @@ export default class ProductionStore {
     return this.productionIndex[id];
   }
 
-  // @action
-  // deriveProductions() {
-  //   const arr = Object.values(this.productionIndex);
-  //   arr.sort(function(a, b) {
-  //     return b.dateCreated - a.dateCreated;
-  //   });
-  //   this.productions = arr;
-  // }
-  //
-  // @action
-  // deriveProductionIndex() {
-  //   const map = {}
-  //
-  //   this.productions.forEach((it)=>{
-  //     map[it._id]= it;
-  //   })
-  //
-  //   this.productionIndex = map;
-  // }
-
   @action
   createProduction = async (name) => {
     const newProduction = {
-      _id: chance.guid(),
+      id: chance.guid(),
       name,
-      dateCreated: new Date(),
+      timestamp: Date.now(),
       entityType: entityTypes.PRODUCTION,
       items: []
     };
 
     //add in db
-    const res = await epicDB.api.add(newProduction);
-// debugger;
+    await db.productions.atomicUpsert(newProduction);
+
     //add in store
     this.productions.unshift(newProduction);
-    // debugger;
+
+    toast.success({message: `Production "${newProduction.name}" created`});
 
     return newProduction;
   };
 
   @action
   updateProduction = async (production) => {
-    const res = await epicDB.api.update(production);
+    await db.productions.atomicUpsert(production);
+
+    toast.success({message: `Production "${production.name}" updated`});
 
     return production;
   };
@@ -148,25 +126,30 @@ export default class ProductionStore {
     if (!production) throw new Error(`Clone: Cannot find production of Id ${productionId}`);
 
     const newProduction={};
-    newProduction._id =  chance.guid();
+    newProduction.id =  chance.guid();
     newProduction.name = production.name + ` (c)`;
     newProduction.items = production.items;
     newProduction.entityType = entityTypes.PRODUCTION;
-    newProduction.dateCreated = new Date();
+    newProduction.timestamp = Date.now();
+    newProduction.createdTime = Date.now();
 
-    await epicDB.api.add(newProduction);
+    await db.productions.atomicUpsert(newProduction);
     this.productions.unshift(newProduction);
 
-    this.appStore.navigateToProduction(newProduction._id);
+    toast.success({message: `Production "${newProduction.name}" created`});
+
+    this.appStore.navigateToProduction(newProduction.id);
   };
 
-  deleteProduction = (productionId) => {
-    const production = this.productionIndex[productionId];
+  deleteProduction = async (productionId) => {
+    const production = await db.productions.findOne({id:productionId}).exec();
     if (!production) throw new Error(`Delete: Cannot find production of Id ${productionId}`);
 
 
-    _.remove(this.productions, { _id: productionId });
-    epicDB.api.remove(productionId);
+    await production.remove();
+    _.remove(this.productions, { id: productionId });
+
+    toast.success({message: `Production "${production.name}" deleted`});
 
     this.appStore.navigateToProduction(null);
   };

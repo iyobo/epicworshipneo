@@ -19,7 +19,7 @@ export default class SongsPageComponent extends Component<Props> {
 
     this.state = {
       name: "",
-      content: ""
+      text: ""
     };
   }
 
@@ -41,9 +41,9 @@ export default class SongsPageComponent extends Component<Props> {
 
     if (element) {
       console.log(element);
-      this.setState({ name: element.name, content: element.content });
+      this.setState({ name: element.name, text: element.text });
     } else if (props.selectedId === "new") {
-      this.setState({ name: "", content: "" });
+      this.setState({ name: "", text: "" });
     }
   }
 
@@ -55,7 +55,7 @@ export default class SongsPageComponent extends Component<Props> {
       title: `Empty ${elementType} name`,
       message: `Every ${elementType} needs a good name`
     });
-    if (!this.state.content) return toast.error({
+    if (!this.state.text) return toast.error({
       title: `Empty ${elementType} body`,
       message: `Every ${elementType} needs a good body`
     });
@@ -65,15 +65,15 @@ export default class SongsPageComponent extends Component<Props> {
     let element = elementStore.getElement(elementType, elementId);
 
     if (!element) {
-      element = await elementStore.createElement(elementType, this.state.name, this.state.content);
+      element = await elementStore.createElement(elementType, this.state.name, this.state.text);
     } else {
       element.name = this.state.name;
-      element.content = this.state.content;
+      element.text = this.state.text;
       await elementStore.updateElement(element);
     }
     // debugger;
     // this.setState({ name: "" });
-    this.props.store.navigateToElement(elementType, element._id);
+    this.props.store.navigateToElement(elementType, element.id);
 
   };
 
@@ -81,7 +81,7 @@ export default class SongsPageComponent extends Component<Props> {
     const elementStore = this.props.store.elementStore;
     const elementId = this.props.selectedId; //if id='new' go all the way down and work with null element
     // debugger;
-    console.log({ elementId });
+    // console.log({ elementId });
 
     // If still no id then no current or previous selection
     if (!elementId) return <div>{dict.song_page_instructions}</div>;
@@ -109,13 +109,13 @@ export default class SongsPageComponent extends Component<Props> {
             </div>
 
             <div className="uk-margin">
-              <div><b>{dict.field_body}</b></div>
+              <div><b>{dict.field_text}</b></div>
               <textarea className="uk-input epicTextArea"
-                        name="content"
+                        name="text"
                         onChange={(evt) => {
-                          this.setState({ content: evt.target.value });
+                          this.setState({ text: evt.target.value });
                         }}
-                        value={this.state.content} />
+                        value={this.state.text} />
             </div>
 
 
