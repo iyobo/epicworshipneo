@@ -125,7 +125,7 @@ export default class ElementStore {
     //add in store
     this[elementType + "s"].unshift(newElement);
 
-    toast.success({message: `${elementType} "${name}" updated`});
+    toast.success({message: `${elementType} "${name}" created`});
     return newElement;
   };
 
