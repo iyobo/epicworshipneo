@@ -141,6 +141,10 @@ export default class ElementStore {
     return this[elementType + "Map"][id];
   };
 
+  findElement = async (id) => {
+    return await db.elements.findOne({id}).exec();
+  };
+
   @action
   cloneElement = async (elementType, id) => {
     const originalElement = this[elementType + "Map"][id];

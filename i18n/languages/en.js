@@ -77,4 +77,6 @@ module.exports = {
 
   toProduction: 'Add to Production',
 
+  element_tooltip_delete_prodItem: 'Delete selected production item'
+
 };

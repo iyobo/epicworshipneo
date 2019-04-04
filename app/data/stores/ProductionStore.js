@@ -1,6 +1,6 @@
 import { action, computed, observable } from "mobx";
 import { entityTypes } from "../../utils/data";
-import { db, setConfig} from "../persistence/Database";
+import { db, setConfig } from "../persistence/Database";
 import { configs } from "../persistence/models/Setting";
 
 const _ = require("lodash");
@@ -21,15 +21,15 @@ export default class ProductionStore {
 
   async _loadProductionsFromDB() {
 
-    const docs = await db.productions.find().sort('timestamp').exec();
+    const docs = await db.productions.find().sort("timestamp").exec();
 
     // docs.sort(function(a, b) {
     //   return b.dateCreated - a.dateCreated;
     // });
     this.productions = docs;
 
-    const liveSetting = await db.settings.findOne({id: configs.liveProductionId}).exec();
-    if(liveSetting) this.setLiveProduction(liveSetting.value);
+    const liveSetting = await db.settings.findOne({ id: configs.liveProductionId }).exec();
+    if (liveSetting) this.setLiveProduction(liveSetting.value);
   }
 
   //FIXME: fix this
@@ -61,15 +61,41 @@ export default class ProductionStore {
 
   @action
   setLiveProduction = (productionId) => {
-    console.log('setting Live production', productionId)
+    console.log("setting Live production", productionId);
     this.liveProductionId = productionId;
   };
+
+  @computed get liveProductionItems() {
+    const live = this.liveProduction;
+    if (!live) return null;
+
+    const items = [];
+    const elementStore = this.appStore.elementStore;
+
+    live.items.forEach((it) => {
+      const element = elementStore.getElement(it.elementType, it.elementId);
+
+      if (element) {
+        const item = {
+          id: chance.guid(),
+          name: element.name,
+          element
+        };
+
+        items.push(item);
+      }
+
+    });
+
+
+    return items;
+  }
 
   makeProductionLive = async (productionId) => {
     const production = this.productionIndex[productionId];
     if (!production) throw new Error(`Live: Cannot find production of Id ${productionId}`);
 
-    await setConfig(configs.liveProductionId,productionId);
+    await setConfig(configs.liveProductionId, productionId);
     this.setLiveProduction(productionId);
   };
 
@@ -106,7 +132,7 @@ export default class ProductionStore {
     //add in store
     this.productions.unshift(newProduction);
 
-    toast.success({message: `Production "${newProduction.name}" created`});
+    toast.success({ message: `Production "${newProduction.name}" created` });
 
     return newProduction;
   };
@@ -115,7 +141,7 @@ export default class ProductionStore {
   updateProduction = async (production) => {
     await db.productions.atomicUpsert(production);
 
-    toast.success({message: `Production "${production.name}" updated`});
+    toast.success({ message: `Production "${production.name}" updated` });
 
     return production;
   };
@@ -125,8 +151,8 @@ export default class ProductionStore {
     const production = this.productionIndex[productionId];
     if (!production) throw new Error(`Clone: Cannot find production of Id ${productionId}`);
 
-    const newProduction={};
-    newProduction.id =  chance.guid();
+    const newProduction = {};
+    newProduction.id = chance.guid();
     newProduction.name = production.name + ` (c)`;
     newProduction.items = production.items;
     newProduction.entityType = entityTypes.PRODUCTION;
@@ -136,22 +162,31 @@ export default class ProductionStore {
     await db.productions.atomicUpsert(newProduction);
     this.productions.unshift(newProduction);
 
-    toast.success({message: `Production "${newProduction.name}" created`});
+    toast.success({ message: `Production "${newProduction.name}" created` });
 
     this.appStore.navigateToProduction(newProduction.id);
   };
 
   deleteProduction = async (productionId) => {
-    const production = await db.productions.findOne({id:productionId}).exec();
+    const production = await db.productions.findOne({ id: productionId }).exec();
     if (!production) throw new Error(`Delete: Cannot find production of Id ${productionId}`);
 
 
     await production.remove();
     _.remove(this.productions, { id: productionId });
 
-    toast.success({message: `Production "${production.name}" deleted`});
+    toast.success({ message: `Production "${production.name}" deleted` });
 
     this.appStore.navigateToProduction(null);
+  };
+
+  addToLiveItems = async (element) => {
+    const liveProduction = this.liveProduction;
+
+    const item = { id: chance.guid(), elementType: element.elementType, elementId: element.id };
+
+    liveProduction.items = [...liveProduction.items, item];
+    await liveProduction.save();
   };
 
 }

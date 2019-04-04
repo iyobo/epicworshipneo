@@ -6,17 +6,34 @@ import MediaPage from "../pages/elements/MediaPage";
 import BackgroundsPage from "../pages/elements/BackgroundsPage";
 import AnnouncementsPage from "../pages/elements/AnnouncementsPage";
 import PresentationsPage from "../pages/elements/PresentationsPage";
-import { T } from "../../i18n/i18n";
+import { dict, T } from "../../i18n/i18n";
 import { Redirect } from "react-router";
 import SongsPage from "../pages/elements/songs/SongsPage";
 import SidePanel from "../components/SidePanel";
+import type { TSideBarButton } from "../components/SidePanel";
 
 @inject("store")
 @observer
 export default class ElementsLayout extends Component {
+  productionItemButtons: array<TSideBarButton> = [
+    {
+      icon: "trash",
+      tooltip: dict.element_tooltip_delete_prodItem,
+      handler: this.onRemoveProductionItem,
+      showOnlyIfSelected: true
+    }
+  ];
+
+  onRemoveProductionItem = async (item) => {
+    const prodStore = this.props.store.productionStore;
+    const selectedProdId = this.getSelectedId();
+
+    await prodStore.deleteProductionItem(productionId, itemId);
+  };
+
   render() {
 
-    const liveProduction = this.props.store.productionStore.liveProduction;
+    const liveProductionItems = this.props.store.productionStore.liveProductionItems;
 
     return (
       <div className='uk-animation-slide-right-small'>
@@ -58,13 +75,13 @@ export default class ElementsLayout extends Component {
             <Redirect to='/elements/song'/>
 
           </Switch>
-          {liveProduction &&
+          {liveProductionItems &&
           <div>
             <h3>Production Set</h3>
             <SidePanel
-              items={liveProduction.items}
+              items={liveProductionItems}
               // selectedId={selectedElementId}
-              // buttons={this.buttons}
+              buttons={this.productionItemButtons}
               // onItemClick={(item) => this.onItemSelect(item)}
             />
           </div>

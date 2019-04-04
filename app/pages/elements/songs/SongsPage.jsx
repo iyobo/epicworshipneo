@@ -57,7 +57,9 @@ export default class SongsPage extends Component {
     const store = this.props.store.productionStore;
     const selectedElementId = this.getSelectedId();
 
-    await store.deleteElement(elementType, selectedElementId);
+    const elemStore = this.props.store.elementStore;
+    const element = await elemStore.findElement(selectedElementId);
+    await store.addToLiveItems(element);
   };
 
 
