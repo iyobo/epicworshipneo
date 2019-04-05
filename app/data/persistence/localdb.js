@@ -76,7 +76,7 @@ export const setConfig = async (name, value)=>{
  * @returns {Promise<void>}
  */
 export const findById = async (id: String) => {
-  return await db.get(id);
+  return await findOne({_id:id});
 };
 
 /**
@@ -88,7 +88,7 @@ export const findById = async (id: String) => {
 export const find = async (where: Object, sort: Array) => {
   const {docs} = await db.find({
     selector: where,
-    sort: sort
+    // sort: sort //TODO: figure this out
   });
   return docs;
 };
@@ -100,7 +100,7 @@ export const find = async (where: Object, sort: Array) => {
  * @returns {Promise<null>}
  */
 export const findOne = async (where: Object, sort: Array) => {
-  const list = findBy(where, sort);
+  const list = find(where, sort);
   return list.length > 0 ? list[0] : null;
 };
 
@@ -110,7 +110,9 @@ export const findOne = async (where: Object, sort: Array) => {
  * @returns {Promise<void>}
  */
 export const remove = async (entityId) => {
-  const doc = await db.get(entityId);
-  return await db.remove(doc);
+  const doc = await findById(entityId);
+  if(doc)
+    return await db.remove(doc);
+
 };
 

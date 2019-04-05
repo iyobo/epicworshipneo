@@ -77,7 +77,7 @@ export default class ProductionStore {
 
       if (element) {
         const item = {
-          id: chance.guid(),
+          _id: chance.guid(),
           name: element.name,
           element
         };
@@ -119,7 +119,7 @@ export default class ProductionStore {
   @action
   createProduction = async (name) => {
     const newProduction = {
-      id: chance.guid(),
+      _id: chance.guid(),
       name,
       timestamp: Date.now(),
       entityType: entityTypes.PRODUCTION,
@@ -168,9 +168,9 @@ export default class ProductionStore {
   };
 
   deleteProduction = async (productionId) => {
-    await remove({ id: productionId });
+    await remove(productionId);
 
-    _.remove(this.productions, { id: productionId });
+    _.remove(this.productions, { ._id productionId });
 
     toast.success({ message: `Production "${production.name}" deleted` });
 
@@ -180,7 +180,7 @@ export default class ProductionStore {
   addToLiveProduction = async (element) => {
     const liveProduction = this.liveProduction;
 
-    const item = { id: chance.guid(), elementType: element.elementType, elementId: element._id };
+    const item = { _id: chance.guid(), elementType: element.elementType, elementId: element._id };
 
     liveProduction.items.push(item);
     await upsert(liveProduction);
