@@ -1,7 +1,7 @@
 import { action, computed, observable } from "mobx";
 import { entityTypes } from "../../utils/data";
-import { db, setConfig } from "../persistence/Database";
 import { configs } from "../persistence/models/Setting";
+import { find, findById, setConfig, upsert } from "../persistence/localdb";
 
 const _ = require("lodash");
 
@@ -21,18 +21,18 @@ export default class ProductionStore {
 
   async _loadProductionsFromDB() {
 
-    const docs = await db.productions.find().sort("timestamp").exec();
+    const docs = await find({entityType: entityTypes.PRODUCTION, timestamp: {$exists:true}},[{timestamp:'desc'}]);
 
     // docs.sort(function(a, b) {
     //   return b.dateCreated - a.dateCreated;
     // });
     this.productions = docs;
 
-    const liveSetting = await db.settings.findOne({ id: configs.liveProductionId }).exec();
+    const liveSetting = await findById(configs.liveProductionId);
     if (liveSetting) this.setLiveProduction(liveSetting.value);
   }
 
-  //FIXME: fix this
+  //FIXME: Implement Full-text search. This is handled by List component for now
   async searchProductions(search) {
 
     // const {docs} = await db.db.find({
@@ -53,7 +53,7 @@ export default class ProductionStore {
     const map = {};
 
     this.productions.forEach((it) => {
-      map[it.id] = it;
+      map[it._id] = it;
     });
 
     return map;
@@ -127,7 +127,7 @@ export default class ProductionStore {
     };
 
     //add in db
-    await db.productions.atomicUpsert(newProduction);
+    await upsert(newProduction);
 
     //add in store
     this.productions.unshift(newProduction);
@@ -139,7 +139,7 @@ export default class ProductionStore {
 
   @action
   updateProduction = async (production) => {
-    await db.productions.atomicUpsert(production);
+    await upsert(production);
 
     toast.success({ message: `Production "${production.name}" updated` });
 
@@ -152,27 +152,24 @@ export default class ProductionStore {
     if (!production) throw new Error(`Clone: Cannot find production of Id ${productionId}`);
 
     const newProduction = {};
-    newProduction.id = chance.guid();
+    newProduction._id = chance.guid();
     newProduction.name = production.name + ` (c)`;
     newProduction.items = production.items;
     newProduction.entityType = entityTypes.PRODUCTION;
     newProduction.timestamp = Date.now();
     newProduction.createdTime = Date.now();
 
-    await db.productions.atomicUpsert(newProduction);
+    await upsert(newProduction);
     this.productions.unshift(newProduction);
 
     toast.success({ message: `Production "${newProduction.name}" created` });
 
-    this.appStore.navigateToProduction(newProduction.id);
+    this.appStore.navigateToProduction(newProduction._id);
   };
 
   deleteProduction = async (productionId) => {
-    const production = await db.productions.findOne({ id: productionId }).exec();
-    if (!production) throw new Error(`Delete: Cannot find production of Id ${productionId}`);
+    await remove({ id: productionId });
 
-
-    await production.remove();
     _.remove(this.productions, { id: productionId });
 
     toast.success({ message: `Production "${production.name}" deleted` });
@@ -180,13 +177,14 @@ export default class ProductionStore {
     this.appStore.navigateToProduction(null);
   };
 
-  addToLiveItems = async (element) => {
+  addToLiveProduction = async (element) => {
     const liveProduction = this.liveProduction;
 
-    const item = { id: chance.guid(), elementType: element.elementType, elementId: element.id };
+    const item = { id: chance.guid(), elementType: element.elementType, elementId: element._id };
 
-    liveProduction.items = [...liveProduction.items, item];
-    await liveProduction.save();
+    liveProduction.items.push(item);
+    await upsert(liveProduction);
+
   };
 
 }

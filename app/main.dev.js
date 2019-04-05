@@ -19,7 +19,6 @@ import { autoUpdater } from "electron-updater";
 import log from "electron-log";
 import MenuBuilder from "./menu";
 
-import database, { initializeData } from "./data/persistence/Database";
 import { initializeScreens } from "./managers/screenManager";
 
 

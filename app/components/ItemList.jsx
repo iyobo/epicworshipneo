@@ -11,7 +11,7 @@ type Props = {
 export default class ItemList extends Component<Props> {
 
   static defaultProps = {
-    idField: "id",
+    idField: "_id",
     onItemClick: () => {
     }
   };

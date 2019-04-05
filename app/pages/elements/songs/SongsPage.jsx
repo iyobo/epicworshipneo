@@ -23,7 +23,7 @@ export default class SongsPage extends Component {
   };
 
   onItemSelect = (item) => {
-    this.props.store.navigateToElement(elementType, item.id);
+    this.props.store.navigateToElement(elementType, item._id);
   };
 
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
@@ -59,7 +59,7 @@ export default class SongsPage extends Component {
 
     const elemStore = this.props.store.elementStore;
     const element = await elemStore.findElement(selectedElementId);
-    await store.addToLiveItems(element);
+    await store.addToLiveProduction(element);
   };
 
 

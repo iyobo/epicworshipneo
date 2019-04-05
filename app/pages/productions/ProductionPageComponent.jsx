@@ -40,7 +40,7 @@ export default class ProductionPageComponent extends Component<Props> {
     }
     // debugger;
     this.setState({ name: "" });
-    this.props.store.navigateToProduction(production.id);
+    this.props.store.navigateToProduction(production._id);
 
   };
 

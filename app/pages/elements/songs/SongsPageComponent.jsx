@@ -73,7 +73,7 @@ export default class SongsPageComponent extends Component<Props> {
     }
     // debugger;
     // this.setState({ name: "" });
-    this.props.store.navigateToElement(elementType, element.id);
+    this.props.store.navigateToElement(elementType, element._id);
 
   };
 
