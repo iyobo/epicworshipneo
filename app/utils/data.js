@@ -13,3 +13,7 @@ export const entityTypes = {
   ELEMENT: "element",
   SETTING: "setting"
 };
+
+export const configTypes = {
+  liveProductionId: "liveProductionId"
+};

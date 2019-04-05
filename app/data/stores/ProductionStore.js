@@ -1,7 +1,6 @@
 import { action, computed, observable } from "mobx";
-import { entityTypes } from "../../utils/data";
-import { configs } from "../persistence/models/Setting";
-import { find, findById, setConfig, upsert } from "../persistence/localdb";
+import { configTypes, entityTypes } from "../../utils/data";
+import { find, getConfig, setConfig, upsert } from "../persistence/localdb";
 
 const _ = require("lodash");
 
@@ -21,14 +20,17 @@ export default class ProductionStore {
 
   async _loadProductionsFromDB() {
 
-    const docs = await find({entityType: entityTypes.PRODUCTION, timestamp: {$exists:true}},[{timestamp:'desc'}]);
+    const docs = await find({
+      entityType: entityTypes.PRODUCTION,
+      timestamp: { $exists: true }
+    }, [{ timestamp: "desc" }]);
 
     // docs.sort(function(a, b) {
     //   return b.dateCreated - a.dateCreated;
     // });
     this.productions = docs;
 
-    const liveSetting = await findById(configs.liveProductionId);
+    const liveSetting = await getConfig(configTypes.liveProductionId);
     if (liveSetting) this.setLiveProduction(liveSetting.value);
   }
 
@@ -95,7 +97,7 @@ export default class ProductionStore {
     const production = this.productionIndex[productionId];
     if (!production) throw new Error(`Live: Cannot find production of Id ${productionId}`);
 
-    await setConfig(configs.liveProductionId, productionId);
+    await setConfig(configTypes.liveProductionId, productionId);
     this.setLiveProduction(productionId);
   };
 
@@ -170,7 +172,7 @@ export default class ProductionStore {
   deleteProduction = async (productionId) => {
     await remove(productionId);
 
-    _.remove(this.productions, { ._id productionId });
+    _.remove(this.productions, { _id: productionId });
 
     toast.success({ message: `Production "${production.name}" deleted` });
 

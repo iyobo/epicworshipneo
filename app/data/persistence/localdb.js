@@ -57,7 +57,7 @@ export const epicDB = { db, api };
 export const upsert = async (entity: Object) => {
   let existing = await db.get(entity._id);//Do we need to know this???
 
-  if(existing && existing._rev !== entity._rev){
+  if (existing && existing._rev !== entity._rev) {
     entity._rev = existing._rev;
   }
 
@@ -66,9 +66,13 @@ export const upsert = async (entity: Object) => {
   return doc;
 };
 
-export const setConfig = async (name, value)=>{
-  return await upsert({_id:name, value});
-}
+export const setConfig = async (name, value) => {
+  return await upsert({ _id: name, value });
+};
+
+export const getConfig = async (name) => {
+  return await findById(name);
+};
 
 /**
  *
@@ -76,7 +80,7 @@ export const setConfig = async (name, value)=>{
  * @returns {Promise<void>}
  */
 export const findById = async (id: String) => {
-  return await findOne({_id:id});
+  return await findOne({ _id: id });
 };
 
 /**
@@ -86,8 +90,8 @@ export const findById = async (id: String) => {
  * @returns {Promise<*>}
  */
 export const find = async (where: Object, sort: Array) => {
-  const {docs} = await db.find({
-    selector: where,
+  const { docs } = await db.find({
+    selector: where
     // sort: sort //TODO: figure this out
   });
   return docs;
@@ -111,7 +115,7 @@ export const findOne = async (where: Object, sort: Array) => {
  */
 export const remove = async (entityId) => {
   const doc = await findById(entityId);
-  if(doc)
+  if (doc)
     return await db.remove(doc);
 
 };

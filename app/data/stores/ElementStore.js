@@ -32,7 +32,7 @@ export default class ElementStore {
 
   async _loadElementsFromDB(elementType) {
 
-    const docs = await find({elementType},[{timestamp:'desc'}]);
+    const docs = await find({ elementType }, [{ timestamp: "desc" }]);
     // debugger;
     // docs.sort(function(a, b) {
     //   return b.dateCreated - a.dateCreated;
@@ -117,7 +117,7 @@ export default class ElementStore {
       timestamp: Date.now(),
       createdTime: Date.now(),
       elementType,
-      entityType: entityTypes.ELEMENT,
+      entityType: entityTypes.ELEMENT
     };
 
     //add in db
@@ -126,7 +126,7 @@ export default class ElementStore {
     //add in store
     this[elementType + "s"].unshift(newElement);
 
-    toast.success({message: `${elementType} "${name}" created`});
+    toast.success({ message: `${elementType} "${name}" created` });
     return newElement;
   };
 
@@ -134,7 +134,7 @@ export default class ElementStore {
   updateElement = async (element) => {
     const res = await upsert(element);
 
-    toast.success({message: `${element.elementType} "${element.name}" updated`});
+    toast.success({ message: `${element.elementType} "${element.name}" updated` });
     return element;
   };
 
@@ -151,18 +151,18 @@ export default class ElementStore {
     const originalElement = this[elementType + "Map"][id];
     if (!originalElement) throw new Error(`Clone: Cannot find ${elementType} of Id ${id}`);
 
-    const newElement={elementType};
-    newElement._id =  chance.guid();
+    const newElement = { elementType };
+    newElement._id = chance.guid();
     newElement.name = originalElement.name + ` (c)`;
     newElement.text = originalElement.text;
     newElement.details = originalElement.details;
-    newElement.entityType= entityTypes.ELEMENT;
+    newElement.entityType = entityTypes.ELEMENT;
     newElement.timestamp = Date.now();
 
     await upsert(newElement);
     this[elementType + "s"].unshift(newElement);
 
-    toast.success({message: `${elementType} "${newElement.name}" created`});
+    toast.success({ message: `${elementType} "${newElement.name}" created` });
     this.appStore.navigateToElement(elementType, newElement._id);
   };
 
@@ -175,7 +175,7 @@ export default class ElementStore {
     await remove(element._id);
     _.remove(this[elementType + "s"], { _id: id });
 
-    toast.success({message: `${elementType} "${element.name}" deleted`});
+    toast.success({ message: `${elementType} "${element.name}" deleted` });
 
     this.appStore.navigateToElement(elementType, null);
   };
