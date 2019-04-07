@@ -1,5 +1,4 @@
 import PouchDB from "pouchdb";
-import PouchHoodieApi from "pouchdb-hoodie-api";
 import PouchGQL from "pouchdb-gql";
 import PouchMigrate from "pouchdb-migrate";
 import PouchFind from "pouchdb-find";
@@ -17,14 +16,12 @@ if (!fs.existsSync(databaseFolderPath)) {
 
 // const dbPath = path.join('database', 'epicworshipdb');
 
-PouchDB.plugin(PouchHoodieApi);
 PouchDB.plugin(PouchGQL);
 PouchDB.plugin(PouchMigrate);
 PouchDB.plugin(PouchFind);
 PouchDB.plugin(upsertBulk);
 
 export const db = new PouchDB(path.join(__dirname, "..", "database", "epicworshipdb"), { auto_compaction: true });
-export const api = db.hoodieApi();
 
 export const initializeData = async () => {
   console.log("Initializing DB...");
@@ -51,18 +48,20 @@ export const initializeData = async () => {
   // });
 };
 
-
-export const epicDB = { db, api };
+const DEBUG = true;
 
 export const upsert = async (entity: Object) => {
-  let existing = await db.get(entity._id);//Do we need to know this???
+  let existing = await findOne({ _id: entity._id });//Do we need to know this???
 
-  if (existing && existing._rev !== entity._rev) {
+  if (existing) {
     entity._rev = existing._rev;
+    if (DEBUG) console.log("PouchDB updating _rev",existing._rev, entity);
+  }
+  else{
+    if (DEBUG) console.log("PouchDB create", entity);
   }
 
-  let doc = await db.put(entity);
-
+  let doc = await db.put(entity, { force: true });
   return doc;
 };
 
@@ -80,7 +79,8 @@ export const getConfig = async (name) => {
  * @returns {Promise<void>}
  */
 export const findById = async (id: String) => {
-  return await findOne({ _id: id });
+  const res =  await findOne({ _id: id });
+  return res;
 };
 
 /**
@@ -94,6 +94,7 @@ export const find = async (where: Object, sort: Array) => {
     selector: where
     // sort: sort //TODO: figure this out
   });
+  if (DEBUG) console.log("PouchDB find", where, docs);
   return docs;
 };
 
@@ -104,7 +105,7 @@ export const find = async (where: Object, sort: Array) => {
  * @returns {Promise<null>}
  */
 export const findOne = async (where: Object, sort: Array) => {
-  const list = find(where, sort);
+  const list = await find(where, sort);
   return list.length > 0 ? list[0] : null;
 };
 
@@ -115,6 +116,7 @@ export const findOne = async (where: Object, sort: Array) => {
  */
 export const remove = async (entityId) => {
   const doc = await findById(entityId);
+  if (DEBUG) console.log("PouchDB remove", doc);
   if (doc)
     return await db.remove(doc);
 

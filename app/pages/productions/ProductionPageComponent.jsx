@@ -30,7 +30,7 @@ export default class ProductionPageComponent extends Component<Props> {
 
     const prodStore = this.props.store.productionStore;
     const prodId = this.props.selectedId;
-    let production = await prodStore.findProductionById(prodId);
+    let production = prodStore.findProductionById(prodId);
 
     if (!production) {
       production = await prodStore.createProduction(this.state.name);

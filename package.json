@@ -274,7 +274,6 @@
     "pouchdb-adapter-node-websql": "^7.0.0",
     "pouchdb-find": "^7.0.0",
     "pouchdb-gql": "^1.0.0",
-    "pouchdb-hoodie-api": "^2.0.0",
     "pouchdb-migrate": "^1.1.1",
     "pouchdb-upsert-bulk": "^1.0.2",
     "react": "^16.8.2",

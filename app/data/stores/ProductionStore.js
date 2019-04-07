@@ -114,7 +114,7 @@ export default class ProductionStore {
   };
 
 
-  findProductionById(id) {
+  findProductionById= (id) =>{
     return this.productionIndex[id];
   }
 
