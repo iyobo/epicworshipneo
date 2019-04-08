@@ -1,6 +1,4 @@
 module.exports = {
-
-  //Menu
   menu_productions: "Productions",
   menu_elements: "Elements",
   menu_live: "Live",
@@ -18,17 +16,13 @@ module.exports = {
   menu_language: "Language",
   menu_nowLive: "Now Live",
 
-  //News
   news_goTo: "Go to",
   news_toGetStarted: "to get started",
   news_comingSoon: "News and Tutorials coming soon",
 
-  //General
   newProduction: "New Production",
   clearSearch: "Clear Search",
   search: "Search",
-
-//PRODUCTIONS...
 
   production_tooltip_create: "Create a new Production",
   production_tooltip_delete: "Delete this Production",
@@ -42,9 +36,6 @@ module.exports = {
   production_errorTitle_productionName: "Invalid production name",
   production_errorMessage_productionName: "Every great production needs a good name",
 
-//ELEMENTS...
-
-//Songs
   song_tooltip_create: "Create a new Song",
   song_tooltip_delete: "Delete this Song",
   song_tooltip_clone: "Clone this Song",
@@ -56,15 +47,11 @@ module.exports = {
   song_errorTitle_productionName: "Invalid Song name",
   song_errorMessage_productionName: "Every great Song needs a good name",
 
-
-  // Field labels
   field_name: "Name",
   field_body: "Body",
   field_content: "Content",
   field_text: "text",
 
-
-  // misc
   new: "new",
   song: "song",
   video: "video",
@@ -76,7 +63,6 @@ module.exports = {
   motionBackground: "Motion Background",
 
   toProduction: 'Add to Production',
-
   element_tooltip_delete_prodItem: 'Delete selected production item'
 
 };
