@@ -74,7 +74,7 @@ app.on("ready", async () => {
     title: "EpicWorship: When you do, It must be Epic",
     show: false,
     width: 1200,
-    height: 728,
+    height: 1200,
     x: -1000,
     y: -400,
     webPreferences: {

@@ -1,13 +1,9 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { dict, translate } from "../../../i18n/i18n";
-import { Route, Switch } from "react-router";
+import { dict } from "../../../i18n/i18n";
 import ProductionPageComponent from "./ProductionPageComponent";
-import { Link, NavLink } from "react-router-dom";
-import ItemList from "../../components/ItemList";
-import SidePanel from "../../components/SidePanel";
-import { elementTypes } from "../../utils/data";
 import type { TSideBarButton } from "../../components/SidePanel";
+import SidePanel from "../../components/SidePanel";
 
 @inject("store")
 @observer

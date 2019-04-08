@@ -10,6 +10,7 @@ export default class ProductionStore {
 
   @observable productions = [];
   @observable liveProductionId;
+  @observable liveProductionItems = null;
   lastSelectedProductionId;
 
   constructor(appStore) {
@@ -32,6 +33,8 @@ export default class ProductionStore {
 
     const liveSetting = await getConfig(configTypes.liveProductionId);
     if (liveSetting) this.setLiveProduction(liveSetting.value);
+
+    // this.calculateProductionItems();
   }
 
   //FIXME: Implement Full-text search. This is handled by List component for now
@@ -67,31 +70,6 @@ export default class ProductionStore {
     this.liveProductionId = productionId;
   };
 
-  @computed get liveProductionItems() {
-    const live = this.liveProduction;
-    if (!live) return null;
-
-    const items = [];
-    const elementStore = this.appStore.elementStore;
-
-    live.items.forEach((it) => {
-      const element = elementStore.getElement(it.elementType, it.elementId);
-
-      if (element) {
-        const item = {
-          _id: chance.guid(),
-          name: element.name,
-          element
-        };
-
-        items.push(item);
-      }
-
-    });
-
-
-    return items;
-  }
 
   makeProductionLive = async (productionId) => {
     const production = this.productionIndex[productionId];
@@ -114,9 +92,9 @@ export default class ProductionStore {
   };
 
 
-  findProductionById= (id) =>{
+  findProductionById = (id) => {
     return this.productionIndex[id];
-  }
+  };
 
   @action
   createProduction = async (name) => {
@@ -179,8 +157,10 @@ export default class ProductionStore {
     this.appStore.navigateToProduction(null);
   };
 
+  @action
   addToLiveProduction = async (element) => {
     const liveProduction = this.liveProduction;
+    // const liveProduction = this.productionIndex[this.liveProductionId];
 
     const item = { _id: chance.guid(), elementType: element.elementType, elementId: element._id };
 
@@ -189,4 +169,43 @@ export default class ProductionStore {
 
   };
 
+  @action
+  removeFromLiveProduction = async (element) => {
+    const liveProduction = this.liveProduction;
+
+    _.remove(liveProduction.items, {_id: element._id});
+
+    await upsert(liveProduction);
+
+  };
+
+
+  @action
+  calculateProductionItems() {
+    const live = this.liveProduction;
+    const elementStore = this.appStore.elementStore;
+    if (!live) this.liveProductionItems = null;
+    let items = [];
+
+
+    live.items.forEach((it) => {
+      const element = elementStore.getElement(it.elementType, it.elementId);
+
+      if (element) {
+        const item = {
+          _id: chance.guid(),
+          name: element.name,
+          element
+        };
+
+        items.push(item);
+      }
+
+    });
+
+
+    this.liveProductionItems = items;
+  }
+
 }
+

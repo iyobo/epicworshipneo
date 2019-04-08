@@ -40,7 +40,7 @@ export default class SongsPageComponent extends Component<Props> {
     // debugger;
 
     if (element) {
-      console.log(element);
+      // console.log(element);
       this.setState({ name: element.name, text: element.text });
     } else if (props.selectedId === "new") {
       this.setState({ name: "", text: "" });

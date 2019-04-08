@@ -22,9 +22,14 @@ export default class SongsPage extends Component {
     this.props.store.navigateToElement(elementType, "new");
   };
 
-  onItemSelect = (item) => {
+  onItemClick = (item) => {
     this.props.store.navigateToElement(elementType, item._id);
   };
+  onItemDoubleClick = (item) => {
+    this.props.store.navigateToElement(elementType, item._id);
+    this.props.store.productionStore.addToLiveProduction(item);
+  };
+
 
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
 
@@ -84,7 +89,9 @@ export default class SongsPage extends Component {
             // elementType={elementTypes.PRODUCTION}
                      enableSearch={true}
                      buttons={this.buttons}
-                     onItemClick={(item) => this.onItemSelect(item)}/>
+                     onItemClick={this.onItemClick}
+                     onItemDoubleClick={this.onItemDoubleClick}
+          />
 
           <div className='uk-animation-slide-right-small '>
             <SongsPageComponent selectedId={selectedElementId}/>

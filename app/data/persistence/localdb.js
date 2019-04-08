@@ -4,6 +4,8 @@ import PouchMigrate from "pouchdb-migrate";
 import PouchFind from "pouchdb-find";
 import upsertBulk from "pouchdb-upsert-bulk";
 
+
+const DEBUG = true;
 const fs = require("fs");
 const path = require("path");
 
@@ -13,6 +15,7 @@ if (!fs.existsSync(databaseFolderPath)) {
   console.log(`Creating ${databaseFolderPath}...`);
   fs.mkdirSync(databaseFolderPath);
 }
+
 
 // const dbPath = path.join('database', 'epicworshipdb');
 
@@ -47,8 +50,6 @@ export const initializeData = async () => {
   //   index: { fields: ["entityType", "elementType", "timestamp", "name"] }
   // });
 };
-
-const DEBUG = true;
 
 export const upsert = async (entity: Object) => {
   let existing = await findOne({ _id: entity._id });//Do we need to know this???

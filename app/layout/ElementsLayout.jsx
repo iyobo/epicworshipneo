@@ -24,16 +24,22 @@ export default class ElementsLayout extends Component {
     }
   ];
 
+  constructor(props){
+    super(props)
+  }
+
   onRemoveProductionItem = async (item) => {
     const prodStore = this.props.store.productionStore;
     const selectedProdId = this.getSelectedId();
 
-    await prodStore.deleteProductionItem(productionId, itemId);
+    await prodStore.removeFromLiveProduction(item);
   };
 
   render() {
 
-    const liveProductionItems = this.props.store.productionStore.liveProductionItems;
+    const liveProduction = this.props.store.productionStore.liveProduction;
+
+    // console.log({liveProduction})
 
     return (
       <div className='uk-animation-slide-right-small'>
@@ -75,14 +81,17 @@ export default class ElementsLayout extends Component {
             <Redirect to='/elements/song'/>
 
           </Switch>
-          {liveProductionItems &&
+          {liveProduction &&
           <div>
             <h3>Production Set</h3>
             <SidePanel
-              items={liveProductionItems}
+              items={liveProduction.items}
+              expand
               // selectedId={selectedElementId}
               buttons={this.productionItemButtons}
+              expandElements={true}
               // onItemClick={(item) => this.onItemSelect(item)}
+
             />
           </div>
           }

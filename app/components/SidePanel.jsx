@@ -1,6 +1,5 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import ItemList from "./ItemList";
 import { dict } from "../../i18n/i18n";
 import _ from "lodash";
 
@@ -18,11 +17,16 @@ type Props = {
   idField?: string,
   elementType?: string,
   onItemClick?: func,
+  onItemDoubleClick?: func,
   onSearch?: func,
   onClearSearch?: func,
   buttons: array<TSideBarButton>,
   enableSearch?: boolean,
-  startingHeight: number
+  startingHeight?: number,
+  percentageHeight?: number,
+  nameField?: string,
+  textField?: string,
+  expandElements?: boolean //If this is true, expect each item to have elementId and elementType. Use element for name and text
 }
 
 @inject("store")
@@ -31,6 +35,10 @@ export default class SidePanel extends Component<Props> {
 
   static defaultProps = {
     startingHeight: 320,
+    percentageHeight: 100,
+    idField: "_id",
+    nameField: "name",
+    textField: "text",
     buttons:[]
   };
 
@@ -39,7 +47,8 @@ export default class SidePanel extends Component<Props> {
 
     this.state = {
       items: props.items,
-      searchVal: ""
+      searchVal: "",
+      selectedId: null
     };
   }
 
@@ -47,7 +56,7 @@ export default class SidePanel extends Component<Props> {
     this.setState({ items: !this.state.searchVal ? this.props.items : this.state.items });
   }
 
-  //
+
 
   onSearch = async (evt) => {
     evt.preventDefault();
@@ -60,23 +69,24 @@ export default class SidePanel extends Component<Props> {
     if (searchVal) {
       if (this.props.onSearch)
         this.props.onSearch(searchVal);
-      else if (this.props.elementType) {
-        //If no parental search function, we can figure out a default search behavior depending on elementType
-
-        //TODO: implement default entity type search behavior
-        const result = await this.props.store.productionStore.searchProductions(searchVal);
-        this.setState({ items: result });
-      } else {
-        // okay we don't know how to search on the database, so let's just do a Javascript search.
-        // With a large list of items, this will block the UI per keystroke. Try to not rely on this so much!
+      // else if (this.props.elementType) {
+      //   //If no parental search function, we can figure out a default search behavior depending on elementType
+      //
+      //   //FIXME: implement default entity type search behavior
+      //   const result = await this.props.store.productionStore.searchProductions(searchVal);
+      //   this.setState({ items: result });
+      // }
+      else {
+        // TODO: okay we don't know how to search on the pouchdb database right now. Bad Wifi. Can't check. So let's just do a Javascript search.
+        // With a large list of items, this will block the UI per keystroke. Try to not rely on this so much.
         const regex = new RegExp(".*" + searchVal + ".*", "i");
 
         const result = _.filter(this.props.items, (it) => {
-          let include = regex.test(it.name);
+          let include = regex.test(it[this.props.nameField]);
 
           //if not elected, if this item has a text, search inside it too
-          if (!include && it.text) {
-            include = regex.test(it.text); //text body?
+          if (!include && it[this.props.textField]) {
+            include = regex.test(it[this.props.textField]); //text body?
           }
 
           return include;
@@ -96,13 +106,15 @@ export default class SidePanel extends Component<Props> {
 
   render() {
 
-    let items = this.state.items;
+    const idField = this.props.idField;
+    const selectedId = this.state.selectedId || this.props.selectedId;
+    const elementStore = this.props.store.elementStore;
 
     const buttons = [];
 
     this.props.buttons.forEach((it) => {
       let renderMe = false;
-      if (it.showOnlyIfSelected && this.props.selectedId) {
+      if (it.showOnlyIfSelected && selectedId) {
         renderMe = true;
       } else if (!it.showOnlyIfSelected) {
         renderMe = true;
@@ -151,11 +163,33 @@ export default class SidePanel extends Component<Props> {
         }
 
         {/*itemlist*/}
-        <div className='itemListWrapper' style={{height: `calc(100vh - ${this.props.startingHeight}px)`}}>
-          <ItemList items={items}
-                    selectedId={this.props.selectedId}
-                    activeId={this.props.activeId}
-                    onItemClick={this.props.onItemClick}/>
+        <div className='itemListWrapper' style={{height: `calc(${this.props.percentageHeight}vh - ${this.props.startingHeight}px)`}}>
+          <ul className="uk-list itemList">
+
+            {this.props.items.map((it) => {
+              let isSelected = (it[idField] === selectedId) ? "selected" : "";
+              let isActive = (it[idField] === this.props.activeId) ? "active" : "";
+
+              let name = it[this.props.nameField];
+
+              if(this.props.expandElements){
+                const element = elementStore.getElement(it.elementType, it.elementId);
+                name = element? element.name: '*DELETED*'
+              }
+
+
+              return <li key={it[idField]}
+                         className={`${isActive} ${isSelected}`}
+                         onClick={() => {
+                           this.setState({ selectedId: it[idField] });
+                           if (this.props.onItemClick) this.props.onItemClick(it);
+                         }}
+                         onDoubleClick={() => {
+                           this.setState({ selectedId: it[this.props.idField] });
+                           if (this.props.onItemDoubleClick) this.props.onItemDoubleClick(it);
+                         }}>{name}</li>;
+            })}
+          </ul>
         </div>
       </div>
     );
