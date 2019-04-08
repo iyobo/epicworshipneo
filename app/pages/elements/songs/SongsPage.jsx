@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { dict } from "../../../../i18n/i18n";
 import SongsPageComponent from "./SongsPageComponent";
-import type { TSideBarButton } from "../../../components/SidePanel";
-import SidePanel from "../../../components/SidePanel";
+import type { TSideBarButton } from "../../../components/ItemList";
+import ItemList from "../../../components/ItemList";
 import { elementTypes } from "../../../utils/data";
 
 
@@ -84,13 +84,14 @@ export default class SongsPage extends Component {
         <h2>{dict.menu_songs}</h2>
 
         <div className='flexContainer'>
-          <SidePanel items={elementStore[elementType + "s"]}
-                     selectedId={selectedElementId}
+          <ItemList items={elementStore[elementType + "s"]}
+                    selectedId={selectedElementId}
             // elementType={elementTypes.PRODUCTION}
-                     enableSearch={true}
-                     buttons={this.buttons}
-                     onItemClick={this.onItemClick}
-                     onItemDoubleClick={this.onItemDoubleClick}
+                    enableSearch={true}
+                    buttons={this.buttons}
+                    stretch
+                    onItemClick={this.onItemClick}
+                    onItemDoubleClick={this.onItemDoubleClick}
           />
 
           <div className='uk-animation-slide-right-small '>

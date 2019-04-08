@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { dict } from "../../../i18n/i18n";
 import { Link } from "react-router-dom";
+import ItemList from "../../components/ItemList";
 
 
 type Props = {
@@ -77,12 +78,15 @@ export default class ProductionPageComponent extends Component<Props> {
             </div>
 
             {production && <div>
-              <h4>{dict.field_elements}</h4>
-              {production.items.length > 0 ? <ul className="uk-list uk-list-striped itemList">
-                {production.items.map(it => {
-                  return <li>{it}</li>;
-                })}
-              </ul>
+              <b>{dict.menu_elements}</b>
+              {production.items.length > 0 ? <ItemList
+                  items={production.items}
+                  // selectedId={selectedElementId}
+                  buttons={this.productionItemButtons}
+                  expandElements={true}
+                  // onItemClick={(item) => this.onItemSelect(item)}
+
+                />
               :
                 <BlankLook />
               }

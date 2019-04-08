@@ -26,12 +26,15 @@ type Props = {
   percentageHeight?: number,
   nameField?: string,
   textField?: string,
+  hideDeleted?: boolean,
+  stretch?: boolean, //if true, use startingHeight and percentageHeight
   expandElements?: boolean //If this is true, expect each item to have elementId and elementType. Use element for name and text
+
 }
 
 @inject("store")
 @observer
-export default class SidePanel extends Component<Props> {
+export default class ItemList extends Component<Props> {
 
   static defaultProps = {
     startingHeight: 320,
@@ -39,7 +42,8 @@ export default class SidePanel extends Component<Props> {
     idField: "_id",
     nameField: "name",
     textField: "text",
-    buttons:[]
+    hideDeleted: true,
+    buttons: []
   };
 
   constructor(props) {
@@ -55,7 +59,6 @@ export default class SidePanel extends Component<Props> {
   componentWillReceiveProps(nextProps: Readonly<P>, nextContext: any): void {
     this.setState({ items: !this.state.searchVal ? this.props.items : this.state.items });
   }
-
 
 
   onSearch = async (evt) => {
@@ -110,6 +113,11 @@ export default class SidePanel extends Component<Props> {
     const selectedId = this.state.selectedId || this.props.selectedId;
     const elementStore = this.props.store.elementStore;
 
+    let wrapperStyle = this.props.stretch ?
+      { height: `calc(${this.props.percentageHeight}vh - ${this.props.startingHeight}px)` }
+      : {};
+
+
     const buttons = [];
 
     this.props.buttons.forEach((it) => {
@@ -122,11 +130,41 @@ export default class SidePanel extends Component<Props> {
 
       if (renderMe) {
         buttons.push(<li key={it.icon}>
-          <button onClick={it.handler} data-uk-icon={`icon: ${it.icon}`}
+          <button onClick={(evt)=>it.handler(selectedId,evt)} data-uk-icon={`icon: ${it.icon}`}
                   data-uk-tooltip={it.tooltip}/>
         </li>);
       }
     });
+
+
+    const renderedItems=[];
+    for(let it of this.props.items) {
+      let isSelected = (it[idField] === selectedId) ? "selected" : "";
+      let isActive = (it[idField] === this.props.activeId) ? "active" : "";
+
+      let name = it[this.props.nameField];
+
+      if (this.props.expandElements) {
+        const element = elementStore.getElement(it.elementType, it.elementId);
+
+        if(!element && this.props.hideDeleted) continue;
+
+        name = element ? element.name : "*DELETED*";
+
+      }
+
+
+      renderedItems.push(<li key={it[idField]}
+                 className={`${isActive} ${isSelected}`}
+                 onClick={() => {
+                   this.setState({ selectedId: it[idField] });
+                   if (this.props.onItemClick) this.props.onItemClick(it);
+                 }}
+                 onDoubleClick={() => {
+                   this.setState({ selectedId: it[idField] });
+                   if (this.props.onItemDoubleClick) this.props.onItemDoubleClick(it);
+                 }}>{name}</li>);
+    }
 
     return (
       <div className='sidePanel'>
@@ -138,57 +176,35 @@ export default class SidePanel extends Component<Props> {
 
         {/*Searchbar*/}
         {this.props.enableSearch &&
-          <div className='searchBox'>
-            <div className="uk-search uk-search-navbar">
-              <div style={{
-                width: "80%",
-                display: "inline-block",
-                border: "1px solid bisque",
-                marginRight: 5,
-                borderRadius: 8
-              }}>
-                <span data-uk-search-icon/>
-                <input name='text'
-                       value={this.state.searchVal}
-                       onChange={(evt) => this.onSearch(evt)}
-                       className="uk-search-input" type="search"
-                       placeholder={dict.search + "..."}/>
-              </div>
-              <a href="#" uk-icon="ban"
-                 style={{color:'red'}}
-                 onClick={this.clearSearch}
-                 data-uk-tooltip={dict.clearSearch}/>
+        <div className='searchBox'>
+          <div className="uk-search uk-search-navbar">
+            <div style={{
+              width: "80%",
+              display: "inline-block",
+              border: "1px solid bisque",
+              marginRight: 5,
+              borderRadius: 8
+            }}>
+              <span data-uk-search-icon/>
+              <input name='text'
+                     value={this.state.searchVal}
+                     onChange={(evt) => this.onSearch(evt)}
+                     className="uk-search-input" type="search"
+                     placeholder={dict.search + "..."}/>
             </div>
+            <a href="#" uk-icon="ban"
+               style={{ color: "red" }}
+               onClick={this.clearSearch}
+               data-uk-tooltip={dict.clearSearch}/>
           </div>
+        </div>
         }
 
         {/*itemlist*/}
-        <div className='itemListWrapper' style={{height: `calc(${this.props.percentageHeight}vh - ${this.props.startingHeight}px)`}}>
+        <div className='itemListWrapper' style={wrapperStyle}>
           <ul className="uk-list itemList">
 
-            {this.props.items.map((it) => {
-              let isSelected = (it[idField] === selectedId) ? "selected" : "";
-              let isActive = (it[idField] === this.props.activeId) ? "active" : "";
-
-              let name = it[this.props.nameField];
-
-              if(this.props.expandElements){
-                const element = elementStore.getElement(it.elementType, it.elementId);
-                name = element? element.name: '*DELETED*'
-              }
-
-
-              return <li key={it[idField]}
-                         className={`${isActive} ${isSelected}`}
-                         onClick={() => {
-                           this.setState({ selectedId: it[idField] });
-                           if (this.props.onItemClick) this.props.onItemClick(it);
-                         }}
-                         onDoubleClick={() => {
-                           this.setState({ selectedId: it[this.props.idField] });
-                           if (this.props.onItemDoubleClick) this.props.onItemDoubleClick(it);
-                         }}>{name}</li>;
-            })}
+            {renderedItems}
           </ul>
         </div>
       </div>

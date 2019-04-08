@@ -9,12 +9,23 @@ import PresentationsPage from "../pages/elements/PresentationsPage";
 import { dict, T } from "../../i18n/i18n";
 import { Redirect } from "react-router";
 import SongsPage from "../pages/elements/songs/SongsPage";
-import SidePanel from "../components/SidePanel";
-import type { TSideBarButton } from "../components/SidePanel";
+import ItemList from "../components/ItemList";
+import type { TSideBarButton } from "../components/ItemList";
 
 @inject("store")
 @observer
 export default class ElementsLayout extends Component {
+
+  constructor(props){
+    super(props)
+  }
+
+  onRemoveProductionItem = async (itemId) => {
+
+    const prodStore = this.props.store.productionStore;
+    await prodStore.removeFromLiveProduction(itemId);
+  };
+
   productionItemButtons: array<TSideBarButton> = [
     {
       icon: "trash",
@@ -23,17 +34,6 @@ export default class ElementsLayout extends Component {
       showOnlyIfSelected: true
     }
   ];
-
-  constructor(props){
-    super(props)
-  }
-
-  onRemoveProductionItem = async (item) => {
-    const prodStore = this.props.store.productionStore;
-    const selectedProdId = this.getSelectedId();
-
-    await prodStore.removeFromLiveProduction(item);
-  };
 
   render() {
 
@@ -84,14 +84,13 @@ export default class ElementsLayout extends Component {
           {liveProduction &&
           <div>
             <h3>Production Set</h3>
-            <SidePanel
+            <ItemList
               items={liveProduction.items}
-              expand
               // selectedId={selectedElementId}
               buttons={this.productionItemButtons}
               expandElements={true}
               // onItemClick={(item) => this.onItemSelect(item)}
-
+              stretch
             />
           </div>
           }

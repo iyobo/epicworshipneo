@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { dict } from "../../../i18n/i18n";
 import ProductionPageComponent from "./ProductionPageComponent";
-import type { TSideBarButton } from "../../components/SidePanel";
-import SidePanel from "../../components/SidePanel";
+import type { TSideBarButton } from "../../components/ItemList";
+import ItemList from "../../components/ItemList";
 
 @inject("store")
 @observer
@@ -74,14 +74,15 @@ export default class ProductionPage extends Component {
 
         <div className='flexContainer'>
 
-          <SidePanel items={prodStore.productions}
-                     selectedId={selectedProdId}
-                     activeId={liveProductionId}
+          <ItemList items={prodStore.productions}
+                    selectedId={selectedProdId}
+                    activeId={liveProductionId}
             // elementType={elementTypes.PRODUCTION}
-                     startingHeight={270}
-                     enableSearch={true}
-                     buttons={this.buttons}
-                     onItemClick={(item) => this.selectProduction(item)}/>
+                    startingHeight={270}
+                    enableSearch={true}
+                    buttons={this.buttons}
+                    stretch
+                    onItemClick={(item) => this.selectProduction(item)}/>
 
           <div className='uk-animation-slide-right-small '>
             <ProductionPageComponent selectedId={selectedProdId}/>

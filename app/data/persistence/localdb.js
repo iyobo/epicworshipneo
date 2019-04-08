@@ -5,7 +5,7 @@ import PouchFind from "pouchdb-find";
 import upsertBulk from "pouchdb-upsert-bulk";
 
 
-const DEBUG = true;
+const LOGGING = false;
 const fs = require("fs");
 const path = require("path");
 
@@ -56,10 +56,10 @@ export const upsert = async (entity: Object) => {
 
   if (existing) {
     entity._rev = existing._rev;
-    if (DEBUG) console.log("PouchDB updating _rev",existing._rev, entity);
+    if (LOGGING) console.log("PouchDB updating _rev",existing._rev, entity);
   }
   else{
-    if (DEBUG) console.log("PouchDB create", entity);
+    if (LOGGING) console.log("PouchDB create", entity);
   }
 
   let doc = await db.put(entity, { force: true });
@@ -95,7 +95,7 @@ export const find = async (where: Object, sort: Array) => {
     selector: where
     // sort: sort //TODO: figure this out
   });
-  if (DEBUG) console.log("PouchDB find", where, docs);
+  if (LOGGING) console.log("PouchDB find", where, docs);
   return docs;
 };
 
@@ -117,7 +117,7 @@ export const findOne = async (where: Object, sort: Array) => {
  */
 export const remove = async (entityId) => {
   const doc = await findById(entityId);
-  if (DEBUG) console.log("PouchDB remove", doc);
+  if (LOGGING) console.log("PouchDB remove", doc);
   if (doc)
     return await db.remove(doc);
 

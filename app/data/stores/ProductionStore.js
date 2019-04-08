@@ -170,10 +170,9 @@ export default class ProductionStore {
   };
 
   @action
-  removeFromLiveProduction = async (element) => {
+  removeFromLiveProduction = async (productionItemId) => {
     const liveProduction = this.liveProduction;
-
-    _.remove(liveProduction.items, {_id: element._id});
+    _.remove(liveProduction.items, {_id: productionItemId});
 
     await upsert(liveProduction);
 
