@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { NavLink, Route, Switch } from "react-router-dom";
 import ScripturePage from "../pages/elements/ScripturePage";
-import MediaPage from "../pages/elements/MediaPage";
+import MediaPage from "../pages/elements/media/MediaPage";
 import BackgroundsPage from "../pages/elements/BackgroundsPage";
 import AnnouncementsPage from "../pages/elements/AnnouncementsPage";
 import PresentationsPage from "../pages/elements/PresentationsPage";
@@ -16,8 +16,8 @@ import type { TSideBarButton } from "../components/ItemList";
 @observer
 export default class ElementsLayout extends Component {
 
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
   }
 
   onRemoveProductionItem = async (itemId) => {
@@ -42,7 +42,7 @@ export default class ElementsLayout extends Component {
     // console.log({liveProduction})
 
     return (
-      <div className='uk-animation-slide-right-small'>
+      <div>
 
         <ul className="uk-subnav uk-subnav-pill uk-animation-slide-top-small">
           <li><NavLink to="/elements/song"><i className='fa fa-music'/> <T name='menu_songs'/></NavLink></li>

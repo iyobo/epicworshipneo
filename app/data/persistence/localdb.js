@@ -5,7 +5,7 @@ import PouchFind from "pouchdb-find";
 import upsertBulk from "pouchdb-upsert-bulk";
 
 
-const LOGGING = false;
+const LOGGING = true;
 const fs = require("fs");
 const path = require("path");
 
@@ -24,7 +24,7 @@ PouchDB.plugin(PouchMigrate);
 PouchDB.plugin(PouchFind);
 PouchDB.plugin(upsertBulk);
 
-export const db = new PouchDB(path.join(__dirname, "..", "database", "epicworshipdb"), { auto_compaction: true });
+export const db = new PouchDB(path.join(process.cwd(), "database", "epicworshipdb"), { auto_compaction: true });
 
 export const initializeData = async () => {
   console.log("Initializing DB...");

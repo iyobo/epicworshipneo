@@ -80,7 +80,7 @@ export const t = (name, params:TranslationParams) => {
 
     //replace variables?
     for (let [k, v] of Object.entries(params)) {
-      text = text.replaceAll(`{{${k}}`, v);
+      text = text.replaceAll(`{{${k}}}`, v);
     }
 
     //pluralize?

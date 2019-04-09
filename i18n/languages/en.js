@@ -63,6 +63,12 @@ module.exports = {
   motionBackground: "Motion Background",
 
   toProduction: 'Add to Production',
-  element_tooltip_delete_prodItem: 'Delete selected production item'
+  element_tooltip_delete_prodItem: 'Delete selected production item',
+
+  tooltip_create: "Create a new {{elementType}}",
+  tooltip_delete: "Delete this {{elementType}}",
+  tooltip_clone: "Clone this {{elementType}}",
+
+  media_page_instructions: "Select Media to preview, or Click '+' to import a file",
 
 };

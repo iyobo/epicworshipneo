@@ -5,7 +5,17 @@ import { AppContainer } from "react-hot-loader";
 import "./app.global.scss";
 import { initializeData } from "./data/persistence/localdb";
 
+
+const el = require('electron');
+
+
 (async function(){
+
+  console.log({
+    elTek: el.remote.app.getAppPath(),
+    processCWD: process.cwd(),
+
+  })
 
   await initializeData();
 

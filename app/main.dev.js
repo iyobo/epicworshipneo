@@ -20,7 +20,9 @@ import log from "electron-log";
 import MenuBuilder from "./menu";
 
 import { initializeScreens } from "./managers/screenManager";
+const { ipcMain } = require('electron');
 
+var fs = require('fs-extra');
 
 export default class AppUpdater {
   constructor() {
@@ -135,3 +137,13 @@ app.on("ready", async () => {
   // eslint-disable-next-line
   new AppUpdater();
 });
+
+/**
+ *
+ * @param from
+ * @param to
+ * @returns {Promise<*>}
+ */
+exports.copyFile = async (from, to) =>{
+  return await fs.copy(from, to)
+}
