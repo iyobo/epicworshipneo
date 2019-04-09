@@ -67,7 +67,6 @@ export default class ItemList extends Component<Props> {
     const searchVal = evt.target.value;
     this.setState({ searchVal });
 
-
     //if parent has a different search function, use that
     if (searchVal) {
       if (this.props.onSearch)
@@ -109,9 +108,11 @@ export default class ItemList extends Component<Props> {
 
   render() {
 
+    const elementStore = this.props.store.elementStore;
     const idField = this.props.idField;
     const selectedId = this.state.selectedId || this.props.selectedId;
-    const elementStore = this.props.store.elementStore;
+    const items = this.state.items || this.props.items;
+
 
     let wrapperStyle = this.props.stretch ?
       { height: `calc(${this.props.percentageHeight}vh - ${this.props.startingHeight}px)` }
@@ -138,7 +139,7 @@ export default class ItemList extends Component<Props> {
 
 
     const renderedItems=[];
-    for(let it of this.props.items) {
+    for(let it of items) {
       let isSelected = (it[idField] === selectedId) ? "selected" : "";
       let isActive = (it[idField] === this.props.activeId) ? "active" : "";
 
