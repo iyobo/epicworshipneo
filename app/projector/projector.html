@@ -140,6 +140,9 @@
       return val / (virtualHeight / stage.canvas.height);
     }
 
+    let bgOldVideoDOM = null;
+    let bgVideoDOM = null;
+
     const enterNodeHandlers = {
       staticBackground: (nodeDesc) => {
 
@@ -153,8 +156,61 @@
           bg.scaleY = stage.canvas.height / image.height;
           bg.alpha = 0;
 
-          // stage.addChild(bg);
-          // stage.setChildIndex(bg, 0);
+          bgContainer.addChild(bg);
+
+          activeScene.background = bg;
+
+          createjs.Tween.get(bg)
+            .to({ alpha: 1 }, 500) // fade in speed 0.5s
+            .call(() => {
+              //Clean up any video bg doms
+              if(bgVideoDOM && bgVideoDOM.parentNode)
+                bgVideoDOM.parentNode.removeChild(bgVideoDOM)
+              if(bgOldVideoDOM && bgOldVideoDOM.parentNode)
+                bgOldVideoDOM.parentNode.removeChild(bgOldVideoDOM)
+            });
+        };
+
+      },
+      videoBackground: (nodeDesc) => {
+        // console.log('video',nodeDesc.src);
+
+        if(bgVideoDOM){
+          bgOldVideoDOM = bgVideoDOM;
+        }
+
+        bgVideoDOM = document.createElement("video");
+        bgVideoDOM.autoplay = true;
+        bgVideoDOM.loop = true;
+        // bgVideoDOM.controls = false;
+        bgVideoDOM.hidden = true;
+        bgVideoDOM.preload = true;
+        // bgVideoDOM.width = 100;
+        bgVideoDOM.mute = true;
+        bgVideoDOM.volume = 0;
+        // bgVideoDOM.setAttribute("webkit-playsinline","true");
+        // bgVideoDOM.setAttribute("playsinline","true");
+        // bgVideoDOM.setAttribute("muted",true);
+        // bgVideoDOM.setAttribute("width",stage.canvas.width);
+        // bgVideoDOM.height = 100;
+        bgVideoDOM.src = nodeDesc.src;
+
+        document.body.append(bgVideoDOM)
+
+        bgVideoDOM.play();
+
+        bgVideoDOM.oncanplay=(evt)=>{
+          var vidBuffer = new createjs.VideoBuffer(bgVideoDOM);
+          var bg = new createjs.Bitmap(vidBuffer);
+
+          // const b = bg.getBounds();
+          var image = vidBuffer.getImage();
+
+          bg.x = 0;
+          bg.y = 0;
+          bg.scaleX = stage.canvas.width / image.width;
+          bg.scaleY = stage.canvas.height / image.height;
+          bg.alpha = 0;
           bgContainer.addChild(bg);
 
           activeScene.background = bg;
@@ -163,15 +219,17 @@
             .to({ alpha: 1 }, 500) // fade in speed 0.5s
             .call(() => {
 
+              //Clean up old video bg doms
+              if(bgOldVideoDOM && bgOldVideoDOM.parentNode)
+                bgOldVideoDOM.parentNode.removeChild(bgOldVideoDOM)
             });
-          // stage.update();
-        };
+        }
 
       },
       text: (nodeDesc) => {
         var text = new createjs.Text(nodeDesc.text, `${nodeDesc.fontSize}px ${nodeDesc.font}`, nodeDesc.color);
 
-        text.x = sx(nodeDesc.bounds.x - 25);
+        text.x = sx(nodeDesc.bounds.x) - 10;
         text.y = sy(nodeDesc.bounds.y);
         text.alpha = 0;
         text.textAlign = nodeDesc.textAlign;
@@ -215,8 +273,6 @@
             realBounds = text.getBounds();
           }
         }
-
-
         //Adjustments complete. Now render
         createjs.Tween.get(text)
           .to({ alpha: 1, x: destinationX }, 300) // fade in speed 0.5s

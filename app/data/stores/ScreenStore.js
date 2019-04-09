@@ -120,7 +120,7 @@ export default class ScreenStore {
       action: "appendScene",
       nodes: [
         // { type: "staticBackground", src: "bg.jpg" },
-        { type: "videoBackground", src: "" },
+        { type: "videoBackground", src: "bg1.mp4" },
 
       ]
     });
@@ -133,7 +133,7 @@ export default class ScreenStore {
       action: "appendScene",
       nodes: [
         // { type: "staticBackground", src: "bg.jpg" },
-        { type: "videoBackground", src: "" },
+        { type: "videoBackground", src: "bg2.mp4" },
 
       ]
     });
