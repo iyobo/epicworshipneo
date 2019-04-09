@@ -14,6 +14,7 @@ export const entityTypes = {
   SETTING: "setting"
 };
 
-export const configTypes = {
-  liveProductionId: "liveProductionId"
+export const settings = {
+  liveProductionId: "liveProductionId",
+  projectorScreenId: 'projectorScreenId'
 };

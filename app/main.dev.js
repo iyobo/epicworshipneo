@@ -76,9 +76,9 @@ app.on("ready", async () => {
     title: "EpicWorship: When you do, It must be Epic",
     show: false,
     width: 1200,
-    height: 1200,
-    x: -1000,
-    y: -400,
+    height: 1000,
+    x: 0,
+    y: 0,
     webPreferences: {
       webSecurity: false,
       nodeIntegration: true
@@ -137,13 +137,3 @@ app.on("ready", async () => {
   // eslint-disable-next-line
   new AppUpdater();
 });
-
-/**
- *
- * @param from
- * @param to
- * @returns {Promise<*>}
- */
-exports.copyFile = async (from, to) =>{
-  return await fs.copy(from, to)
-}

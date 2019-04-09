@@ -3,7 +3,7 @@ import { Link, NavLink, Route, Switch } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import ProductionPage from "../pages/productions/ProductionPage";
 import ElementsLayout from "./ElementsLayout";
-import LivePage from "../pages/LivePage";
+import LivePage from "../pages/live/LivePage";
 import SettingsLayout from "./SettingsLayout";
 import NewsPage from "../pages/NewsPage";
 import { T } from "../../i18n/i18n";

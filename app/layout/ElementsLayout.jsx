@@ -50,10 +50,10 @@ export default class ElementsLayout extends Component {
           <li><NavLink to="/elements/media"><i className='fa fa-play-circle'/> <T name='menu_media'/></NavLink></li>
           <li><NavLink to="/elements/background"><i className='fa fa-image'/> <T name='menu_backgrounds'/></NavLink>
           </li>
-          <li><NavLink to="/elements/announcement"><i className='fa fa-bullhorn'/> <T
-            name='menu_announcements'/></NavLink></li>
-          <li><NavLink to="/elements/presentation"><i className='fa fa-magic'/> <T
-            name='menu_presentations'/></NavLink></li>
+          {/*<li><NavLink to="/elements/announcement"><i className='fa fa-bullhorn'/> <T*/}
+            {/*name='menu_announcements'/></NavLink></li>*/}
+          {/*<li><NavLink to="/elements/presentation"><i className='fa fa-magic'/> <T*/}
+            {/*name='menu_presentations'/></NavLink></li>*/}
 
         </ul>
         {/*Order of routes is important*/}

@@ -1,5 +1,5 @@
 import { action, computed, observable } from "mobx";
-import { configTypes, entityTypes } from "../../utils/data";
+import { settings, entityTypes } from "../../utils/data";
 import { find, getConfig, setConfig, upsert, remove } from "../persistence/localdb";
 
 const _ = require("lodash");
@@ -31,7 +31,7 @@ export default class ProductionStore {
     // });
     this.productions = docs;
 
-    const liveSetting = await getConfig(configTypes.liveProductionId);
+    const liveSetting = await getConfig(settings.liveProductionId);
     if (liveSetting) this.setLiveProduction(liveSetting.value);
 
     // this.calculateProductionItems();
@@ -75,7 +75,7 @@ export default class ProductionStore {
     const production = this.productionIndex[productionId];
     if (!production) throw new Error(`Live: Cannot find production of Id ${productionId}`);
 
-    await setConfig(configTypes.liveProductionId, productionId);
+    await setConfig(settings.liveProductionId, productionId);
     this.setLiveProduction(productionId);
   };
 
