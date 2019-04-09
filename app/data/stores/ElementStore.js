@@ -182,7 +182,7 @@ export default class ElementStore {
     if(element.elementType === elementTypes.MEDIA || element.elementType === elementTypes.BACKGROUND ) {
       try {
         await fs.unlink(element.details.path);
-      }catch(err){}
+      }catch(err){console.warn(err)}
     }
     _.remove(this[elementType + "s"], { _id: id });
 
@@ -194,7 +194,6 @@ export default class ElementStore {
 
   @action
   importMediaElement = async (elementType) => {
-
 
     const files = electron.dialog.showOpenDialog({
       filters: [
@@ -211,7 +210,7 @@ export default class ElementStore {
     const elementId = chance.guid();
 
 
-    const importedfilePath = path.join(process.cwd(),'mediafiles',elementId);
+    const importedfilePath = path.join(process.cwd(),'mediafiles',elementType, elementId);
 
     await fs.copy(sourceFilePath, importedfilePath);
 

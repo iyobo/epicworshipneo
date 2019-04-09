@@ -49,11 +49,10 @@ export default class ProductionPage extends Component {
     await prodStore.deleteProduction(selectedProdId);
   };
 
-  onMakeLive = async () => {
+  onMakeLive = async (itemId) => {
     const prodStore = this.props.store.productionStore;
-    const selectedProdId = this.getSelectedId();
-
-    await prodStore.makeProductionLive(selectedProdId);
+    console.log('Making production live',itemId)
+    await prodStore.makeProductionLive(itemId);
   };
 
   buttons: array<TSideBarButton> = [
@@ -82,7 +81,9 @@ export default class ProductionPage extends Component {
                     enableSearch={true}
                     buttons={this.buttons}
                     stretch
-                    onItemClick={(item) => this.selectProduction(item)}/>
+                    onItemClick={(item) => this.selectProduction(item)}
+                    onItemDoubleClick={(item)=> this.onMakeLive(item._id)}
+          />
 
           <div className='uk-animation-slide-right-small '>
             <ProductionPageComponent selectedId={selectedProdId}/>

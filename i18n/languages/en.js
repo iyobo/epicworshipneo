@@ -70,5 +70,6 @@ module.exports = {
   tooltip_clone: "Clone this {{elementType}}",
 
   media_page_instructions: "Select Media to preview, or Click '+' to import a file",
+  background_page_instructions: "Select Background to preview, or Click '+' to import a file",
 
 };

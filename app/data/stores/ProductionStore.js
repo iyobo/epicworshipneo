@@ -1,6 +1,6 @@
 import { action, computed, observable } from "mobx";
 import { configTypes, entityTypes } from "../../utils/data";
-import { find, getConfig, setConfig, upsert } from "../persistence/localdb";
+import { find, getConfig, setConfig, upsert, remove } from "../persistence/localdb";
 
 const _ = require("lodash");
 

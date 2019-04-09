@@ -5,16 +5,16 @@ import type { TSideBarButton } from "../../../components/ItemList";
 import ItemList from "../../../components/ItemList";
 import { elementTypes } from "../../../utils/data";
 
-const elementType = elementTypes.MEDIA;
+const elementType = elementTypes.BACKGROUND;
 
-type MediaComponentType = {
+type BackgroundComponentType = {
   selectedId: string,
 
 }
 
 @inject("store")
 @observer
-export default class MediaComponent extends Component<MediaComponentType> {
+export default class BackgroundsComponent extends Component<BackgroundComponentType> {
 
   constructor(props) {
     super(props);
@@ -70,36 +70,6 @@ export default class MediaComponent extends Component<MediaComponentType> {
     await productionStore.addToLiveProduction(element);
   };
 
-  onSubmit = async (evt) => {
-    evt.preventDefault();
-
-    if (!this.state.name) return toast.error({
-      title: `Empty ${elementType} name`,
-      message: `Every ${elementType} needs a good name`
-    });
-    if (!this.state.text) return toast.error({
-      title: `Empty ${elementType} body`,
-      message: `Every ${elementType} needs a good body`
-    });
-
-    const elementStore = this.props.store.elementStore;
-    const elementId = this.props.selectedId;
-    let element = elementStore.getElement(elementType, elementId);
-
-    if (!element) {
-      element = await elementStore.createElement(elementType, this.state.name, this.state.text);
-    } else {
-      element.name = this.state.name;
-      element.text = this.state.text;
-      await elementStore.updateElement(element);
-    }
-    // debugger;
-    // this.setState({ name: "" });
-    this.props.store.navigateToElement(elementType, element._id);
-
-  };
-
-
   buttons: array<TSideBarButton> = [
     { icon: "plus", tooltip: dict._('tooltip_create',{elementType}), handler: this.onCreate },
     { icon: "trash", tooltip: dict._('tooltip_delete',{elementType}), handler: this.onDelete, showOnlyIfSelected: true },
@@ -111,7 +81,7 @@ export default class MediaComponent extends Component<MediaComponentType> {
     const selectedElementId = this.getSelectedId();
     const selectedElement = elementStore.getElement(elementType, selectedElementId);
 
-    let PreviewPane = <div>{dict.media_page_instructions}</div>;
+    let PreviewPane = <div>{dict.background_page_instructions}</div>;
 
     if(selectedElement){
       if(selectedElement.details && selectedElement.details.mime.startsWith('image')){
@@ -133,7 +103,7 @@ export default class MediaComponent extends Component<MediaComponentType> {
     // debugger;
     return (
       <div className='uk-animation-slide-right-small'>
-        <h2>{dict.menu_media}</h2>
+        <h2>{dict.menu_backgrounds}</h2>
 
         <div className='flexContainer'>
           <ItemList items={elementStore[elementType + "s"]}

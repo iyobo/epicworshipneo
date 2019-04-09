@@ -3,7 +3,6 @@ import { inject, observer } from "mobx-react";
 import { NavLink, Route, Switch } from "react-router-dom";
 import ScripturePage from "../pages/elements/ScripturePage";
 import MediaPage from "../pages/elements/media/MediaPage";
-import BackgroundsPage from "../pages/elements/BackgroundsPage";
 import AnnouncementsPage from "../pages/elements/AnnouncementsPage";
 import PresentationsPage from "../pages/elements/PresentationsPage";
 import { dict, T } from "../../i18n/i18n";
@@ -11,6 +10,7 @@ import { Redirect } from "react-router";
 import SongsPage from "../pages/elements/songs/SongsPage";
 import ItemList from "../components/ItemList";
 import type { TSideBarButton } from "../components/ItemList";
+import BackgroundsPage from "../pages/elements/background/BackgroundsPage";
 
 @inject("store")
 @observer
@@ -48,11 +48,11 @@ export default class ElementsLayout extends Component {
           <li><NavLink to="/elements/song"><i className='fa fa-music'/> <T name='menu_songs'/></NavLink></li>
           <li><NavLink to="/elements/scripture"><i className='fa fa-bible'/> <T name='menu_scripture'/></NavLink></li>
           <li><NavLink to="/elements/media"><i className='fa fa-play-circle'/> <T name='menu_media'/></NavLink></li>
-          <li><NavLink to="/elements/backgrounds"><i className='fa fa-image'/> <T name='menu_backgrounds'/></NavLink>
+          <li><NavLink to="/elements/background"><i className='fa fa-image'/> <T name='menu_backgrounds'/></NavLink>
           </li>
-          <li><NavLink to="/elements/announcements"><i className='fa fa-bullhorn'/> <T
+          <li><NavLink to="/elements/announcement"><i className='fa fa-bullhorn'/> <T
             name='menu_announcements'/></NavLink></li>
-          <li><NavLink to="/elements/presentations"><i className='fa fa-magic'/> <T
+          <li><NavLink to="/elements/presentation"><i className='fa fa-magic'/> <T
             name='menu_presentations'/></NavLink></li>
 
         </ul>
