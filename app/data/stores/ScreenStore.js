@@ -5,6 +5,7 @@ import { settings } from "../../utils/data";
 
 const electron = require("electron").remote;
 const path = electron.require("path");
+const chance = new require("chance")();
 
 export default class ScreenStore {
 
@@ -69,9 +70,19 @@ export default class ScreenStore {
       nodes: [
         { type: "staticBackground", src: "bg.jpg" },
         { type: "videoBackground", src: "" },
-        { type: "video", src: "", volume: 100, bounds: null, mime:'video/mp4' }, // For anything but text, null bounds means full screen
+        { type: "video", src: "", volume: 100, bounds: null, mime: "video/mp4" }, // For anything but text, null bounds means full screen
         { type: "image", src: "", volume: 100, bounds: null },
-        { type: "text", text: text || "Welcome to Church", bounds: { x: 30, y: 50, width: 40, height: 20 } }
+        {
+          type: "text",
+          text: text || "Welcome \nto Church " + chance.name() + ". \nHow can I help you?\nWill you be alright?\nOmni flex 2345 the revolutionary something that became legendary all on it's own.",
+          fontSize: 200,
+          font: "Arial",
+          color: "white",
+          shadowColor: "black",
+          textAlign: "center",
+
+          bounds: { x: 200, width: 600, y: 100, height: 800 }
+        }
       ]
     });
   };
