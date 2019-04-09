@@ -62,16 +62,16 @@ export default class ScreenStore {
     });
   };
 
-  testProjector = (text) => {
+  testText = (text) => {
     if (!this.projectorWindow) this.loadProjector();
 
     this.projectorWindow.webContents.send("toProjector", {
-      action: "scene",
+      action: "replaceScene",
       nodes: [
-        { type: "staticBackground", src: "bg.jpg" },
-        { type: "videoBackground", src: "" },
-        { type: "video", src: "", volume: 100, bounds: null, mime: "video/mp4" }, // For anything but text, null bounds means full screen
-        { type: "image", src: "", volume: 100, bounds: null },
+        // { type: "staticBackground", src: "bg.jpg" },
+        // { type: "videoBackground", src: "" },
+        // { type: "video", src: "", volume: 100, bounds: null, mime: "video/mp4" }, // For anything but text, null bounds means full screen
+        // { type: "image", src: "", volume: 100, bounds: null },
         {
           type: "text",
           text: text || "Welcome \nto Church " + chance.name() + ". \nHow can I help you?\nWill you be alright?\nOmni flex 2345 the revolutionary something that became legendary all on it's own.",
@@ -83,6 +83,58 @@ export default class ScreenStore {
 
           bounds: { x: 200, width: 600, y: 100, height: 800 }
         }
+      ]
+    });
+  };
+
+  testStaticBackground1 = () => {
+    if (!this.projectorWindow) this.loadProjector();
+
+    this.projectorWindow.webContents.send("toProjector", {
+      action: "appendScene",
+      nodes: [
+        { type: "staticBackground", src: "bg.jpg" },
+        // { type: "videoBackground", src: "" },
+
+      ]
+    });
+  };
+
+  testStaticBackground2 = () => {
+    if (!this.projectorWindow) this.loadProjector();
+
+    this.projectorWindow.webContents.send("toProjector", {
+      action: "appendScene",
+      nodes: [
+        { type: "staticBackground", src: "10205.jpg" },
+        // { type: "videoBackground", src: "" },
+
+      ]
+    });
+  };
+
+  testMotionBackground1 = () => {
+    if (!this.projectorWindow) this.loadProjector();
+
+    this.projectorWindow.webContents.send("toProjector", {
+      action: "appendScene",
+      nodes: [
+        // { type: "staticBackground", src: "bg.jpg" },
+        { type: "videoBackground", src: "" },
+
+      ]
+    });
+  };
+
+  testMotionBackground2 = () => {
+    if (!this.projectorWindow) this.loadProjector();
+
+    this.projectorWindow.webContents.send("toProjector", {
+      action: "appendScene",
+      nodes: [
+        // { type: "staticBackground", src: "bg.jpg" },
+        { type: "videoBackground", src: "" },
+
       ]
     });
   };

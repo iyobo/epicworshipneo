@@ -89,28 +89,26 @@
 
     function processAction(data) {
 
-      switch (data.action) {
-        case "scene": {
-          //make current active scene previous scene
-          previousScene = activeScene;
-          activeScene = {
-            background: null,
-            nodes: [],
-            _payload: data
-          };
+      if (data.action === "replaceScene") {
+        previousScene = activeScene;
+        activeScene = {
+          background: null,
+          nodes: [],
+          _payload: data
+        };
 
-          //Begin exit transitions for previous scene nodes
-          previousScene.nodes.forEach((node) => {
-            exitNode(node);
-          });
-          previousScene.nodes = []; //release references to old nodes so they get garbage colected after tweens
+        //Begin exit transitions for previous scene nodes
+        previousScene.nodes.forEach((node) => {
+          exitNode(node);
+        });
+        previousScene.nodes = []; //release references to old nodes so they get garbage colected after tweens
 
-          //Begin entry transitions for new scene node
-          data.nodes.forEach((nodeDesc) => {
-            enterNode(nodeDesc);
-          });
-        }
       }
+
+      data.nodes.forEach((nodeDesc) => {
+        enterNode(nodeDesc);
+      });
+
       // stage.update();
     }
 
