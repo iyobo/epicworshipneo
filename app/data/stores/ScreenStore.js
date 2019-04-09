@@ -67,9 +67,9 @@ export default class ScreenStore {
     this.projectorWindow.webContents.send("toProjector", {
       action: "scene",
       nodes: [
-        { type: "staticBackground", src: "" },
+        { type: "staticBackground", src: "bg.jpg" },
         { type: "videoBackground", src: "" },
-        { type: "video", src: "", volume: 100, bounds: null }, // For anything but text, null bounds means full screen
+        { type: "video", src: "", volume: 100, bounds: null, mime:'video/mp4' }, // For anything but text, null bounds means full screen
         { type: "image", src: "", volume: 100, bounds: null },
         { type: "text", text: text || "Welcome to Church", bounds: { x: 30, y: 50, width: 40, height: 20 } }
       ]

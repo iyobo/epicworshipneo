@@ -128,6 +128,7 @@ app.on("ready", async () => {
 
   mainWindow.on("closed", () => {
     mainWindow = null;
+    process.exit();
   });
 
   const menuBuilder = new MenuBuilder(mainWindow);

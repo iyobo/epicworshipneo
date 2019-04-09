@@ -2,17 +2,166 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>EpicWorship Projector</title>
+    <style>
+        body {
+            /*background-color: black;*/
+        }
 
+        #canvas {
+            /*background-color: black;*/
+        }
+
+        .fullscreen {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+    <script src="createjs.min.js"></script>
+    <!--<script-->
+    <!--src="https://code.jquery.com/jquery-3.3.1.min.js"-->
+    <!--crossorigin="anonymous"></script>-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
 </head>
-<body>
-Projection ultra
+<body onload="startTheParty();">
 
+<!--width and height here determines resolution of canvas as well, regardless of fullscreen styling-->
+<canvas id="projectorCanvas" width="1920px" height="1080px" class="fullscreen"></canvas>
+
+<div id="mediaDOMs">
+    <video id="bgvid1" class="fullscreen" autoplay loop></video>
+    <video id="bgvid2" class="fullscreen" autoplay loop></video>
+</div>
+<script type="text/javascript" src="src/projector.js"></script>
 <script type="text/javascript">
-  const ipc = require("electron").ipcRenderer;
-  ipc.on("toProjector", function(data, a,b,c) {
-    console.log(data,a,b,c);
-  });
+  function startTheParty() {
+
+    //Register canvas
+    var stage = new createjs.Stage("projectorCanvas");
+    const maintainAspectRatioOnResize = false;
+
+    function resize() {
+      if (maintainAspectRatioOnResize) {
+        stage.canvas.width = window.innerWidth;
+        stage.canvas.height = window.innerHeight;
+      }
+      stage.update();
+    }
+
+    resize();
+
+
+    var ipc = require("electron").ipcRenderer;
+    ipc.on("toProjector", function(evt, data) {
+      console.log("toProjector", data);
+
+      processAction(data);
+
+    });
+
+    let previousScene = {
+      background: null,
+      nodes: [],
+      _payload: null
+    };
+    let activeScene = {
+      background: null,
+      nodes: [],
+      _payload: null
+    };
+
+    function processAction(data) {
+
+      switch (data.action) {
+        case "scene": {
+          //make current active scene previous scene
+          previousScene = activeScene;
+          activeScene = {
+            background: null,
+            nodes: [],
+            _payload: data
+          };
+
+          //Begin exit transitions for previous scene nodes
+          previousScene.nodes.forEach((node) => {
+            exitNode(node);
+          });
+
+          //Begin entry transitions for new scene node
+          data.nodes.forEach((nodeDesc) => {
+            enterNode(nodeDesc);
+          });
+        }
+      }
+      stage.update();
+    }
+
+    function enterNode(nodeDesc) {
+      const handler = enterNodeHandlers[nodeDesc.type];
+      if (handler) handler(nodeDesc);
+    }
+
+    function exitNode(node) {
+      //node exit transitions are fairly standard. Just fadeout and remove from stage afterwards.
+
+
+    }
+
+    //Resizing the window
+    window.addEventListener("resize", resize);
+
+    // ~~~~
+
+    function sx(val) {
+
+    }
+
+    function sy(val) {
+
+    }
+
+    const enterNodeHandlers = {
+      staticBackground: (nodeDesc) => {
+
+        var image = new Image();
+        image.src = nodeDesc.src;
+        image.onload = (evt) => {
+          var bg = new createjs.Bitmap(evt.target);
+          bg.x = 0;
+          bg.y = 0;
+          bg.scaleX = stage.canvas.width/image.width;
+          bg.scaleY = stage.canvas.height/image.height;
+
+          stage.addChild(bg);
+          stage.setChildIndex(bg, 0);
+
+          activeScene.background = bg;
+          stage.update();
+        };
+
+      },
+      text: (nodeDesc) => {
+        var text = new createjs.Text(nodeDesc.text, "86px arial", nodeDesc.color || "#b9e7ff");
+        text.x = 1 || nodeDesc.bounds.x;
+        text.y = 1 || nodeDesc.bounds.y;
+        text.lineWidth = nodeDesc.bounds.width;
+        text.shadow = new createjs.Shadow(nodeDesc.shadowColor || "#000000", 5, 5, 10);
+
+        stage.addChild(text);
+        stage.setChildIndex(text, 10);
+        activeScene.nodes.push(text);
+
+        console.log({ textBounds: text.getBounds(), textTransformedBounds: text.getTransformedBounds() });
+      }
+    };
+
+
+  }
 </script>
 </body>
 </html>
