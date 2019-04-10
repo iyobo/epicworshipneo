@@ -32,6 +32,7 @@
 
 <!--width and height here determines resolution of canvas as well, regardless of fullscreen styling-->
 <canvas id="projectorCanvas" width="1920px" height="1080px" class="fullscreen"></canvas>
+<!--<canvas id="projectorCanvas" width="800" height="600px" class="fullscreen"></canvas>-->
 
 <script type="text/javascript" src="src/projector.js"></script>
 <script type="text/javascript">
@@ -50,7 +51,7 @@
 
     const maintainAspectRatioOnResize = false;
 
-    createjs.Ticker.setFPS(60);
+    createjs.Ticker.framerate= 60;
     createjs.Ticker.addEventListener("tick", stage);
 
     function resize() {
@@ -69,6 +70,9 @@
       console.log("toProjector", data);
 
       processAction(data);
+      setTimeout(()=>{
+        console.log('post-Action report', {stageChildren: stage.children});
+      }, 2000);
 
     });
 
@@ -119,6 +123,7 @@
         .to({ alpha: 0 }, speed)
         .call(() => {
           //remove node
+          frontContainer.removeChild(node);
         });
 
     }
@@ -139,6 +144,16 @@
     let bgOldVideoDOM = null;
     let bgVideoDOM = null;
 
+    // let activeBg = null;
+
+    function destroyVideoDOM(dom){
+      if(dom && dom.parentNode){
+        dom.pause();
+        dom.parentNode.removeChild(dom);
+        dom = null;
+      }
+    }
+
     const enterNodeHandlers = {
       staticBackground: (nodeDesc) => {
 
@@ -154,16 +169,21 @@
 
           bgContainer.addChild(bg);
 
-          activeScene.background = bg;
+
 
           createjs.Tween.get(bg)
             .to({ alpha: 1 }, 500) // fade in speed 0.5s
             .call(() => {
+
+              // debugger;
+              if(activeScene.background) {
+                console.log('Static BG transitioned in. Removing previous bg');
+                bgContainer.removeChild(activeScene.background);
+              }
+              activeScene.background = bg;
               //Clean up any video bg doms
-              if (bgVideoDOM && bgVideoDOM.parentNode)
-                bgVideoDOM.parentNode.removeChild(bgVideoDOM);
-              if (bgOldVideoDOM && bgOldVideoDOM.parentNode)
-                bgOldVideoDOM.parentNode.removeChild(bgOldVideoDOM);
+              destroyVideoDOM(bgVideoDOM);
+              destroyVideoDOM(bgOldVideoDOM);
             });
         };
 
@@ -182,8 +202,8 @@
         bgVideoDOM.hidden = true;
         bgVideoDOM.preload = true;
         // bgVideoDOM.width = 100;
-        bgVideoDOM.mute = true;
-        bgVideoDOM.volume = 0;
+        bgVideoDOM.muted = true;
+        // bgVideoDOM.volume = 0;
         // bgVideoDOM.setAttribute("webkit-playsinline","true");
         // bgVideoDOM.setAttribute("playsinline","true");
         // bgVideoDOM.setAttribute("muted",true);
@@ -197,27 +217,29 @@
 
         bgVideoDOM.oncanplay = (evt) => {
           var vidBuffer = new createjs.VideoBuffer(bgVideoDOM);
-          var bg = new createjs.Bitmap(vidBuffer);
-
-          // const b = bg.getBounds();
-          var image = vidBuffer.getImage();
+          var bg = new createjs.Bitmap(bgVideoDOM);
 
           bg.x = 0;
           bg.y = 0;
-          bg.scaleX = stage.canvas.width / image.width;
-          bg.scaleY = stage.canvas.height / image.height;
+          bg.scaleX = stage.canvas.width / bgVideoDOM.videoWidth;
+          bg.scaleY = stage.canvas.height / bgVideoDOM.videoHeight;
           bg.alpha = 0;
           bgContainer.addChild(bg);
 
-          activeScene.background = bg;
 
           createjs.Tween.get(bg)
             .to({ alpha: 1 }, 500) // fade in speed 0.5s
             .call(() => {
 
+              // debugger;
+              if(activeScene.background) {
+                console.log('Video BG transitioned in. Removing previous bg');
+                bgContainer.removeChild(activeScene.background);
+              }
+              activeScene.background = bg;
+
               //Clean up old video bg doms
-              if (bgOldVideoDOM && bgOldVideoDOM.parentNode)
-                bgOldVideoDOM.parentNode.removeChild(bgOldVideoDOM);
+              destroyVideoDOM(bgOldVideoDOM);
             });
         };
 

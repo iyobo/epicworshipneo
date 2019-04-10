@@ -116,16 +116,14 @@ export default class MediaComponent extends Component<MediaComponentType> {
     if(selectedElement){
       if(selectedElement.details && selectedElement.details.mime.startsWith('image')){
         PreviewPane = <div>
-          <h3>{selectedElement.name}</h3>
+          <h3 className='hardWrap'>{selectedElement.name}</h3>
           <img src={selectedElement.details.path} width='100%' />
         </div>
       }
       else {
         PreviewPane = <div>
-          <h3>{selectedElement.name}</h3>
-          <video width="100%" height="400" controls preload='auto'>
-            <source src={selectedElement.details.path} type={selectedElement.details.mime}/>
-          </video>
+          <h3 className='hardWrap'>{selectedElement.name}</h3>
+          <video width="100%" height="400" controls  src={selectedElement.details.path}/>
         </div>
       }
     }

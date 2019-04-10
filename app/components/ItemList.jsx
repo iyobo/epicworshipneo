@@ -156,7 +156,7 @@ export default class ItemList extends Component<Props> {
 
 
       renderedItems.push(<li key={it[idField]}
-                 className={`${isActive} ${isSelected}`}
+                 className={`${isActive} ${isSelected} hardWrap`}
                  onClick={() => {
                    this.setState({ selectedId: it[idField] });
                    if (this.props.onItemClick) this.props.onItemClick(it);

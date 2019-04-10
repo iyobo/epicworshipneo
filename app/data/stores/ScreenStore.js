@@ -78,7 +78,7 @@ export default class ScreenStore {
           fontSize: 100,
           font: "Arial",
           color: "white",
-          shadow: 10,
+          shadow: 1,
           shadowColor: "black",
           textAlign: "center",
 
