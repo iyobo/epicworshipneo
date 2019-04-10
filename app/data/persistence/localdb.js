@@ -1,30 +1,27 @@
 import PouchDB from "pouchdb";
-import PouchGQL from "pouchdb-gql";
-import PouchMigrate from "pouchdb-migrate";
 import PouchFind from "pouchdb-find";
-import upsertBulk from "pouchdb-upsert-bulk";
+
 
 
 const LOGGING = true;
-const fs = require("fs");
-const path = require("path");
+// const fs = require("fs");
+// const path = require("path");
 
-const databaseFolderPath = path.join(__dirname, "..", "database");
-if (!fs.existsSync(databaseFolderPath)) {
-
-  console.log(`Creating ${databaseFolderPath}...`);
-  fs.mkdirSync(databaseFolderPath);
-}
+// const databaseFolderPath = path.join(__dirname, "..", "database");
+// if (!fs.existsSync(databaseFolderPath)) {
+//
+//   console.log(`Creating ${databaseFolderPath}...`);
+//   fs.mkdirSync(databaseFolderPath);
+// }
 
 
 // const dbPath = path.join('database', 'epicworshipdb');
 
-PouchDB.plugin(PouchGQL);
-PouchDB.plugin(PouchMigrate);
 PouchDB.plugin(PouchFind);
-PouchDB.plugin(upsertBulk);
 
-export const db = new PouchDB(path.join(process.cwd(), "database", "epicworshipdb"), { auto_compaction: true });
+
+// export const db = new PouchDB(path.join(process.cwd(), "database", "epicworshipdb"), { auto_compaction: true });
+export const db = new PouchDB( "epicworshipdb", { auto_compaction: true });
 
 export const initializeData = async () => {
   console.log("Initializing DB...");

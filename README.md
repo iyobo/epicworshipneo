@@ -104,6 +104,19 @@ $ yarn test-e2e
 DEBUG_PROD=true yarn package
 ```
 
+### Trouble-shooting Packaging process
+
+From OSX, you can package for all 2 platforms i.e Windows, OSx and Linux.
+Sometimes you might get some errors due to system dependencies you haven't installed yet.
+
+If you see the error: 
+
+`{:timestamp=>"xxx", :message=>"Need executable 'rpmbuild' to convert dir to rpm", :level=>:error}
+`
+
+Install the system package `rpm`. i.e `brew install rpm` on OSX or `sudo apt-get install rpm` on Ubuntu, etc.
+
+
 ## CSS Modules
 
 This boilerplate is configured to use [css-modules](https://github.com/css-modules/css-modules) out of the box.
