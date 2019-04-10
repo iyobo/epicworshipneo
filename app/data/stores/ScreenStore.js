@@ -75,9 +75,10 @@ export default class ScreenStore {
         {
           type: "text",
           text: text || "Welcome \nto Church " + chance.name() + ". \nHow can I help you?\nWill you be alright?\nOmni flex 2345 the revolutionary something that became legendary all on it's own.",
-          fontSize: 200,
+          fontSize: 100,
           font: "Arial",
           color: "white",
+          shadow: 10,
           shadowColor: "black",
           textAlign: "center",
 

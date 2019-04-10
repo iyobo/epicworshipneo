@@ -33,10 +33,6 @@
 <!--width and height here determines resolution of canvas as well, regardless of fullscreen styling-->
 <canvas id="projectorCanvas" width="1920px" height="1080px" class="fullscreen"></canvas>
 
-<div id="mediaDOMs">
-    <video id="bgvid1" class="fullscreen" autoplay loop></video>
-    <video id="bgvid2" class="fullscreen" autoplay loop></video>
-</div>
 <script type="text/javascript" src="src/projector.js"></script>
 <script type="text/javascript">
 
@@ -164,10 +160,10 @@
             .to({ alpha: 1 }, 500) // fade in speed 0.5s
             .call(() => {
               //Clean up any video bg doms
-              if(bgVideoDOM && bgVideoDOM.parentNode)
-                bgVideoDOM.parentNode.removeChild(bgVideoDOM)
-              if(bgOldVideoDOM && bgOldVideoDOM.parentNode)
-                bgOldVideoDOM.parentNode.removeChild(bgOldVideoDOM)
+              if (bgVideoDOM && bgVideoDOM.parentNode)
+                bgVideoDOM.parentNode.removeChild(bgVideoDOM);
+              if (bgOldVideoDOM && bgOldVideoDOM.parentNode)
+                bgOldVideoDOM.parentNode.removeChild(bgOldVideoDOM);
             });
         };
 
@@ -175,7 +171,7 @@
       videoBackground: (nodeDesc) => {
         // console.log('video',nodeDesc.src);
 
-        if(bgVideoDOM){
+        if (bgVideoDOM) {
           bgOldVideoDOM = bgVideoDOM;
         }
 
@@ -195,11 +191,11 @@
         // bgVideoDOM.height = 100;
         bgVideoDOM.src = nodeDesc.src;
 
-        document.body.append(bgVideoDOM)
+        document.body.append(bgVideoDOM);
 
         bgVideoDOM.play();
 
-        bgVideoDOM.oncanplay=(evt)=>{
+        bgVideoDOM.oncanplay = (evt) => {
           var vidBuffer = new createjs.VideoBuffer(bgVideoDOM);
           var bg = new createjs.Bitmap(vidBuffer);
 
@@ -220,24 +216,26 @@
             .call(() => {
 
               //Clean up old video bg doms
-              if(bgOldVideoDOM && bgOldVideoDOM.parentNode)
-                bgOldVideoDOM.parentNode.removeChild(bgOldVideoDOM)
+              if (bgOldVideoDOM && bgOldVideoDOM.parentNode)
+                bgOldVideoDOM.parentNode.removeChild(bgOldVideoDOM);
             });
-        }
+        };
 
       },
       text: (nodeDesc) => {
-        var text = new createjs.Text(nodeDesc.text, `${nodeDesc.fontSize}px ${nodeDesc.font}`, nodeDesc.color);
+        const textContainer = new createjs.Container();
+        textContainer.alpha = 0;
 
-        text.x = sx(nodeDesc.bounds.x) - 10;
-        text.y = sy(nodeDesc.bounds.y);
-        text.alpha = 0;
+        textContainer.x = sx(nodeDesc.bounds.x) - 20;
+        textContainer.y = sy(nodeDesc.bounds.y);
+
+        var text = new createjs.Text(nodeDesc.text, `${nodeDesc.fontSize}px ${nodeDesc.font}`, nodeDesc.color);
         text.textAlign = nodeDesc.textAlign;
         text.lineWidth = sx(nodeDesc.bounds.width);
-        text.shadow = new createjs.Shadow(nodeDesc.shadowColor || "#000000", 5, 5, 10);
 
-        frontContainer.addChild(text);
-        activeScene.nodes.push(text);
+        textContainer.addChild(text);
+        frontContainer.addChild(textContainer);
+        activeScene.nodes.push(textContainer);
 
         let destinationX = sx(nodeDesc.bounds.x);
 
@@ -248,7 +246,7 @@
         if (nodeDesc.textAlign === "center") {
           const offset = realBounds.width / 2;
           console.log({ offset });
-          text.x += offset;
+          textContainer.x += offset;
           destinationX += offset;
         }
 
@@ -273,14 +271,26 @@
             realBounds = text.getBounds();
           }
         }
+
+        //deepen shadow
+        if (nodeDesc.shadow > 0) {
+          text.shadow = new createjs.Shadow(nodeDesc.shadowColor || "#000000", 0, 0, 20);
+
+          //for any extra depth, clone text and give shadow
+          for (var v = 1; v < nodeDesc.shadow ; v++) {
+            var stext = text.clone(true);
+            stext.shadow = new createjs.Shadow(nodeDesc.shadowColor || "#000000", Math.random() * 5, Math.random() * 5, 40);
+            textContainer.addChild(stext);
+          }
+        }
+
         //Adjustments complete. Now render
-        createjs.Tween.get(text)
+        createjs.Tween.get(textContainer)
           .to({ alpha: 1, x: destinationX }, 300) // fade in speed 0.5s
           .call(() => {
 
           });
 
-        // console.log("sx", sx(1), "sy", sy(1), "text bounds:", text.getBounds());
       }
     };
 
