@@ -1,7 +1,8 @@
 import { action, computed, observable } from "mobx";
 import { settings, entityTypes } from "../../utils/data";
-import { find, getConfig, setConfig, upsert, remove } from "../persistence/localdb";
-
+// import { find, getConfig, setConfig, upsert, remove } from "../persistence/localdb";
+const electron = require("electron").remote;
+const { find, getConfig, setConfig, upsert, remove }  = electron.require("./data/persistence/localdb")
 const _ = require("lodash");
 
 const chance = new require("chance")();

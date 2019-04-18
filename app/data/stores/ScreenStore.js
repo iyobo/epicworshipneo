@@ -1,9 +1,11 @@
 import { observable, action } from "mobx";
 import { BrowserWindow } from "electron";
-import { setConfig } from "../persistence/localdb";
-import { settings } from "../../utils/data";
-
 const electron = require("electron").remote;
+
+// import { setConfig } from "../persistence/localdb";
+const { setConfig } = electron.require("./data/persistence/localdb")
+
+import { settings } from "../../utils/data";
 const path = electron.require("path");
 const chance = new require("chance")();
 

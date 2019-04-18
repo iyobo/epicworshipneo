@@ -11,16 +11,16 @@
  * @flow
  */
 import { initLogger, installExtensions } from "./utils/bootstrap";
-
-initLogger();
-
 import { app, BrowserWindow } from "electron";
 import { autoUpdater } from "electron-updater";
 import log from "electron-log";
 import MenuBuilder from "./menu";
 
 import { initializeScreens } from "./managers/screenManager";
-const { ipcMain } = require('electron');
+import { initializeData } from "./data/persistence/localdb";
+
+initLogger();
+
 
 var fs = require('fs-extra');
 
@@ -72,6 +72,9 @@ app.on("ready", async () => {
 
   // await initializeData(app);
   await initializeScreens(app);
+
+  //Initialize data
+  await initializeData(app)
 
 
   mainWindow = new BrowserWindow({

@@ -263,6 +263,7 @@
     "electron-log": "3.0.5",
     "electron-updater": "4.0.6",
     "history": "4.9.0",
+    "izitoast": "^1.4.0",
     "lodash": "4.17.11",
     "mime": "2.4.2",
     "mobx": "5.9.4",
@@ -286,6 +287,7 @@
     "rxjs": "6.4.0",
     "source-map-support": "0.5.12",
     "sqlite3": "4.0.6",
+    "sweetalert2": "^8.8.5",
     "uikit": "3.0.3"
   },
   "devEngines": {

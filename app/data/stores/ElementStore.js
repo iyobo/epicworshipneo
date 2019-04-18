@@ -1,15 +1,16 @@
 import { action, computed, observable } from "mobx";
 import { elementTypes, entityTypes } from "../../utils/data";
-import { find, findById, upsert, remove } from "../persistence/localdb";
+// import { find, findById, upsert, remove } from "../persistence/localdb";
+
 
 const _ = require("lodash");
-
 const chance = new require("chance")();
-const electron = require("electron").remote;
 
+const electron = require("electron").remote;
 const fs = electron.require("fs-extra");
 const path = electron.require("path");
 const Mime = electron.require("mime");
+const { find, findById, upsert, remove } = electron.require("./data/persistence/localdb")
 
 export default class ElementStore {
 
