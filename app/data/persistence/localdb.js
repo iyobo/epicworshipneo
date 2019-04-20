@@ -2,7 +2,6 @@ import PouchDB from "pouchdb";
 import PouchFind from "pouchdb-find";
 
 
-
 const LOGGING = true;
 // const fs = require("fs");
 // const path = require("path");
@@ -21,7 +20,7 @@ PouchDB.plugin(PouchFind);
 
 
 // export const db = new PouchDB(path.join(process.cwd(), "database", "epicworshipdb"), { auto_compaction: true });
-export const db = new PouchDB( "epicworshipdb", { auto_compaction: true });
+export const db = new PouchDB("epicworshipdb", { auto_compaction: true });
 
 export const initializeData = async () => {
   console.log("Initializing DB...");
@@ -53,9 +52,8 @@ export const upsert = async (entity: Object) => {
 
   if (existing) {
     entity._rev = existing._rev;
-    if (LOGGING) console.log("PouchDB updating _rev",existing._rev, entity);
-  }
-  else{
+    if (LOGGING) console.log("PouchDB updating _rev", existing._rev, entity);
+  } else {
     if (LOGGING) console.log("PouchDB create", entity);
   }
 
@@ -77,7 +75,7 @@ export const getConfig = async (name) => {
  * @returns {Promise<void>}
  */
 export const findById = async (id: String) => {
-  const res =  await findOne({ _id: id });
+  const res = await findOne({ _id: id });
   return res;
 };
 

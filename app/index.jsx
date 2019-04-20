@@ -1,10 +1,12 @@
+
 import React from "react";
 import { render } from "react-dom";
 import { AppContainer } from "react-hot-loader";
 // import Root from "./layout/Root";
 import "./app.global.scss";
+import { initSentry } from "./utils/bootstrap";
 // import { initializeData } from "./data/persistence/localdb";
-
+initSentry();
 
 const el = require('electron');
 

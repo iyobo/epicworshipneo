@@ -10,10 +10,15 @@
  *
  * @flow
  */
-import { initLogger, installExtensions } from "./utils/bootstrap";
+
+import { initLogger, initSentry, installExtensions } from "./utils/bootstrap";
+initSentry();
 import { app, BrowserWindow } from "electron";
 import { autoUpdater } from "electron-updater";
 import log from "electron-log";
+
+
+
 import MenuBuilder from "./menu";
 
 import { initializeScreens } from "./managers/screenManager";
@@ -74,8 +79,7 @@ app.on("ready", async () => {
   await initializeScreens(app);
 
   //Initialize data
-  await initializeData(app)
-
+  await initializeData(app);
 
   mainWindow = new BrowserWindow({
     title: "EpicWorship: When you do, It must be Epic",
@@ -118,6 +122,7 @@ app.on("ready", async () => {
 
     }
   });
+
 
   // mainWindow.webContents.on('did-navigate-in-page', () => {
   //   if (!mainWindow) {

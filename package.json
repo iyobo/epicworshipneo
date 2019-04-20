@@ -256,6 +256,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.8.1",
+    "@sentry/electron": "^0.17.1",
     "capitalize": "2.0.0",
     "chance": "1.0.18",
     "devtron": "1.4.0",
