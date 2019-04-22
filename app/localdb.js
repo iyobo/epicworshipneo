@@ -2,16 +2,17 @@ import PouchDB from "pouchdb";
 import PouchFind from "pouchdb-find";
 
 
-const LOGGING = true;
-// const fs = require("fs");
-// const path = require("path");
+const LOGGING = false;
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
+export const storageFolder = path.join(os.homedir(), 'epicworshipData');
 
-// const databaseFolderPath = path.join(__dirname, "..", "database");
-// if (!fs.existsSync(databaseFolderPath)) {
-//
-//   console.log(`Creating ${databaseFolderPath}...`);
-//   fs.mkdirSync(databaseFolderPath);
-// }
+if (!fs.existsSync(storageFolder)) {
+
+  console.log(`Creating ${storageFolder}...`);
+  fs.mkdirSync(storageFolder);
+}
 
 
 // const dbPath = path.join('database', 'epicworshipdb');
@@ -20,9 +21,9 @@ PouchDB.plugin(PouchFind);
 
 
 // export const db = new PouchDB(path.join(process.cwd(), "database", "epicworshipdb"), { auto_compaction: true });
-export const db = new PouchDB("epicworshipdb", { auto_compaction: true });
+export const db = new PouchDB(path.join(storageFolder, 'db'), { auto_compaction: true });
 
-export const initializeData = async () => {
+export const initializeData = async (opts) => {
   console.log("Initializing DB...");
 
   const info = await db.info();

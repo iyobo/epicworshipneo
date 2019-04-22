@@ -3,7 +3,7 @@ import { BrowserWindow } from "electron";
 const electron = require("electron").remote;
 
 // import { setConfig } from "../persistence/localdb";
-const { setConfig } = electron.require("./data/persistence/localdb")
+const { setConfig } = electron.require('filepouch')
 
 import { settings } from "../../utils/data";
 const path = electron.require("path");

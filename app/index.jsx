@@ -5,11 +5,14 @@ import { AppContainer } from "react-hot-loader";
 // import Root from "./layout/Root";
 import "./app.global.scss";
 import { initSentry } from "./utils/bootstrap";
-// import { initializeData } from "./data/persistence/localdb";
 initSentry();
-
 const el = require('electron');
+const electron = require("electron").remote;
 
+const path = electron.require('path');
+const os = electron.require('os');
+const { initializeData, setConfig } = electron.require('filepouch');
+const storageFolder = path.join(os.homedir(), 'epicworshipData');
 
 (async function(){
 
@@ -19,7 +22,7 @@ const el = require('electron');
 
   })
 
-  // await initializeData();
+  await initializeData({storageFolder});
 
   const Root = require("./layout/Root").default;
   render(

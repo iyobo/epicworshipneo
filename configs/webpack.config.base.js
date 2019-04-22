@@ -9,6 +9,7 @@ import { dependencies } from '../package.json';
 export default {
   externals: [...Object.keys(dependencies || {})],
 
+
   module: {
     rules: [
       {
@@ -24,6 +25,8 @@ export default {
     ]
   },
 
+
+
   output: {
     path: path.join(__dirname, '..', 'app'),
     // https://github.com/webpack/webpack/issues/1114
@@ -34,7 +37,10 @@ export default {
    * Determine the array of extensions that should be used to resolve modules.
    */
   resolve: {
-    extensions: ['.js', '.jsx', '.json']
+    extensions: ['.js', '.jsx', '.json'],
+    // alias: {
+    //   common: path.resolve(__dirname, 'app/common/')
+    // }
   },
 
   plugins: [

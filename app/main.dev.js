@@ -22,12 +22,8 @@ import log from "electron-log";
 import MenuBuilder from "./menu";
 
 import { initializeScreens } from "./managers/screenManager";
-import { initializeData } from "./data/persistence/localdb";
 
 initLogger();
-
-
-var fs = require('fs-extra');
 
 export default class AppUpdater {
   constructor() {
@@ -79,7 +75,7 @@ app.on("ready", async () => {
   await initializeScreens(app);
 
   //Initialize data
-  await initializeData(app);
+  // await initializeData(app);
 
   mainWindow = new BrowserWindow({
     title: "EpicWorship: When you do, It must be Epic",

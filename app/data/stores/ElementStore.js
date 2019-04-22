@@ -10,7 +10,7 @@ const electron = require("electron").remote;
 const fs = electron.require("fs-extra");
 const path = electron.require("path");
 const Mime = electron.require("mime");
-const { find, findById, upsert, remove } = electron.require("./data/persistence/localdb")
+const { find, findById, upsert, remove } = electron.require('filepouch')
 
 export default class ElementStore {
 
