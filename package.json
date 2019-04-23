@@ -64,6 +64,7 @@
       "app/app.html",
       "app/projector/createjs.min.js",
       "app/projector/projector.html",
+      "app/projector/projector.js",
       "app/main.prod.js",
       "app/main.prod.js.map",
       "package.json"
