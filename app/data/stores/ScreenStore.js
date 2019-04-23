@@ -1,6 +1,7 @@
 import { observable, action } from "mobx";
 import { BrowserWindow } from "electron";
 const electron = require("electron").remote;
+const process = electron.getGlobal('process');
 
 // import { setConfig } from "../persistence/localdb";
 const { setConfig } = electron.require('filepouch')
@@ -50,14 +51,24 @@ export default class ScreenStore {
       ...this.projectorScreen.bounds
     };
 
-    console.log({ opts });
+    // const url = `file://${__dirname}/projector/projector.html`;
+    const url = `file://${process.env.realAppBase}/projector/projector.html`;
+    console.log({ url, opts , __filename, __dirname, env: process.env});
 
     this.projectorWindow = new electron.BrowserWindow(opts);
-    this.projectorWindow.loadURL(`file://${__dirname}/projector/projector.html`);
+    this.projectorWindow.loadURL(url);
+
+
     this.projectorWindow.webContents.on("did-finish-load", () => {
 
       this.projectorWindow.show();
       // this.projectorWindow.maximize();
+
+      // if (
+      //   process.env.NODE_ENV === "development" ||
+      //   process.env.DEBUG_PROD === "true"
+      // )
+        this.projectorWindow.webContents.openDevTools({ mode: "bottom" });
     });
     this.projectorWindow.on("closed", () => {
       this.projectorWindow = null;

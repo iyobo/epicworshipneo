@@ -62,6 +62,8 @@
     "files": [
       "app/dist/",
       "app/app.html",
+      "app/projector/createjs.min.js",
+      "app/projector/projector.html",
       "app/main.prod.js",
       "app/main.prod.js.map",
       "package.json"

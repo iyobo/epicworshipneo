@@ -96,7 +96,11 @@ app.on("ready", async () => {
   // protocol: 'file:',
   // slashes: true
   // }));
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  // const mainWindowURL = `file://${__dirname}/projector/projector.html`;
+  process.env.realAppBase = __dirname;
+  const mainWindowURL = `file://${__dirname}/app.html`;
+  console.error({mainWindowURL, dirBase: __dirname, eBase: app.getAppPath()});
+  mainWindow.loadURL(mainWindowURL);
 
   if (
     process.env.NODE_ENV === "development" ||
