@@ -43,6 +43,10 @@
   const virtualWidth = 1000;
   const virtualHeight = 1000;
 
+  const electron = require("electron").remote;
+  const process = electron.getGlobal("process");
+  global.APPBASE = process.env.realAppBase;
+
   function startTheParty() {
 
     //Register canvas

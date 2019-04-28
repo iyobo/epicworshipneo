@@ -11,8 +11,8 @@ const electron = require("electron").remote;
 
 const path = electron.require('path');
 const os = electron.require('os');
-const { initializeData, setConfig } = electron.require('filepouch');
 const storageFolder = path.join(os.homedir(), 'epicworshipData');
+const { initializeData, setConfig } = electron.require(`${global.APPBASE}/localdb`);
 
 (async function(){
 
@@ -22,7 +22,7 @@ const storageFolder = path.join(os.homedir(), 'epicworshipData');
 
   })
 
-  await initializeData({storageFolder});
+  await initializeData({storageFolder, verbose: true});
 
   const Root = require("./layout/Root").default;
   render(

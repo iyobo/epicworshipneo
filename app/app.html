@@ -32,6 +32,10 @@
         var toast = iziToast;
         const scripts = [];
 
+        const electron = require("electron").remote;
+        const process = electron.getGlobal("process");
+        global.APPBASE = process.env.realAppBase;
+
         // Dynamically insert the DLL script in development env in the
         // renderer process
         if (process.env.NODE_ENV === 'development') {

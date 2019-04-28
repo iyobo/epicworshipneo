@@ -10,7 +10,7 @@ const electron = require("electron").remote;
 const fs = electron.require("fs-extra");
 const path = electron.require("path");
 const Mime = electron.require("mime");
-const { find, findById, upsert, remove } = electron.require('filepouch')
+const { find, findById, upsert, remove } = electron.require(`${global.APPBASE}/localdb`)
 
 export default class ElementStore {
 
@@ -230,5 +230,7 @@ export default class ElementStore {
 
     toast.success({ message: `Media ${elem.name} imported` });
   };
+
+
 
 }

@@ -1,8 +1,8 @@
 import { action, computed, observable } from "mobx";
-import { settings, entityTypes } from "../../utils/data";
+import { settings, entityTypes, elementTypes } from "../../utils/data";
 // import { find, getConfig, setConfig, upsert, remove } from "../persistence/localdb";
 const electron = require("electron").remote;
-const { find, getConfig, setConfig, upsert, remove }  = electron.require('filepouch')
+const { find, getConfig, setConfig, upsert, remove } = electron.require(`${global.APPBASE}/localdb`);
 const _ = require("lodash");
 
 const chance = new require("chance")();
@@ -162,18 +162,19 @@ export default class ProductionStore {
   addToLiveProduction = async (element) => {
     const liveProduction = this.liveProduction;
     // const liveProduction = this.productionIndex[this.liveProductionId];
-
     const item = { _id: chance.guid(), elementType: element.elementType, elementId: element._id };
 
+    const g = JSON.parse(JSON.stringify(liveProduction));
+    console.log({g, liveProduction});
+    await upsert(g);
     liveProduction.items.push(item);
-    await upsert(liveProduction);
-
+    console.log(liveProduction);
   };
 
   @action
   removeFromLiveProduction = async (productionItemId) => {
     const liveProduction = this.liveProduction;
-    _.remove(liveProduction.items, {_id: productionItemId});
+    _.remove(liveProduction.items, { _id: productionItemId });
 
     await upsert(liveProduction);
 
@@ -205,6 +206,78 @@ export default class ProductionStore {
 
 
     this.liveProductionItems = items;
+  }
+
+  /**
+   * A Scene Page is an object with {name, type, text, elementId, payload}.
+   * Payload  gets thrown out to the projector for display
+   * @returns {Array}
+   */
+
+  get liveProductionScenePages() {
+    // if(!this.liveProductionItems) return [];
+
+    const scenePages = [];
+    const elementStore = this.appStore.elementStore;
+
+    this.liveProductionItems.forEach((it) => {
+      const element = it.element;
+
+      if (element.elementType === elementTypes.SONG) {
+        const paragraphs = it.element.text.split("/n");
+        paragraphs.forEach((paragraphText) => {
+
+          const payload = {
+            action: "replaceScene",
+            nodes: [
+              // { type: "staticBackground", src: "bg.jpg" },
+              // { type: "videoBackground", src: "" },
+              // { type: "video", src: "", volume: 100, bounds: null, mime: "video/mp4" }, // For anything but text, null bounds means full screen
+              // { type: "image", src: "", volume: 100, bounds: null },
+              {
+                type: "text",
+                text: paragraphText.trim(),
+                fontSize: 100,
+                font: "Arial",
+                color: "white",
+                shadow: 2,
+                shadowColor: "black",
+                textAlign: "center",
+
+                bounds: { x: 200, width: 600, y: 100, height: 800 }
+              },
+              {
+                type: "text",
+                text: element.name,
+                fontSize: 20,
+                font: "Arial",
+                color: "white",
+                shadow: 2,
+                shadowColor: "black",
+                textAlign: "center",
+
+                bounds: { x: 10, y: 950, width: 900, height: 50 }
+              }
+            ]
+          };
+
+          const scenePage = {
+            _id: chance.guid(),
+            name: it.name,
+            type: element.elementType,
+            text: element.text,
+            elementId: element._id,
+            payload
+          };
+
+          scenePages.push(scenePage);
+        });
+      }
+
+
+    });
+
+    return scenePages;
   }
 
 }

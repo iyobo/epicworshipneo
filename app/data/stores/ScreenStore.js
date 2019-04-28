@@ -1,12 +1,14 @@
 import { observable, action } from "mobx";
 import { BrowserWindow } from "electron";
+
 const electron = require("electron").remote;
-const process = electron.getGlobal('process');
+const process = electron.getGlobal("process");
 
 // import { setConfig } from "../persistence/localdb";
-const { setConfig } = electron.require('filepouch')
+const { setConfig } = electron.require(`${global.APPBASE}/localdb`);
 
 import { settings } from "../../utils/data";
+
 const path = electron.require("path");
 const chance = new require("chance")();
 
@@ -53,7 +55,7 @@ export default class ScreenStore {
 
     // const url = `file://${__dirname}/projector/projector.html`;
     const url = `file://${process.env.realAppBase}/projector/projector.html`;
-    console.log({ url, opts , __filename, __dirname, env: process.env});
+    console.log({ url, opts, __filename, __dirname, env: process.env });
 
     this.projectorWindow = new electron.BrowserWindow(opts);
     this.projectorWindow.loadURL(url);
@@ -68,11 +70,22 @@ export default class ScreenStore {
       //   process.env.NODE_ENV === "development" ||
       //   process.env.DEBUG_PROD === "true"
       // )
-        this.projectorWindow.webContents.openDevTools({ mode: "bottom" });
+      this.projectorWindow.webContents.openDevTools({ mode: "bottom" });
     });
     this.projectorWindow.on("closed", () => {
       this.projectorWindow = null;
     });
+  };
+
+  /**
+   * projectorName not used right now as we currently only do one.
+   * @param projectorName
+   * @param payload
+   */
+  sendtoProjector = (projectorName, payload) => {
+    if (!this.projectorWindow) this.loadProjector();
+
+    this.projectorWindow.webContents.send("toProjector", payload);
   };
 
   testText = (text) => {
@@ -107,7 +120,7 @@ export default class ScreenStore {
     this.projectorWindow.webContents.send("toProjector", {
       action: "appendScene",
       nodes: [
-        { type: "staticBackground", src: "bg.jpg" },
+        { type: "staticBackground", src: "bg.jpg" }
         // { type: "videoBackground", src: "" },
 
       ]
@@ -120,7 +133,7 @@ export default class ScreenStore {
     this.projectorWindow.webContents.send("toProjector", {
       action: "appendScene",
       nodes: [
-        { type: "staticBackground", src: "10205.jpg" },
+        { type: "staticBackground", src: "10205.jpg" }
         // { type: "videoBackground", src: "" },
 
       ]
@@ -134,7 +147,7 @@ export default class ScreenStore {
       action: "appendScene",
       nodes: [
         // { type: "staticBackground", src: "bg.jpg" },
-        { type: "videoBackground", src: "bg1.mp4" },
+        { type: "videoBackground", src: "bg1.mp4" }
 
       ]
     });
@@ -147,7 +160,7 @@ export default class ScreenStore {
       action: "appendScene",
       nodes: [
         // { type: "staticBackground", src: "bg.jpg" },
-        { type: "videoBackground", src: "bg2.mp4" },
+        { type: "videoBackground", src: "bg2.mp4" }
 
       ]
     });
