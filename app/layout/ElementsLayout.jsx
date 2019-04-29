@@ -38,6 +38,7 @@ export default class ElementsLayout extends Component {
   render() {
 
     const liveProduction = this.props.store.productionStore.liveProduction;
+    const navigateToElement = this.props.store.navigateToElement;
 
     // console.log({liveProduction})
 
@@ -89,7 +90,7 @@ export default class ElementsLayout extends Component {
               // selectedId={selectedElementId}
               buttons={this.productionItemButtons}
               expandElements={true}
-              // onItemClick={(item) => this.onItemSelect(item)}
+              onItemClick={(item) => navigateToElement(item.elementType, item.elementId)}
               stretch
             />
           </div>

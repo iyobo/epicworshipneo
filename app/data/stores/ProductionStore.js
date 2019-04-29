@@ -181,8 +181,6 @@ export default class ProductionStore {
    * Payload  gets thrown out to the projector for display
    * @returns {Array}
    */
-
-
   get liveProductionScenePages() {
     console.log('refreshing scene pages...', this);
     if(!this.liveProduction) return [];
@@ -247,6 +245,7 @@ export default class ProductionStore {
 
     });
 
+    console.log({scenePages});
     return scenePages;
   }
 
