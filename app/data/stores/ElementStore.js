@@ -10,7 +10,7 @@ const electron = require("electron").remote;
 const fs = electron.require("fs-extra");
 const path = electron.require("path");
 const Mime = electron.require("mime");
-const { find, findById, upsert, remove } = electron.require(`${global.APPBASE}/localdb`)
+const { find, findById, upsert, remove } = require('./localdb')
 
 export default class ElementStore {
 

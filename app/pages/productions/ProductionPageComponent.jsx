@@ -79,7 +79,7 @@ export default class ProductionPageComponent extends Component<Props> {
 
             {production && <div>
               <b>{dict.menu_elements}</b>
-              {production.items.length > 0 ? <ItemList
+              {production.items && production.items.length > 0 ? <ItemList
                   items={production.items}
                   // selectedId={selectedElementId}
                   buttons={this.productionItemButtons}

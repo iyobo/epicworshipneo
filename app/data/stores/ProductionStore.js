@@ -2,7 +2,7 @@ import { action, computed, observable } from "mobx";
 import { settings, entityTypes, elementTypes } from "../../utils/data";
 // import { find, getConfig, setConfig, upsert, remove } from "../persistence/localdb";
 const electron = require("electron").remote;
-const { find, getConfig, setConfig, upsert, remove } = electron.require(`${global.APPBASE}/localdb`);
+const { find, getConfig, setConfig, upsert, remove } = require('./localdb');
 const _ = require("lodash");
 
 const chance = new require("chance")();
@@ -164,9 +164,6 @@ export default class ProductionStore {
     // const liveProduction = this.productionIndex[this.liveProductionId];
     const item = { _id: chance.guid(), elementType: element.elementType, elementId: element._id };
 
-    const g = JSON.parse(JSON.stringify(liveProduction));
-    console.log({g, liveProduction});
-    await upsert(g);
     liveProduction.items.push(item);
     console.log(liveProduction);
   };

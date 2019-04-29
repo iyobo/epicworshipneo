@@ -12,7 +12,7 @@ const electron = require("electron").remote;
 const path = electron.require('path');
 const os = electron.require('os');
 const storageFolder = path.join(os.homedir(), 'epicworshipData');
-const { initializeData, setConfig } = electron.require(`${global.APPBASE}/localdb`);
+const { initializeData, setConfig } = require('./data/stores/localdb');
 
 (async function(){
 

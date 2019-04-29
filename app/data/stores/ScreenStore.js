@@ -5,7 +5,7 @@ const electron = require("electron").remote;
 const process = electron.getGlobal("process");
 
 // import { setConfig } from "../persistence/localdb";
-const { setConfig } = electron.require(`${global.APPBASE}/localdb`);
+const { setConfig } = require('./localdb');
 
 import { settings } from "../../utils/data";
 
