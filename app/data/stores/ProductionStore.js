@@ -11,7 +11,6 @@ export default class ProductionStore {
 
   @observable productions = [];
   @observable liveProductionId;
-  @observable liveProductionItems = null;
   lastSelectedProductionId;
 
   constructor(appStore) {
@@ -177,51 +176,25 @@ export default class ProductionStore {
 
   };
 
-
-  @action
-  calculateProductionItems() {
-    const live = this.liveProduction;
-    const elementStore = this.appStore.elementStore;
-    if (!live) this.liveProductionItems = null;
-    let items = [];
-
-
-    live.items.forEach((it) => {
-      const element = elementStore.getElement(it.elementType, it.elementId);
-
-      if (element) {
-        const item = {
-          _id: chance.guid(),
-          name: element.name,
-          element
-        };
-
-        items.push(item);
-      }
-
-    });
-
-
-    this.liveProductionItems = items;
-  }
-
   /**
    * A Scene Page is an object with {name, type, text, elementId, payload}.
    * Payload  gets thrown out to the projector for display
    * @returns {Array}
    */
 
+
   get liveProductionScenePages() {
-    // if(!this.liveProductionItems) return [];
+    console.log('refreshing scene pages...', this);
+    if(!this.liveProduction) return [];
 
     const scenePages = [];
     const elementStore = this.appStore.elementStore;
 
-    this.liveProductionItems.forEach((it) => {
-      const element = it.element;
+    this.liveProduction.items.forEach((it) => {
+      const element = elementStore.getElement(it.elementType, it.elementId);
 
       if (element.elementType === elementTypes.SONG) {
-        const paragraphs = it.element.text.split("/n");
+        const paragraphs = element.text.split("/n");
         paragraphs.forEach((paragraphText) => {
 
           const payload = {

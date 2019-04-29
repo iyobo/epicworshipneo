@@ -11,17 +11,20 @@
  * @flow
  */
 
-import { initLogger, initSentry, installExtensions } from "./utils/bootstrap";
-initSentry();
+import { initLogger, installExtensions } from "./utils/bootstrap";
 import { app, BrowserWindow } from "electron";
 import { autoUpdater } from "electron-updater";
 import log from "electron-log";
-
-
-
 import MenuBuilder from "./menu";
-
 import { initializeScreens } from "./managers/screenManager";
+
+if (process.env.NODE_ENV === "production") {
+  console.log("SENTRY ACTIVATED");
+  const Sentry = require("@sentry/electron");
+  Sentry.init({ dsn: "https://8a81eeb019fa4233a8ce3f2835129b4f@sentry.io/1443354" });
+} else {
+  console.log("SENTRY DISABLED: Not production environment");
+}
 
 initLogger();
 
@@ -53,7 +56,7 @@ if (
  * Add event listeners...
  */
 
-app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
+app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
 
 app.on("window-all-closed", () => {
   // Respect the OSX convention of having the application in memory even
@@ -99,7 +102,7 @@ app.on("ready", async () => {
   // const mainWindowURL = `file://${__dirname}/projector/projector.html`;
   process.env.realAppBase = __dirname;
   const mainWindowURL = `file://${__dirname}/app.html`;
-  console.error({mainWindowURL, dirBase: __dirname, eBase: app.getAppPath()});
+  console.error({ mainWindowURL, dirBase: __dirname, eBase: app.getAppPath() });
   mainWindow.loadURL(mainWindowURL);
 
   if (

@@ -61,8 +61,10 @@
     "appId": "co.iyobo.EpicWorship",
     "files": [
       "app/dist/",
+      "app/assets/",
       "app/localdb.js",
       "app/app.html",
+      "app/utils/sentry.js",
       "app/projector/createjs.min.js",
       "app/projector/projector.html",
       "app/projector/projector.js",

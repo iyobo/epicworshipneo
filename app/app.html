@@ -7,10 +7,20 @@
     <link rel="stylesheet" href="../node_modules/sweetalert2/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="../node_modules/izitoast/dist/css/iziToast.min.css">
     <link rel="stylesheet" href="../node_modules/uikit/dist/css/uikit.min.css">
+    <script>
+      if(process.env.NODE_ENV === 'production') {
+        console.log('SENTRY ACTIVATED')
+        const Sentry = require("@sentry/electron");
+        Sentry.init({ dsn: "https://8a81eeb019fa4233a8ce3f2835129b4f@sentry.io/1443354" });
+      }else{
+        console.log('SENTRY DISABLED: Not production environment')
+      }
+    </script>
     <script type="text/javascript" src="../node_modules/uikit/dist/js/uikit.min.js"></script>
     <script src="../node_modules/uikit/dist/js/uikit-icons.min.js"></script>
     <script>
       (function() {
+
         if (!process.env.HOT) {
           const link = document.createElement('link');
           link.rel = 'stylesheet';

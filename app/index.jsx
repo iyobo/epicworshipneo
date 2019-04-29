@@ -4,8 +4,7 @@ import { render } from "react-dom";
 import { AppContainer } from "react-hot-loader";
 // import Root from "./layout/Root";
 import "./app.global.scss";
-import { initSentry } from "./utils/bootstrap";
-initSentry();
+
 const el = require('electron');
 const electron = require("electron").remote;
 
