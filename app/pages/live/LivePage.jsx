@@ -24,6 +24,7 @@ export default class LivePage extends Component {
           // stretch
                   onItemClick={this.onItemClick}
           // onItemDoubleClick={this.onItemDoubleClick}
+          nameField='text'
         />
 
       </div>

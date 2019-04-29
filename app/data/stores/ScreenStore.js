@@ -82,7 +82,7 @@ export default class ScreenStore {
    * @param projectorName
    * @param payload
    */
-  sendtoProjector = (projectorName, payload) => {
+  sendToProjector = (projectorName, payload) => {
     if (!this.projectorWindow) this.loadProjector();
 
     this.projectorWindow.webContents.send("toProjector", payload);

@@ -192,9 +192,10 @@ export default class ProductionStore {
       const element = elementStore.getElement(it.elementType, it.elementId);
 
       if (element.elementType === elementTypes.SONG) {
-        const paragraphs = element.text.split("/n");
-        paragraphs.forEach((paragraphText) => {
+        const paragraphs = element.text.split("\n\n");
+        paragraphs.forEach((paragraph) => {
 
+          const paragraphText = paragraph.trim();
           const payload = {
             action: "replaceScene",
             nodes: [
@@ -231,14 +232,23 @@ export default class ProductionStore {
 
           const scenePage = {
             _id: chance.guid(),
-            name: it.name,
-            type: element.elementType,
-            text: element.text,
+            name: element.name,
+            elementType: element.elementType,
             elementId: element._id,
+            text: paragraphText,
             payload
           };
 
           scenePages.push(scenePage);
+        });
+
+        // empty scene
+        scenePages.push({
+          _id: chance.guid(),
+          payload:{
+            action: "replaceScene",
+            nodes: []
+          }
         });
       }
 
