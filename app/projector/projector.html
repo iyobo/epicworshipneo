@@ -177,7 +177,7 @@
     }
 
     const enterNodeHandlers = {
-      staticBackground: (nodeDesc) => {
+      image: (nodeDesc) => {
 
         var image = new Image();
         image.src = nodeDesc.src;
@@ -209,7 +209,7 @@
         };
 
       },
-      videoBackground: (nodeDesc) => {
+      video: (nodeDesc) => {
         // console.log('video',nodeDesc.src);
 
         if (bgVideoDOM) {
@@ -218,12 +218,12 @@
 
         bgVideoDOM = document.createElement("video");
         bgVideoDOM.autoplay = true;
-        bgVideoDOM.loop = true;
+        bgVideoDOM.loop = nodeDesc.loop;
         // bgVideoDOM.controls = false;
         bgVideoDOM.hidden = true;
         bgVideoDOM.preload = true;
         // bgVideoDOM.width = 100;
-        bgVideoDOM.muted = true;
+        bgVideoDOM.muted = nodeDesc.muted;
         // bgVideoDOM.volume = 0;
         // bgVideoDOM.setAttribute("webkit-playsinline","true");
         // bgVideoDOM.setAttribute("playsinline","true");

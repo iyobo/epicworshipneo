@@ -31,7 +31,7 @@ export default class ScreenStore {
   loadScreens = async () => {
     this.screens = electron.screen.getAllDisplays();
 
-    //For now, just always use the last screen to display projector
+    //FIXME: For now, just always use the last screen to display projector
     this.projectorScreen = this.screens[this.screens.length - 1];
 
     await setConfig(settings.projectorScreenId, this.projectorScreen.id);

@@ -2,7 +2,7 @@ import { action, computed, observable } from "mobx";
 import { settings, entityTypes, elementTypes } from "../../utils/data";
 // import { find, getConfig, setConfig, upsert, remove } from "../persistence/localdb";
 const electron = require("electron").remote;
-const { find, getConfig, setConfig, upsert, remove } = require('./localdb');
+const { find, getConfig, setConfig, upsert, remove } = require("./localdb");
 const _ = require("lodash");
 
 const chance = new require("chance")();
@@ -182,15 +182,15 @@ export default class ProductionStore {
    * @returns {Array}
    */
   get liveProductionScenePages() {
-    console.log('refreshing scene pages...', this);
-    if(!this.liveProduction) return [];
+    console.log("refreshing scene pages...", this);
+    if (!this.liveProduction) return [];
 
     const scenePages = [];
     const elementStore = this.appStore.elementStore;
 
     this.liveProduction.items.forEach((it) => {
       const element = elementStore.getElement(it.elementType, it.elementId);
-      if(!element) return;
+      if (!element) return;
 
       if (element.elementType === elementTypes.SONG) {
         const paragraphs = element.text.split("\n\n");
@@ -200,10 +200,8 @@ export default class ProductionStore {
           const payload = {
             action: "replaceScene",
             nodes: [
-              // { type: "staticBackground", src: "bg.jpg" },
-              // { type: "videoBackground", src: "" },
-              // { type: "video", src: "", volume: 100, bounds: null, mime: "video/mp4" }, // For anything but text, null bounds means full screen
-              // { type: "image", src: "", volume: 100, bounds: null },
+              // { type: "video", src: "" }, // For anything but text, null bounds means full screen
+              // { type: "image", src: "" },
               {
                 type: "text",
                 text: paragraphText.trim(),
@@ -222,7 +220,7 @@ export default class ProductionStore {
                 fontSize: 20,
                 font: "Arial",
                 color: "white",
-                shadow: 2,
+                shadow: 1,
                 shadowColor: "black",
                 bounds: { x: 10, y: 950, width: 900, height: 50 }
               }
@@ -241,20 +239,70 @@ export default class ProductionStore {
           scenePages.push(scenePage);
         });
 
-        // empty scene
-        scenePages.push({
+      }
+      else if (element.elementType === elementTypes.BACKGROUND) {
+
+        let bgNode= {};
+
+        if(element.details.mime && ~element.details.mime.indexOf('video')){
+          bgNode = { type: "video", src: element.details.path, loop: true, muted: true };
+        }
+        else{
+          bgNode = { type: "image", src: element.details.path };
+        }
+
+        const scenePage = {
           _id: chance.guid(),
-          payload:{
-            action: "replaceScene",
-            nodes: []
+          name: element.name,
+          text: element.name,
+          elementType: element.elementType,
+          elementId: element._id,
+          payload: {
+            action: "appendScene",
+            nodes: [bgNode]
           }
-        });
+        };
+        scenePages.push(scenePage);
+
+      }
+      else if (element.elementType === elementTypes.MEDIA) {
+
+        let bgNode= {};
+
+        if(element.details.mime && ~element.details.mime.indexOf('video')){
+          bgNode = { type: "video", src: element.details.path, loop: false, muted: false };
+        }
+        else{
+          bgNode = { type: "image", src: element.details.path };
+        }
+
+        const scenePage = {
+          _id: chance.guid(),
+          name: element.name,
+          text: element.name,
+          elementType: element.elementType,
+          elementId: element._id,
+          payload: {
+            action: "replaceScene",
+            nodes: [bgNode]
+          }
+        };
+        scenePages.push(scenePage);
+
       }
 
+      // empty scene
+      scenePages.push({
+        _id: chance.guid(),
+        payload: {
+          action: "replaceScene",
+          nodes: []
+        }
+      });
 
     });
 
-    console.log({scenePages});
+    console.log({ scenePages });
     return scenePages;
   }
 
