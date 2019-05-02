@@ -83,10 +83,10 @@ app.on("ready", async () => {
   mainWindow = new BrowserWindow({
     title: "EpicWorship: When you do, It must be Epic",
     show: false,
-    width: 1200,
-    height: 1000,
-    x: 0,
-    y: 0,
+    // width: 1200,
+    // height: 1000,
+    // x: 0,
+    // y: 0,
     webPreferences: {
       webSecurity: false,
       nodeIntegration: true

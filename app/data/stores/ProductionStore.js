@@ -190,6 +190,7 @@ export default class ProductionStore {
 
     this.liveProduction.items.forEach((it) => {
       const element = elementStore.getElement(it.elementType, it.elementId);
+      if(!element) return;
 
       if (element.elementType === elementTypes.SONG) {
         const paragraphs = element.text.split("\n\n");
@@ -211,9 +212,9 @@ export default class ProductionStore {
                 color: "white",
                 shadow: 2,
                 shadowColor: "black",
-                textAlign: "center",
-
-                bounds: { x: 200, width: 600, y: 100, height: 800 }
+                horizontalAlign: "center",
+                verticalAlign: "center",
+                bounds: { x: 100, width: 800, y: 100, height: 800 }
               },
               {
                 type: "text",
@@ -223,8 +224,6 @@ export default class ProductionStore {
                 color: "white",
                 shadow: 2,
                 shadowColor: "black",
-                textAlign: "center",
-
                 bounds: { x: 10, y: 950, width: 900, height: 50 }
               }
             ]

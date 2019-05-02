@@ -50,7 +50,8 @@ export default class ScreenStore {
         webSecurity: false,
         nodeIntegration: true
       },
-      ...this.projectorScreen.bounds
+      // ...this.projectorScreen.bounds
+      // x: 1100
     };
 
     // const url = `file://${__dirname}/projector/projector.html`;
@@ -66,11 +67,12 @@ export default class ScreenStore {
       this.projectorWindow.show();
       // this.projectorWindow.maximize();
 
-      // if (
-      //   process.env.NODE_ENV === "development" ||
-      //   process.env.DEBUG_PROD === "true"
-      // )
-      this.projectorWindow.webContents.openDevTools({ mode: "bottom" });
+      if (
+        process.env.NODE_ENV === "development" ||
+        process.env.DEBUG_PROD === "true"
+      ) {
+        // this.projectorWindow.webContents.openDevTools({ mode: "bottom" });
+      }
     });
     this.projectorWindow.on("closed", () => {
       this.projectorWindow = null;
